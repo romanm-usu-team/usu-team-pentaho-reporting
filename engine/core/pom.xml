@@ -18,6 +18,13 @@
   </licenses>
   <dependencies>
     <dependency>
+      <!-- added be me, mjasek -->
+      <groupId>de.usu</groupId>
+      <artifactId>si-pdr-xmljdbc</artifactId>
+      <version>2.2.0</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.pentaho.reporting.library</groupId>
       <artifactId>libbase</artifactId>
     </dependency>
