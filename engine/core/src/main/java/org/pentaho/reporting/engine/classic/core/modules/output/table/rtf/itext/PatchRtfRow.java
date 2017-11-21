@@ -29,6 +29,7 @@ import com.lowagie.text.rtf.document.RtfDocument;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  * The PatchRtfRow wraps one Row for a PatchRtfTable. INTERNAL USE ONLY
@@ -325,7 +326,13 @@ public class PatchRtfRow extends RtfElement {
       minHeightInTwips = Math.max( minHeightInTwips, rtfCell.getMinimumHeight() );
     }
     result.write( ROW_HEIGHT );
-    result.write( intToByteArray( (int) ( minHeightInTwips * 20 ) ) );
+    //if (minHeightInTwips >= 1) {
+      result.write( intToByteArray( (int) ( -minHeightInTwips * 20 ) ) );
+    //} else {
+    //    System.out.println("::: " + minHeightInTwips);
+
+     // result.write( intToByteArray( -1 ) );
+    //}
 
     if ( this.rowNumber <= this.parentTable.getHeaderRows() ) {
       result.write( ROW_HEADER_ROW );
