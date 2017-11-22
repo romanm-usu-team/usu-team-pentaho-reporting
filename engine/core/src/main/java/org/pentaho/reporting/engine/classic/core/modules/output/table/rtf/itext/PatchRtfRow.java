@@ -17,10 +17,7 @@
 
 package org.pentaho.reporting.engine.classic.core.modules.output.table.rtf.itext;
 
-import com.lowagie.text.Cell;
-import com.lowagie.text.DocWriter;
-import com.lowagie.text.Element;
-import com.lowagie.text.Row;
+import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPRow;
 import com.lowagie.text.rtf.RtfElement;
@@ -28,7 +25,9 @@ import com.lowagie.text.rtf.document.RtfDocument;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.logging.Logger;
 
 /**
@@ -321,18 +320,19 @@ public class PatchRtfRow extends RtfElement {
     }
 
     float minHeightInTwips = 0;
+    boolean hasEmptyCell = false;
     for ( int i = 0; i < this.cells.size(); i++ ) {
       PatchRtfCell rtfCell = this.cells.get( i );
       minHeightInTwips = Math.max( minHeightInTwips, rtfCell.getMinimumHeight() );
+      hasEmptyCell |= rtfCell.isWithEmptyContent();
     }
     result.write( ROW_HEIGHT );
-    //if (minHeightInTwips >= 1) {
-      result.write( intToByteArray( (int) ( -minHeightInTwips * 20 ) ) );
-    //} else {
-    //    System.out.println("::: " + minHeightInTwips);
 
-     // result.write( intToByteArray( -1 ) );
-    //}
+    if (!hasEmptyCell) {
+        result.write( intToByteArray( (int) ( minHeightInTwips * 20 ) ) );
+    } else {
+        result.write( intToByteArray( (int) ( - minHeightInTwips * 20 )  ) );
+    }
 
     if ( this.rowNumber <= this.parentTable.getHeaderRows() ) {
       result.write( ROW_HEADER_ROW );
@@ -388,7 +388,8 @@ public class PatchRtfRow extends RtfElement {
     }
   }
 
-  /**
+
+    /**
    * Writes the content of this PatchRtfRow
    */
   public void writeContent( final OutputStream result ) throws IOException {

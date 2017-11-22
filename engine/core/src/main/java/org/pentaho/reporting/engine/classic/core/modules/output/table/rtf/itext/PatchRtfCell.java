@@ -33,6 +33,7 @@ import com.lowagie.text.rtf.RtfExtendedElement;
 import com.lowagie.text.rtf.document.RtfDocument;
 import com.lowagie.text.rtf.style.RtfColor;
 import com.lowagie.text.rtf.style.RtfParagraphStyle;
+import com.lowagie.text.rtf.text.PatchRtfParagraph;
 import com.lowagie.text.rtf.text.RtfParagraph;
 
 import java.io.IOException;
@@ -710,5 +711,26 @@ public class PatchRtfCell extends Cell implements RtfExtendedElement {
 
   public void setMinimumHeight( final float minimumHeight ) {
     this.minimumHeight = minimumHeight;
+  }
+
+  /**
+   * Returns whether the cell is empty (i.e. has at least only one child, and the child is paragraph with no content)
+   * @return
+   */
+  public boolean isWithEmptyContent() {
+    if (content.isEmpty() || content.size() > 1) {
+      return true;
+    }
+
+    RtfBasicElement child = content.get(0);
+    if (!(child instanceof  RtfParagraph)) {
+      return false;
+    }
+
+    RtfParagraph para = (RtfParagraph) child;
+    PatchRtfParagraph patched = new PatchRtfParagraph(document, para);
+    boolean isEmpty = patched.isEmpty();
+
+    return isEmpty;
   }
 }
