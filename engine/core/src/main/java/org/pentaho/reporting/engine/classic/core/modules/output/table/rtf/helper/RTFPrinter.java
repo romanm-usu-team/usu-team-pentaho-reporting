@@ -332,41 +332,6 @@ public class RTFPrinter {
         return RtfBorder.BORDER_NONE;
     }
 
-    /*
-    //XXX buggy
-    private void updateCellStyle(final Cell cell, final CellBackground background) {
-
-        final Color backgroundColor = background.getBackgroundColor();
-        if (backgroundColor != null) {
-            cell.setBackgroundColor(backgroundColor);
-        }
-        final BorderEdge top = background.getTop();
-        if (!BorderEdge.EMPTY.equals(top)) {
-            cell.setBorderColorTop(top.getColor());
-            cell.setBorderWidthTop((float) StrictGeomUtility.toExternalValue(top.getWidth()));
-        }
-
-        final BorderEdge left = background.getLeft();
-        if (!BorderEdge.EMPTY.equals(left)) {
-            cell.setBorderColorLeft(left.getColor());
-            cell.setBorderWidthLeft((float) StrictGeomUtility.toExternalValue(left.getWidth()));
-        }
-
-        final BorderEdge bottom = background.getBottom();
-        if (!BorderEdge.EMPTY.equals(bottom)) {
-            cell.setBorderColorBottom(bottom.getColor());
-            cell.setBorderWidthBottom((float) StrictGeomUtility.toExternalValue(bottom.getWidth()));
-        }
-
-        final BorderEdge right = background.getRight();
-        if (!BorderEdge.EMPTY.equals(right)) {
-            cell.setBorderColorRight(right.getColor());
-            cell.setBorderWidthRight((float) StrictGeomUtility.toExternalValue(right.getWidth()));
-        }
-    }
-    */
-
-    //with fix
     private void updateCellStyle(final PatchRtfCell cell, final CellBackground background) {
 
         final Color backgroundColor = background.getBackgroundColor();
