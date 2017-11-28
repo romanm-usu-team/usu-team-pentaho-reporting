@@ -19,7 +19,7 @@
   <dependencies>
     <dependency>
       <!-- added be me, mjasek -->
-      <groupId>de.usu</groupId>
+      <groupId>de.usu.si</groupId>
       <artifactId>si-pdr-xmljdbc</artifactId>
       <version>2.2.0</version>
     </dependency>
