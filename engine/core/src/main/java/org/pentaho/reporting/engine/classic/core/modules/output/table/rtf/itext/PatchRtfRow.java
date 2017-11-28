@@ -320,15 +320,15 @@ public class PatchRtfRow extends RtfElement {
     }
 
     float minHeightInTwips = 0;
-    boolean hasEmptyCell = false;
+    boolean hasAllCellsEmpty = true;
     for ( int i = 0; i < this.cells.size(); i++ ) {
       PatchRtfCell rtfCell = this.cells.get( i );
       minHeightInTwips = Math.max( minHeightInTwips, rtfCell.getMinimumHeight() );
-      hasEmptyCell |= rtfCell.isWithEmptyContent();
+      hasAllCellsEmpty &= rtfCell.isWithEmptyContent();
     }
     result.write( ROW_HEIGHT );
 
-    if (!hasEmptyCell) {
+    if (!hasAllCellsEmpty) {
         result.write( intToByteArray( (int) ( minHeightInTwips * 20 ) ) );
     } else {
         result.write( intToByteArray( (int) ( - minHeightInTwips * 20 )  ) );

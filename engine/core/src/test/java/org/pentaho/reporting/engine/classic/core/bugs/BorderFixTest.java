@@ -34,7 +34,11 @@ public class BorderFixTest extends TestCase {
 
     public void testBugExists() throws Exception {
         // final URL resource = getClass().getResource( "pentahoRequisition9.prpt" );
-        final URL resource = new URL("file:D:\\PRD1\\data\\pentahoRequisition9.prpt");
+
+
+        final URL resource = new URL("file:D:\\PRD2\\data\\pentahoRequisition9-fixed-v2.prpt");
+        //final URL resource = new URL("file:D:\\PRD2\\data\\multicol-multilines-report-1.prpt");
+        //final URL resource = new URL("file:D:\\PRD2\\data\\basic-static-report-1.prpt");
         assertNotNull(resource);
 
         final ResourceManager mgr = new ResourceManager();
@@ -49,7 +53,7 @@ public class BorderFixTest extends TestCase {
     }
 
     private void writeToPDF(final MasterReport report) throws IOException, ReportProcessingException {
-        final Path path = Paths.get("c:\\tmp\\PRD\\report_fehler_borderline" + System.currentTimeMillis() + ".pdf");
+        final Path path = Paths.get("c:\\tmp\\PRD\\report_" + System.currentTimeMillis() + ".pdf");
 
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
         PdfReportUtil.createPDF(report, out);
@@ -58,7 +62,7 @@ public class BorderFixTest extends TestCase {
     }
 
     private void writeToRTF(final MasterReport report) throws IOException, ReportProcessingException {
-        final Path path = Paths.get("c:\\tmp\\PRD\\report_fehler_borderline" + System.currentTimeMillis() + ".rtf");
+        final Path path = Paths.get("c:\\tmp\\PRD\\report_" + System.currentTimeMillis() + ".rtf");
 
 
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
