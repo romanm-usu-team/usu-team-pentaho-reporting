@@ -1,9 +1,10 @@
 package org.pentaho.reporting.engine.classic.core.bugs;
 
+import de.usu.si.xmljdbc.driver.VMDSJDBCDriver;
 import junit.framework.TestCase;
-import org.pentaho.reporting.engine.classic.core.ClassicEngineBoot;
-import org.pentaho.reporting.engine.classic.core.MasterReport;
-import org.pentaho.reporting.engine.classic.core.ReportProcessingException;
+import org.pentaho.reporting.engine.classic.core.*;
+import org.pentaho.reporting.engine.classic.core.modules.misc.datafactory.sql.ConnectionProvider;
+import org.pentaho.reporting.engine.classic.core.modules.misc.datafactory.sql.SQLReportDataFactory;
 import org.pentaho.reporting.engine.classic.core.modules.output.pageable.pdf.PdfReportUtil;
 import org.pentaho.reporting.engine.classic.core.modules.output.table.rtf.RTFReportUtil;
 import org.pentaho.reporting.libraries.resourceloader.Resource;
@@ -12,10 +13,15 @@ import org.pentaho.reporting.libraries.resourceloader.ResourceManager;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 public class TestUsuReports  extends TestCase {
 
@@ -29,18 +35,48 @@ public class TestUsuReports  extends TestCase {
 
 
     public void testBorderlinesOverlapsAndOverflowsReport() throws Exception {
-        testRunRender("no-overflow.prpt");
-        testRunRender("overlaps.prpt");
+        testRunRender("no-overflow.prpt", "Requisition.zip");
+        testRunRender("overlaps.prpt", "Requisition.zip");
     }
 
     public void testRequisitionReport() throws Exception {
-        testRunRender("pentahoRequisition9-fixed-v2-publish.prpt");
+        testRunRender("pentahoRequisition9-fixed-v2-publish.prpt", "Requisition.zip");
+    }
+
+
+    public void testVaulemationsReports() throws Exception {
+        testRunRender("vaulemations/ContractSummary.prpt", "Vaulemations.zip");
+
+        testRunRender("vaulemations/FinalChargeback_ITIL.prpt", "Vaulemations.zip");
+        testRunRender("vaulemations/FinalChargeback_ITIL_paginate.prpt", "Vaulemations.zip");
+        testRunRender("vaulemations/IPC001_IncidentsByImpact_jdbc_GER.prpt", "Vaulemations.zip");
+        testRunRender("vaulemations/IPC002_IncorrectlyClassifiedIncidents_GER.prpt", "Vaulemations.zip");
+        testRunRender("vaulemations/IPC004_ReopenedIncidents_GER.prpt", "Vaulemations.zip");
+        testRunRender("vaulemations/IPC005_IncidentsSolvedByServiceDesk_GER.prpt", "Vaulemations.zip");
+        testRunRender("vaulemations/IPC006_CreatedClosedIncidentsAtTheEndOfPeriode_GER.prpt", "Vaulemations.zip");
+        testRunRender("vaulemations/IPC007_IncidentsByCategory_GER.prpt", "Vaulemations.zip");
+        testRunRender("vaulemations/IPC008_OpenedIncidentsGER.prpt", "Vaulemations.zip");
+        testRunRender("vaulemations/IPC011_EscalatedIncidentsByCategory_GER.prpt", "Vaulemations.zip");
+        testRunRender("vaulemations/IPC012_NewReportedIncidents_GER.prpt", "Vaulemations.zip");
+        testRunRender("vaulemations/IPC014_IncidentsVsComplaints_GER.prpt", "Vaulemations.zip");
+        testRunRender("vaulemations/IPC016_FirstLevelSolutionRate_GER.prpt", "Vaulemations.zip");
+        testRunRender("vaulemations/IPC017_SolutionTimeByCategory_GER.prpt", "Vaulemations.zip");
+        testRunRender("vaulemations/IPC029_AlterationOfIncidentsClassifiedIncorrectly_GER.prpt", "Vaulemations.zip");
+        testRunRender("vaulemations/OrderSummary_jdbc.prpt", "Vaulemations.zip");
+        testRunRender("vaulemations/RMTasksForResources.prpt", "Vaulemations.zip");
+        testRunRender("vaulemations/ServiceAgreement_ITIL.prpt", "Vaulemations.zip");
+        testRunRender("vaulemations/ServiceCatalog_GER.prpt", "Vaulemations.zip");
+        testRunRender("vaulemations/ServiceSpecification_GER.prpt", "Vaulemations.zip");
+        testRunRender("vaulemations/ServiceSpecification_ITIL.prpt", "Vaulemations.zip");
+        testRunRender("vaulemations/Supplier review meeting.prpt", "Vaulemations.zip");
+        testRunRender("vaulemations/Suppliers Overview-Activity to be done.prpt", "Vaulemations.zip");
+        testRunRender("vaulemations/Suppliers Overview-Status.prpt", "Vaulemations.zip");
     }
 
     // other tests here ...
 
 
-    public void testRunRender(String reportFileName) throws Exception {
+    public void testRunRender(String reportFileName, String reportDatasourceFileName) throws Exception {
         final URL resource = getClass().getResource( "/usu-reports/" + reportFileName );
         assertNotNull("Report " + reportFileName + " not found", resource);
 
@@ -49,8 +85,13 @@ public class TestUsuReports  extends TestCase {
         final Resource parsed = mgr.createDirectly(resource, MasterReport.class);
         final MasterReport report = (MasterReport) parsed.getResource();
 
-        writeToRTF(report, "report-of-" + reportFileName + "-at-" + System.currentTimeMillis()+ ".rtf");
-        writeToPDF(report, "report-of-" + reportFileName + "-at-" + System.currentTimeMillis()+ ".pdf");
+        URL datasource = getClass().getResource( "/usu-reports/" + reportDatasourceFileName );
+        assertNotNull("Datasource " + reportDatasourceFileName + " not found", datasource);
+
+        setDatasource(report, datasource);
+
+        writeToRTF(report, "report-of-" + reportFileName.replace('/', '\\') + "-at-" + System.currentTimeMillis()+ ".rtf");
+        writeToPDF(report, "report-of-" + reportFileName.replace('/', '\\') + "-at-" + System.currentTimeMillis()+ ".pdf");
     }
 
     private void writeToPDF(final MasterReport report, String outFileName) throws IOException, ReportProcessingException {
@@ -87,6 +128,68 @@ public class TestUsuReports  extends TestCase {
         } catch (Exception e) {
             fail("Target dir does not exist");
             return null;
+        }
+    }
+
+    private void setDatasource(MasterReport report, URL pathToZip)  {
+
+        File aZIPFile = new File(pathToZip.getFile());
+
+        ConnectionProvider customConnectionProvider = new ConnectionProvider() {
+
+            private static final long serialVersionUID = 143443L;
+
+            public java.sql.Connection createConnection(String arg0, String arg1) throws SQLException {
+                VMDSJDBCDriver driver = new VMDSJDBCDriver();
+                return driver.connectWithZip(aZIPFile);
+            }
+
+            public Object getConnectionHash() {
+                return pathToZip.hashCode();
+            }
+
+        };
+
+        if (((CompoundDataFactory) report.getDataFactory()).size() == 0) {
+            return;
+        }
+
+        DataFactory originalDataFactory = ((CompoundDataFactory) report.getDataFactory()).get(0);
+        SQLReportDataFactory sqlDataReportFactory = (SQLReportDataFactory) originalDataFactory;
+        sqlDataReportFactory.setConnectionProvider(customConnectionProvider);
+
+        ((CompoundDataFactory) report.getDataFactory()).set(0, sqlDataReportFactory);
+
+        Set<SubReport> tmpSubReports = getSubReports(report);
+        Iterator<SubReport> tmpSubIterator = tmpSubReports.iterator();
+        while (tmpSubIterator.hasNext()) {
+            SubReport i = (SubReport) tmpSubIterator.next();
+            DataFactory iOriginalDataFactory = ((CompoundDataFactory) i.getDataFactory()).get(0);
+            SQLReportDataFactory iSqlDataReportFactory = (SQLReportDataFactory) iOriginalDataFactory;
+            iSqlDataReportFactory.setConnectionProvider(customConnectionProvider);
+            ((CompoundDataFactory) i.getDataFactory()).set(0, iSqlDataReportFactory);
+        }
+    }
+
+    private Set<SubReport> getSubReports(MasterReport aMasterReport ) {
+        Set<SubReport> subReports = new HashSet<SubReport>();
+        recurseToFindAllSubReports(aMasterReport, subReports);
+        return subReports;
+    }
+
+    private void recurseToFindAllSubReports(Section section, Set<SubReport> subReports) {
+        int elementCount = section.getElementCount();
+        for ( int i=0; i<elementCount ; i++ ) {
+            Element e = section.getElement(i);
+            if ( e instanceof RootLevelBand ) {
+                SubReport[] subs = ((RootLevelBand)e).getSubReports();
+                for( SubReport s : subs ) {
+                    subReports.add(s);
+                }
+            }
+            if ( e instanceof Section ) {
+                recurseToFindAllSubReports((Section)e, subReports);
+            }
         }
     }
 
