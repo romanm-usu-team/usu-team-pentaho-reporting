@@ -45,32 +45,31 @@ public class TestUsuReports  extends TestCase {
 
 
     public void testVaulemationsReports() throws Exception {
-        testRunRender("vaulemations/ContractSummary.prpt", "Vaulemations.zip");
-
-        testRunRender("vaulemations/FinalChargeback_ITIL.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/FinalChargeback_ITIL_paginate.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/IPC001_IncidentsByImpact_jdbc_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/IPC002_IncorrectlyClassifiedIncidents_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/IPC004_ReopenedIncidents_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/IPC005_IncidentsSolvedByServiceDesk_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/IPC006_CreatedClosedIncidentsAtTheEndOfPeriode_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/IPC007_IncidentsByCategory_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/IPC008_OpenedIncidentsGER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/IPC011_EscalatedIncidentsByCategory_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/IPC012_NewReportedIncidents_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/IPC014_IncidentsVsComplaints_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/IPC016_FirstLevelSolutionRate_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/IPC017_SolutionTimeByCategory_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/IPC029_AlterationOfIncidentsClassifiedIncorrectly_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/OrderSummary_jdbc.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/RMTasksForResources.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/ServiceAgreement_ITIL.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/ServiceCatalog_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/ServiceSpecification_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/ServiceSpecification_ITIL.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/Supplier review meeting.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/Suppliers Overview-Activity to be done.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/Suppliers Overview-Status.prpt", "Vaulemations.zip");
+        testRunRender("vaulemations/ContractSummary.prpt", "Contract_DS_VM50.zip");
+        testRunRender("vaulemations/FinalChargeback_ITIL.prpt", "FinalChargeback.zip");
+        testRunRender("vaulemations/FinalChargeback_ITIL_paginate.prpt", "FinalChargeback.zip");
+        testRunRender("vaulemations/IPC001_IncidentsByImpact_jdbc_GER.prpt", "Ticketreport_DS_VM50.zip");
+        testRunRender("vaulemations/IPC002_IncorrectlyClassifiedIncidents_GER.prpt", "Ticketreport_DS_VM50.zip");
+        testRunRender("vaulemations/IPC004_ReopenedIncidents_GER.prpt", "Ticketreport_DS_VM50.zip");
+        testRunRender("vaulemations/IPC005_IncidentsSolvedByServiceDesk_GER.prpt", "Ticketreport_DS_VM50.zip");
+        testRunRender("vaulemations/IPC006_CreatedClosedIncidentsAtTheEndOfPeriode_GER.prpt", "Ticketreport_DS_VM50.zip");
+        testRunRender("vaulemations/IPC007_IncidentsByCategory_GER.prpt", "Ticketreport_DS_VM50.zip");
+        testRunRender("vaulemations/IPC008_OpenedIncidentsGER.prpt", "Ticketreport_DS_VM50.zip");
+        testRunRender("vaulemations/IPC011_EscalatedIncidentsByCategory_GER.prpt", "Ticketreport_DS_VM50.zip");
+        testRunRender("vaulemations/IPC012_NewReportedIncidents_GER.prpt", "Ticketreport_DS_VM50.zip");
+        testRunRender("vaulemations/IPC014_IncidentsVsComplaints_GER.prpt", "Ticketreport_DS_VM50.zip");
+        testRunRender("vaulemations/IPC016_FirstLevelSolutionRate_GER.prpt", "Ticketreport_DS_VM50.zip");
+        testRunRender("vaulemations/IPC017_SolutionTimeByCategory_GER.prpt", "Ticketreport_DS_VM50.zip");
+        testRunRender("vaulemations/IPC029_AlterationOfIncidentsClassifiedIncorrectly_GER.prpt", "Ticketreport_DS_VM50.zip");
+        testRunRender("vaulemations/OrderSummary_jdbc.prpt", "Order_DS_VM45.zip");
+        testRunRender("vaulemations/RMTasksForResources.prpt", "RMResource.zip");
+        testRunRender("vaulemations/ServiceAgreement_ITIL.prpt", "SLA_for_Service_ITIL.zip");
+        testRunRender("vaulemations/ServiceCatalog_GER.prpt", "Services_DS_VM50.zip");
+        testRunRender("vaulemations/ServiceSpecification_GER.prpt", "Services_DS_VM50.zip");
+        testRunRender("vaulemations/ServiceSpecification_ITIL.prpt", "Services_DS_ITIL.zip");
+        testRunRender("vaulemations/Supplier review meeting.prpt", "Suppliers_DS_VM_50.zip");
+        testRunRender("vaulemations/Suppliers Overview-Activity to be done.prpt", "Suppliers_DS_VM_50.zip");
+        testRunRender("vaulemations/Suppliers Overview-Status.prpt", "Suppliers_DS_VM_50.zip");
     }
 
     // other tests here ...
@@ -90,8 +89,8 @@ public class TestUsuReports  extends TestCase {
 
         setDatasource(report, datasource);
 
-        writeToRTF(report, "report-of-" + reportFileName.replace('/', '\\') + "-at-" + System.currentTimeMillis()+ ".rtf");
-        writeToPDF(report, "report-of-" + reportFileName.replace('/', '\\') + "-at-" + System.currentTimeMillis()+ ".pdf");
+        writeToRTF(report, "report-of-" + reportFileName.replace('/', '_') + "-at-" + System.currentTimeMillis()+ ".rtf");
+        writeToPDF(report, "report-of-" + reportFileName.replace('/', '_') + "-at-" + System.currentTimeMillis()+ ".pdf");
     }
 
     private void writeToPDF(final MasterReport report, String outFileName) throws IOException, ReportProcessingException {
@@ -169,6 +168,7 @@ public class TestUsuReports  extends TestCase {
             iSqlDataReportFactory.setConnectionProvider(customConnectionProvider);
             ((CompoundDataFactory) i.getDataFactory()).set(0, iSqlDataReportFactory);
         }
+        report.setAttribute(AttributeNames.Core.NAMESPACE, AttributeNames.Core.DATA_CACHE, Boolean.FALSE);
     }
 
     private Set<SubReport> getSubReports(MasterReport aMasterReport ) {
