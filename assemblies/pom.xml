@@ -95,12 +95,24 @@
       <artifactId>classic-extensions-sampledata</artifactId>
       <version>${project.version}</version>
       <scope>compile</scope>
+	  <exclusions>
+        <exclusion>
+          <artifactId>stax-ex</artifactId>
+          <groupId>org.jvnet.staxex</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.pentaho.reporting.engine</groupId>
       <artifactId>classic-extensions-kettle</artifactId>
       <version>${project.version}</version>
       <scope>compile</scope>
+	  <exclusions>
+        <exclusion>
+          <artifactId>stax-ex</artifactId>
+          <groupId>org.jvnet.staxex</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.pentaho.reporting.engine</groupId>
@@ -113,24 +125,48 @@
       <artifactId>ext-legacy-charts</artifactId>
       <version>${project.version}</version>
       <scope>compile</scope>
+	  <exclusions>
+        <exclusion>
+          <artifactId>stax-ex</artifactId>
+          <groupId>org.jvnet.staxex</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.pentaho.reporting.designer</groupId>
       <artifactId>ext-pentaho</artifactId>
       <version>${project.version}</version>
       <scope>compile</scope>
+	  <exclusions>
+        <exclusion>
+          <artifactId>stax-ex</artifactId>
+          <groupId>org.jvnet.staxex</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.pentaho.reporting.designer</groupId>
       <artifactId>ext-wizard</artifactId>
       <version>${project.version}</version>
       <scope>compile</scope>
+	  <exclusions>
+        <exclusion>
+          <artifactId>stax-ex</artifactId>
+          <groupId>org.jvnet.staxex</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.pentaho.reporting.designer</groupId>
       <artifactId>ext-toc</artifactId>
       <version>${project.version}</version>
       <scope>compile</scope>
+	  <exclusions>
+        <exclusion>
+          <artifactId>stax-ex</artifactId>
+          <groupId>org.jvnet.staxex</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>pentaho</groupId>
