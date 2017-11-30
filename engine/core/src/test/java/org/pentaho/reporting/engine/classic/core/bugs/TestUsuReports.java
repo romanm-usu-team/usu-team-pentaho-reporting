@@ -45,32 +45,31 @@ public class TestUsuReports  extends TestCase {
 
 
     public void testVaulemationsReports() throws Exception {
-        testRunRender("vaulemations/ContractSummary.prpt", "Vaulemations.zip");
-
-        testRunRender("vaulemations/FinalChargeback_ITIL.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/FinalChargeback_ITIL_paginate.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/IPC001_IncidentsByImpact_jdbc_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/IPC002_IncorrectlyClassifiedIncidents_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/IPC004_ReopenedIncidents_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/IPC005_IncidentsSolvedByServiceDesk_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/IPC006_CreatedClosedIncidentsAtTheEndOfPeriode_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/IPC007_IncidentsByCategory_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/IPC008_OpenedIncidentsGER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/IPC011_EscalatedIncidentsByCategory_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/IPC012_NewReportedIncidents_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/IPC014_IncidentsVsComplaints_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/IPC016_FirstLevelSolutionRate_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/IPC017_SolutionTimeByCategory_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/IPC029_AlterationOfIncidentsClassifiedIncorrectly_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/OrderSummary_jdbc.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/RMTasksForResources.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/ServiceAgreement_ITIL.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/ServiceCatalog_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/ServiceSpecification_GER.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/ServiceSpecification_ITIL.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/Supplier review meeting.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/Suppliers Overview-Activity to be done.prpt", "Vaulemations.zip");
-        testRunRender("vaulemations/Suppliers Overview-Status.prpt", "Vaulemations.zip");
+        testRunRender("vaulemations/ContractSummary.prpt", "Contract_DS_VM50.zip");
+        testRunRender("vaulemations/FinalChargeback_ITIL.prpt", "FinalChargeback.zip");
+        testRunRender("vaulemations/FinalChargeback_ITIL_paginate.prpt", "FinalChargeback.zip");
+        testRunRender("vaulemations/IPC001_IncidentsByImpact_jdbc_GER.prpt", "Ticketreport_DS_VM50.zip");
+        testRunRender("vaulemations/IPC002_IncorrectlyClassifiedIncidents_GER.prpt", "Ticketreport_DS_VM50.zip");
+        testRunRender("vaulemations/IPC004_ReopenedIncidents_GER.prpt", "Ticketreport_DS_VM50.zip");
+        testRunRender("vaulemations/IPC005_IncidentsSolvedByServiceDesk_GER.prpt", "Ticketreport_DS_VM50.zip");
+        testRunRender("vaulemations/IPC006_CreatedClosedIncidentsAtTheEndOfPeriode_GER.prpt", "Ticketreport_DS_VM50.zip");
+        testRunRender("vaulemations/IPC007_IncidentsByCategory_GER.prpt", "Ticketreport_DS_VM50.zip");
+        testRunRender("vaulemations/IPC008_OpenedIncidentsGER.prpt", "Ticketreport_DS_VM50.zip");
+        testRunRender("vaulemations/IPC011_EscalatedIncidentsByCategory_GER.prpt", "Ticketreport_DS_VM50.zip");
+        testRunRender("vaulemations/IPC012_NewReportedIncidents_GER.prpt", "Ticketreport_DS_VM50.zip");
+        testRunRender("vaulemations/IPC014_IncidentsVsComplaints_GER.prpt", "Ticketreport_DS_VM50.zip");
+        testRunRender("vaulemations/IPC016_FirstLevelSolutionRate_GER.prpt", "Ticketreport_DS_VM50.zip");
+        testRunRender("vaulemations/IPC017_SolutionTimeByCategory_GER.prpt", "Ticketreport_DS_VM50.zip");
+        testRunRender("vaulemations/IPC029_AlterationOfIncidentsClassifiedIncorrectly_GER.prpt", "Ticketreport_DS_VM50.zip");
+        testRunRender("vaulemations/OrderSummary_jdbc.prpt", "Order_DS_VM45.zip");
+        testRunRender("vaulemations/RMTasksForResources.prpt", "RMResource.zip");
+        testRunRender("vaulemations/ServiceAgreement_ITIL.prpt", "SLA_for_Service_ITIL.zip");
+        testRunRender("vaulemations/ServiceCatalog_GER.prpt", "Services_DS_VM50.zip");
+        testRunRender("vaulemations/ServiceSpecification_GER.prpt", "Services_DS_VM50.zip");
+        testRunRender("vaulemations/ServiceSpecification_ITIL.prpt", "Services_DS_ITIL.zip");
+        testRunRender("vaulemations/Supplier review meeting.prpt", "Suppliers_DS_VM_50.zip");
+        testRunRender("vaulemations/Suppliers Overview-Activity to be done.prpt", "Suppliers_DS_VM_50.zip");
+        testRunRender("vaulemations/Suppliers Overview-Status.prpt", "Suppliers_DS_VM_50.zip");
     }
 
     // other tests here ...
@@ -90,8 +89,8 @@ public class TestUsuReports  extends TestCase {
 
         setDatasource(report, datasource);
 
-        writeToRTF(report, "report-of-" + reportFileName.replace('/', '\\') + "-at-" + System.currentTimeMillis()+ ".rtf");
-        writeToPDF(report, "report-of-" + reportFileName.replace('/', '\\') + "-at-" + System.currentTimeMillis()+ ".pdf");
+        writeToRTF(report, "report-of-" + reportFileName.replace('/', '_') + "-at-" + System.currentTimeMillis()+ ".rtf");
+        writeToPDF(report, "report-of-" + reportFileName.replace('/', '_') + "-at-" + System.currentTimeMillis()+ ".pdf");
     }
 
     private void writeToPDF(final MasterReport report, String outFileName) throws IOException, ReportProcessingException {
@@ -160,37 +159,49 @@ public class TestUsuReports  extends TestCase {
 
         ((CompoundDataFactory) report.getDataFactory()).set(0, sqlDataReportFactory);
 
-        Set<SubReport> tmpSubReports = getSubReports(report);
-        Iterator<SubReport> tmpSubIterator = tmpSubReports.iterator();
-        while (tmpSubIterator.hasNext()) {
-            SubReport i = (SubReport) tmpSubIterator.next();
-            DataFactory iOriginalDataFactory = ((CompoundDataFactory) i.getDataFactory()).get(0);
-            SQLReportDataFactory iSqlDataReportFactory = (SQLReportDataFactory) iOriginalDataFactory;
-            iSqlDataReportFactory.setConnectionProvider(customConnectionProvider);
-            ((CompoundDataFactory) i.getDataFactory()).set(0, iSqlDataReportFactory);
-        }
+        setConnectionProviderToReport(report, customConnectionProvider);
+        report.setAttribute(AttributeNames.Core.NAMESPACE, AttributeNames.Core.DATA_CACHE, Boolean.FALSE);
     }
 
-    private Set<SubReport> getSubReports(MasterReport aMasterReport ) {
-        Set<SubReport> subReports = new HashSet<SubReport>();
-        recurseToFindAllSubReports(aMasterReport, subReports);
-        return subReports;
-    }
-
-    private void recurseToFindAllSubReports(Section section, Set<SubReport> subReports) {
-        int elementCount = section.getElementCount();
-        for ( int i=0; i<elementCount ; i++ ) {
-            Element e = section.getElement(i);
-            if ( e instanceof RootLevelBand ) {
-                SubReport[] subs = ((RootLevelBand)e).getSubReports();
-                for( SubReport s : subs ) {
-                    subReports.add(s);
+    /**
+     * Finds all subreports and sets VMSI JDBC driver as default connection
+     * provider to all of them
+     *
+     */
+    private void setConnectionProviderToSubReports(final Section tmpSection, ConnectionProvider tmpConnectionProvider) {
+        final int count = tmpSection.getElementCount();
+        for ( int i = 0; i < count; i++ ) {
+            final ReportElement element = tmpSection.getElement( i );
+            if ( element instanceof SubReport ) {
+                setConnectionProviderToReport((SubReport) element, tmpConnectionProvider);
+            } else if ( element instanceof Section ) {
+                setConnectionProviderToSubReports((Section)element, tmpConnectionProvider);
+                if ( element instanceof RootLevelBand ) {
+                    final RootLevelBand rlb = (RootLevelBand) element;
+                    for ( int sr = 0; sr < rlb.getSubReportCount(); sr += 1 ) {
+                        setConnectionProviderToReport(rlb.getSubReport( sr ), tmpConnectionProvider);
+                    }
                 }
             }
-            if ( e instanceof Section ) {
-                recurseToFindAllSubReports((Section)e, subReports);
-            }
         }
+    }
+
+    /**
+     * Set VM SI JDBC to all existing data factories in report
+     *
+     * @param subReport
+     * @param tmpConnectionProvider
+     */
+    private void setConnectionProviderToReport(AbstractReportDefinition subReport, ConnectionProvider tmpConnectionProvider) {
+        CompoundDataFactory cdf = (CompoundDataFactory) subReport.getDataFactory();
+        for (int i = 0; i < cdf.size(); i++) {
+            SQLReportDataFactory sqlDataReportFactory = (SQLReportDataFactory) cdf.get(i);
+            sqlDataReportFactory.setConnectionProvider(tmpConnectionProvider);
+            cdf.set(i, sqlDataReportFactory);
+        }
+
+        // set recersively VM SI JDBC provider to all subreports in this report
+        setConnectionProviderToSubReports(subReport, tmpConnectionProvider);
     }
 
 }
