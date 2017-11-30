@@ -72,6 +72,10 @@ public class TestUsuReports  extends TestCase {
         testRunRender("vaulemations/Suppliers Overview-Status.prpt", "Suppliers_DS_VM_50.zip");
     }
 
+
+    public void testHTMLs() throws Exception {
+        testRunRender("html-render-all.prpt", null);
+    }
     // other tests here ...
 
 
@@ -84,10 +88,12 @@ public class TestUsuReports  extends TestCase {
         final Resource parsed = mgr.createDirectly(resource, MasterReport.class);
         final MasterReport report = (MasterReport) parsed.getResource();
 
-        URL datasource = getClass().getResource( "/usu-reports/" + reportDatasourceFileName );
-        assertNotNull("Datasource " + reportDatasourceFileName + " not found", datasource);
+        if (reportDatasourceFileName != null) {
+            URL datasource = getClass().getResource("/usu-reports/" + reportDatasourceFileName);
+            assertNotNull("Datasource " + reportDatasourceFileName + " not found", datasource);
 
-        setDatasource(report, datasource);
+            setDatasource(report, datasource);
+        }
 
         writeToRTF(report, "report-of-" + reportFileName.replace('/', '_') + "-at-" + System.currentTimeMillis()+ ".rtf");
         writeToPDF(report, "report-of-" + reportFileName.replace('/', '_') + "-at-" + System.currentTimeMillis()+ ".pdf");
