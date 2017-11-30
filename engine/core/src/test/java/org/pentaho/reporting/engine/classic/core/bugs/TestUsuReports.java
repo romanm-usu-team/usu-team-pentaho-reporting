@@ -159,38 +159,49 @@ public class TestUsuReports  extends TestCase {
 
         ((CompoundDataFactory) report.getDataFactory()).set(0, sqlDataReportFactory);
 
-        Set<SubReport> tmpSubReports = getSubReports(report);
-        Iterator<SubReport> tmpSubIterator = tmpSubReports.iterator();
-        while (tmpSubIterator.hasNext()) {
-            SubReport i = (SubReport) tmpSubIterator.next();
-            DataFactory iOriginalDataFactory = ((CompoundDataFactory) i.getDataFactory()).get(0);
-            SQLReportDataFactory iSqlDataReportFactory = (SQLReportDataFactory) iOriginalDataFactory;
-            iSqlDataReportFactory.setConnectionProvider(customConnectionProvider);
-            ((CompoundDataFactory) i.getDataFactory()).set(0, iSqlDataReportFactory);
-        }
+        setConnectionProviderToReport(report, customConnectionProvider);
         report.setAttribute(AttributeNames.Core.NAMESPACE, AttributeNames.Core.DATA_CACHE, Boolean.FALSE);
     }
 
-    private Set<SubReport> getSubReports(MasterReport aMasterReport ) {
-        Set<SubReport> subReports = new HashSet<SubReport>();
-        recurseToFindAllSubReports(aMasterReport, subReports);
-        return subReports;
-    }
-
-    private void recurseToFindAllSubReports(Section section, Set<SubReport> subReports) {
-        int elementCount = section.getElementCount();
-        for ( int i=0; i<elementCount ; i++ ) {
-            Element e = section.getElement(i);
-            if ( e instanceof RootLevelBand ) {
-                SubReport[] subs = ((RootLevelBand)e).getSubReports();
-                for( SubReport s : subs ) {
-                    subReports.add(s);
+    /**
+     * Finds all subreports and sets VMSI JDBC driver as default connection
+     * provider to all of them
+     *
+     */
+    private void setConnectionProviderToSubReports(final Section tmpSection, ConnectionProvider tmpConnectionProvider) {
+        final int count = tmpSection.getElementCount();
+        for ( int i = 0; i < count; i++ ) {
+            final ReportElement element = tmpSection.getElement( i );
+            if ( element instanceof SubReport ) {
+                setConnectionProviderToReport((SubReport) element, tmpConnectionProvider);
+            } else if ( element instanceof Section ) {
+                setConnectionProviderToSubReports((Section)element, tmpConnectionProvider);
+                if ( element instanceof RootLevelBand ) {
+                    final RootLevelBand rlb = (RootLevelBand) element;
+                    for ( int sr = 0; sr < rlb.getSubReportCount(); sr += 1 ) {
+                        setConnectionProviderToReport(rlb.getSubReport( sr ), tmpConnectionProvider);
+                    }
                 }
             }
-            if ( e instanceof Section ) {
-                recurseToFindAllSubReports((Section)e, subReports);
-            }
         }
+    }
+
+    /**
+     * Set VM SI JDBC to all existing data factories in report
+     *
+     * @param subReport
+     * @param tmpConnectionProvider
+     */
+    private void setConnectionProviderToReport(AbstractReportDefinition subReport, ConnectionProvider tmpConnectionProvider) {
+        CompoundDataFactory cdf = (CompoundDataFactory) subReport.getDataFactory();
+        for (int i = 0; i < cdf.size(); i++) {
+            SQLReportDataFactory sqlDataReportFactory = (SQLReportDataFactory) cdf.get(i);
+            sqlDataReportFactory.setConnectionProvider(tmpConnectionProvider);
+            cdf.set(i, sqlDataReportFactory);
+        }
+
+        // set recersively VM SI JDBC provider to all subreports in this report
+        setConnectionProviderToSubReports(subReport, tmpConnectionProvider);
     }
 
 }
