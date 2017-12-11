@@ -90,6 +90,7 @@ public class AttributeNames {
     public static final String TITLE = "title";
     public static final String ALT = "alt";
 
+
     private Html() {
     }
   }

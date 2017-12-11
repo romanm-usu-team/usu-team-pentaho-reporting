@@ -3,7 +3,7 @@ package org.pentaho.reporting.engine.classic.core.layout.richtext;
 import junit.framework.TestCase;
 import org.pentaho.reporting.engine.classic.core.ClassicEngineBoot;
 
-public class HtmlStylesRichTechConverterTest extends TestCase {
+public class HtmlStylesRichTextConverterTest extends TestCase {
     private HtmlStylesRichTechConverter styles;
 
     public void setUp() throws Exception {
@@ -52,4 +52,5 @@ public class HtmlStylesRichTechConverterTest extends TestCase {
         assertEquals("ZZ", HtmlStylesRichTechConverter.ListStyle.toAlpha(702));
         assertEquals("AAA", HtmlStylesRichTechConverter.ListStyle.toAlpha(703));
     }
+
 }
