@@ -127,7 +127,7 @@ public class TestUsuReports  extends TestCase {
         try {
             //choose as you wish ...
             String tmpDirStr = System.getProperty("java.io.tmpdir");
-            //String tmpDirStr = "target";
+            //String tmpDirStr = "target/something";
 
             File tmpDir = new File(tmpDirStr);
             File testDir = new File(tmpDir, "PRD");

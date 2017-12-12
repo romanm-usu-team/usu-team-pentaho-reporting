@@ -20,29 +20,29 @@ public class HtmlListsRichTextConverterTest extends BaseHtmlRichTextConverterTes
 
     public void testHtmlListElementary() throws  Exception {
         final String input = "<ol><li>Hi!</li></ol>";
-        Band result = (Band) converter.convert(source, input);
-        Band body = checkResultAndGetBody(result);
+        final Band result = (Band) converter.convert(source, input);
+        final Band body = checkResultAndGetBody(result);
 
-        Element ol = body.getElement(0);
+        final Element ol = body.getElement(0);
         checkOLwithLI(ol, 0, "1. ", "Hi!");
     }
 
     public void testHtmlListBasic() throws  Exception {
         final String input = "<ol><li>Hi!</li><li>Hello!</li></ol>";
-        Band result = (Band) converter.convert(source, input);
-        Band body = checkResultAndGetBody(result);
+        final Band result = (Band) converter.convert(source, input);
+        final Band body = checkResultAndGetBody(result);
 
-        Element ol = body.getElement(0);
+        final Element ol = body.getElement(0);
         checkOLwithLI(ol, 0, "1. ", "Hi!");
         checkOLwithLI(ol, 1, "2. ", "Hello!");
     }
 
     public void testHtmlWithEmptyLI() throws  Exception {
         final String input = "<ol><li></li></ol>";
-        Band result = (Band) converter.convert(source, input);
-        Band body = checkResultAndGetBody(result);
+        final Band result = (Band) converter.convert(source, input);
+        final Band body = checkResultAndGetBody(result);
 
-        Element ol = body.getElement(0);
+        final Element ol = body.getElement(0);
         //printElement(ol, 0);
 
         checkOLwithLI(ol, 0, null, null);
@@ -50,55 +50,55 @@ public class HtmlListsRichTextConverterTest extends BaseHtmlRichTextConverterTes
 
     public void testHtmlListsTwoInRow() throws  Exception {
         final String input = "<ol><li>foo</li></ol><ol><li>bar</li></ol>";
-        Band result = (Band) converter.convert(source, input);
-        Band body = checkResultAndGetBody(result);
+        final Band result = (Band) converter.convert(source, input);
+        final Band body = checkResultAndGetBody(result);
         //printElement(body, 1);
 
-        Element olFoo = body.getElement(0);
+        final Element olFoo = body.getElement(0);
         checkOLwithLI(olFoo, 0, "1. ", "foo");
-        Element olBar = body.getElement(1);
+        final Element olBar = body.getElement(1);
         checkOLwithLI(olBar, 0, "1. ", "bar");
     }
 
     public void testHtmlListsNestedWithoutText() throws  Exception {
         final String input = "<ol><li><ol><li>Teeext</li></ol></li></ol>";
-        Band result = (Band) converter.convert(source, input);
-        Band body = checkResultAndGetBody(result);
+        final Band result = (Band) converter.convert(source, input);
+        final Band body = checkResultAndGetBody(result);
 
         //printElement(body, 0);
 
-        Element outerOL = body.getElement(0);
+        final Element outerOL = body.getElement(0);
 
         //XXX not working this way checkOLwithLI(outerOL, 0, "1. ", null);
         checkName(body, "li", 0, 0, 0);
         checkName(body, "point", 0, 0, 0, 0);
         checkName(body, "ol", 0, 0, 0, 1);
 
-        Element innerOL = findElemByPath(body, 0, 0, 0, 1);
+        final Element innerOL = findElemByPath(body, 0, 0, 0, 1);
         checkOLwithLI(innerOL, 0, "1. ", "Teeext");
     }
 
     public void testHtmlListsNestedWithText() throws  Exception {
         final String input = "<ol><li>People<ol><li>Karl</li></ol></li></ol>";
-        Band result = (Band) converter.convert(source, input);
-        Band body = checkResultAndGetBody(result);
+        final Band result = (Band) converter.convert(source, input);
+        final Band body = checkResultAndGetBody(result);
 
         //printElement(body, 0);
 
-        Element outerOL = findElemByPath(body, 0);
+        final Element outerOL = findElemByPath(body, 0);
         checkOLwithLI(outerOL, 0, "1. ", "People");
-        Element innerOL = findElemByPath(body, 0, 0, 0, 1);
+        final Element innerOL = findElemByPath(body, 0, 0, 0, 1);
         checkOLwithLI(innerOL, 0, "1. ", "Karl");
     }
 
     public void testHtmlListsNestedWithBlockElem() throws  Exception {
         final String input = "<ol><li><p>42</p><ol><li>99</li></ol></li></ol>";
-        Band result = (Band) converter.convert(source, input);
-        Band body = checkResultAndGetBody(result);
+        final Band result = (Band) converter.convert(source, input);
+        final Band body = checkResultAndGetBody(result);
 
        // printElement(body, 0);
 
-        Element outerOL = findElemByPath(body, 0);
+        final Element outerOL = findElemByPath(body, 0);
         checkName(outerOL, "li", 0, 0);
         checkName(outerOL, "p", 0, 0, 0);
         checkName(outerOL, "", 0, 0, 0, 0);
@@ -108,7 +108,7 @@ public class HtmlListsRichTextConverterTest extends BaseHtmlRichTextConverterTes
         checkValue(outerOL, "42", 0, 0, 0, 0, 1);
 
 
-        Element innerOL = findElemByPath(body, 0, 0, 0, 1);
+        final Element innerOL = findElemByPath(body, 0, 0, 0, 1);
         checkOLwithLI(innerOL, 0, "1. ", "99");
     }
 
