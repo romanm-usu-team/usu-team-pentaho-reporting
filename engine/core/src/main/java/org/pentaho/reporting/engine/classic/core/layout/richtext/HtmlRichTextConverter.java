@@ -42,11 +42,7 @@ import org.pentaho.reporting.engine.classic.core.ReportElement;
 import org.pentaho.reporting.engine.classic.core.filter.types.ContentType;
 import org.pentaho.reporting.engine.classic.core.filter.types.LabelType;
 import org.pentaho.reporting.engine.classic.core.metadata.ElementType;
-import org.pentaho.reporting.engine.classic.core.style.BandStyleKeys;
-import org.pentaho.reporting.engine.classic.core.style.ElementStyleKeys;
-import org.pentaho.reporting.engine.classic.core.style.StyleKey;
-import org.pentaho.reporting.engine.classic.core.style.TextStyleKeys;
-import org.pentaho.reporting.engine.classic.core.style.WhitespaceCollapse;
+import org.pentaho.reporting.engine.classic.core.style.*;
 
 /**
  * This handles HTML 3.2 with some CSS support. It uses the Swing HTML parser to process the document.
@@ -142,7 +138,11 @@ public class HtmlRichTextConverter implements RichTextConverter {
           return processText(textElement);
       } else {
 
-          // we need to intercept for <UL> and <OL> here and everything inside of them
+          if (is(textElement, HTML.Tag.TABLE) /*| | is(textElement, HTML.Tag.TR) || is(textElement, HTML.Tag.TH) || is(textElement, HTML.Tag.TD) || is(textElement, HTML.Tag.CAPTION)*/) {
+              return processTable(textElement, currentListStyle, currentListItem);
+          }
+
+          // we need to intercept for <UL> and <OL> here and everything between them
           if ((is(textElement, HTML.Tag.OL) || is(textElement, HTML.Tag.UL) || is(textElement, HTML.Tag.LI))
                   || ((textElement.getParentElement() != null))) {
 
@@ -205,9 +205,112 @@ public class HtmlRichTextConverter implements RichTextConverter {
         return band;
     }
 
+
+    private Element processTable(javax.swing.text.Element textElement, HtmlStylesRichTechConverter.ListStyle currentListStyle, MutableInteger currentListItem) throws BadLocationException {
+
+        final Band tableWrapper = new Band();
+        //tableWrapper.setName("p-implied");
+        // configureBand(textElement, tableWrapper);
+         tableWrapper.getStyle().setStyleProperty(BandStyleKeys.LAYOUT, BandStyleKeys.LAYOUT_INLINE);
+
+        final Band table = new Band();
+        preprocessResulting(textElement, table, null, null);
+        table.getStyle().setStyleProperty( BandStyleKeys.TABLE_LAYOUT, TableLayout.fixed );
+        //configureBand(textElement, table);
+        table.getStyle().setStyleProperty(BandStyleKeys.LAYOUT, BandStyleKeys.LAYOUT_TABLE);
+
+        final Band tableHeader = new Band();
+        tableHeader.setName("thead");
+        tableHeader.getStyle().setStyleProperty(BandStyleKeys.LAYOUT, BandStyleKeys.LAYOUT_TABLE_HEADER);
+
+        final Band tableBody = new Band();
+        tableHeader.setName("tbody");
+        tableBody.getStyle().setStyleProperty(BandStyleKeys.LAYOUT, BandStyleKeys.LAYOUT_TABLE_BODY);
+
+        for (int i = 0; i < textElement.getElementCount(); i++) {
+            final javax.swing.text.Element child = textElement.getElement(i);
+
+            if (is(child, HTML.Tag.TR)) {
+                final Element processedRow = processTableRow(child, currentListStyle, currentListItem, tableWrapper);
+                tableBody.addElement(processedRow);
+            } else if (is(child, "thead") || is(child, "tbody")) {
+                for (int j = 0; j < child.getElementCount(); j++) {
+                    final javax.swing.text.Element subchild = textElement.getElement(i);
+
+                    if (is(subchild, HTML.Tag.TR)) {
+                        final Element processedRow = processTableRow(subchild, currentListStyle, currentListItem, tableWrapper);
+
+                        if (is(child, "thead")) {
+                            tableHeader.addElement(processedRow);
+                        } else if (is(child, "tbody")) {
+                            tableBody.addElement(processedRow);
+                        } else {
+                            tableBody.addElement(processedRow);
+                        }
+                    } else {
+                        final Element processedRest = process(subchild, currentListStyle, currentListItem);
+                        if (processedRest != null) {
+                            tableWrapper.addElement(processedRest);
+                        }
+
+                    }
+                }
+            } else if (is(child, "caption")) {
+                final Element processedRest = process(child, currentListStyle, currentListItem);
+                tableWrapper.addElement(processedRest);
+                //TODO LAYOUT := TABLE_CAPTION ?
+            } else {
+                final Element processedRest = process(child, currentListStyle, currentListItem);
+                tableWrapper.addElement(processedRest);
+            }
+        }
+
+        table.addElement(tableHeader);
+        table.addElement(tableBody);
+
+        tableWrapper.addElement(table);
+        return tableWrapper;
+    }
+
+
+    private Element processTableRow(javax.swing.text.Element rowTextElement, HtmlStylesRichTechConverter.ListStyle currentListStyle, MutableInteger currentListItem, Band tableWrapper) throws BadLocationException {
+        Band row = new Band();
+        row.setName(rowTextElement.getName());
+        row.getStyle().setStyleProperty(BandStyleKeys.LAYOUT, BandStyleKeys.LAYOUT_TABLE_ROW);
+
+        for (int i = 0; i < rowTextElement.getElementCount(); i++) {
+            final javax.swing.text.Element cellTextElem = rowTextElement.getElement(i);
+
+            final Element processed = //process(cellTextElem, currentListStyle, currentListItem);
+                processGeneralCompositeElement(cellTextElem, currentListStyle, currentListItem);
+
+            if (processed == null) {
+                continue;
+            }
+
+            if (is(cellTextElem, HTML.Tag.TD) || is(cellTextElem, HTML.Tag.TH)) {
+                Band cell = new Band();
+                cell.setName(cellTextElem.getName());
+                //TODO colspan and rowspan should be processed
+
+
+                cell.getStyle().setStyleProperty(BandStyleKeys.LAYOUT, BandStyleKeys.LAYOUT_TABLE_CELL);
+                cell.getStyle().setStyleProperty( ElementStyleKeys.MIN_WIDTH, 10.0f );
+                cell.getStyle().setStyleProperty( ElementStyleKeys.MIN_HEIGHT, 10.0f );
+
+                cell.addElement(processed);
+                row.addElement(cell);
+            } else {
+                tableWrapper.addElement(processed);
+            }
+        }
+        return row;
+    }
+
+
     private Element processUlAndOlAndLi(javax.swing.text.Element textElement, HtmlStylesRichTechConverter.ListStyle currentListStyle, MutableInteger currentListItem) throws BadLocationException {
         // don't ask me, I have absolutelly no idea what this bulk of magic do
-
+        // but would also work with particullar different element
         final Band band = new Band();
         preprocessResulting(textElement, band, null, null);
         configureBand(textElement, band);
