@@ -211,7 +211,7 @@ public class HtmlRichTextConverter implements RichTextConverter {
         final Band tableWrapper = new Band();
         //tableWrapper.setName("p-implied");
         // configureBand(textElement, tableWrapper);
-         tableWrapper.getStyle().setStyleProperty(BandStyleKeys.LAYOUT, BandStyleKeys.LAYOUT_INLINE);
+         tableWrapper.getStyle().setStyleProperty(BandStyleKeys.LAYOUT, BandStyleKeys.LAYOUT_BLOCK);
 
         final Band table = new Band();
         preprocessResulting(textElement, table, null, null);
@@ -256,9 +256,9 @@ public class HtmlRichTextConverter implements RichTextConverter {
                     }
                 }
             } else if (is(child, "caption")) {
-                final Element processedRest = process(child, currentListStyle, currentListItem);
-                tableWrapper.addElement(processedRest);
-                //TODO LAYOUT := TABLE_CAPTION ?
+                final Element processedCaption = process(child, currentListStyle, currentListItem);
+                processedCaption.getStyle().setStyleProperty(BandStyleKeys.LAYOUT, BandStyleKeys.LAYOUT_BLOCK);
+                tableWrapper.addElement(processedCaption);
             } else {
                 final Element processedRest = process(child, currentListStyle, currentListItem);
                 tableWrapper.addElement(processedRest);
@@ -292,7 +292,6 @@ public class HtmlRichTextConverter implements RichTextConverter {
                 Band cell = new Band();
                 cell.setName(cellTextElem.getName());
                 //TODO colspan and rowspan should be processed
-
 
                 cell.getStyle().setStyleProperty(BandStyleKeys.LAYOUT, BandStyleKeys.LAYOUT_TABLE_CELL);
                 cell.getStyle().setStyleProperty( ElementStyleKeys.MIN_WIDTH, 10.0f );

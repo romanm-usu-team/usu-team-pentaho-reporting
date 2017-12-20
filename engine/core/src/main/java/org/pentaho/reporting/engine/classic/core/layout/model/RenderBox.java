@@ -394,6 +394,11 @@ public abstract class RenderBox extends RenderNode {
     final RenderBox renderBox = getParent();
     if ( renderBox != null ) {
       renderBox.increaseTableReferenceCount( count, this );
+    } else {
+      final LogicalPageBox page = this.getLogicalPage();
+      if (page != null && this != page) {
+        page.increaseTableReferenceCount(count, this);
+      }
     }
   }
 
@@ -456,6 +461,11 @@ public abstract class RenderBox extends RenderNode {
     final RenderBox renderBox = getParent();
     if ( renderBox != null ) {
       renderBox.decreaseTableReferenceCount( count, this );
+    } else {
+        final LogicalPageBox page = this.getLogicalPage();
+        if (page != null && this != page) {
+            page.decreaseTableReferenceCount(count, this);
+        }
     }
   }
 
