@@ -34,45 +34,52 @@ public class TestUsuReports  extends TestCase {
     }
 
 
-    public void testBorderlinesOverlapsAndOverflowsReport() throws Exception {
-        testRunRender("no-overflow.prpt", "Requisition.zip");
-        testRunRender("overlaps.prpt", "Requisition.zip");
+//    public void testBorderlinesOverlapsAndOverflowsReport() throws Exception {
+//        testRunRender("no-overflow.prpt", "Requisition.zip");
+//        testRunRender("overlaps.prpt", "Requisition.zip");
+//    }
+//
+//    public void testRequisitionReport() throws Exception {
+//        testRunRender("pentahoRequisition9-fixed-v2-publish.prpt", "Requisition.zip");
+//    }
+
+
+//    public void testVaulemationsReports() throws Exception {
+//        testRunRender("vaulemations/ContractSummary.prpt", "Contract_DS_VM50.zip");
+//        testRunRender("vaulemations/FinalChargeback_ITIL.prpt", "FinalChargeback.zip");
+//        testRunRender("vaulemations/FinalChargeback_ITIL_paginate.prpt", "FinalChargeback.zip");
+//        testRunRender("vaulemations/IPC001_IncidentsByImpact_jdbc_GER.prpt", "Ticketreport_DS_VM50.zip");
+//        testRunRender("vaulemations/IPC002_IncorrectlyClassifiedIncidents_GER.prpt", "Ticketreport_DS_VM50.zip");
+//        testRunRender("vaulemations/IPC004_ReopenedIncidents_GER.prpt", "Ticketreport_DS_VM50.zip");
+//        testRunRender("vaulemations/IPC005_IncidentsSolvedByServiceDesk_GER.prpt", "Ticketreport_DS_VM50.zip");
+//        testRunRender("vaulemations/IPC006_CreatedClosedIncidentsAtTheEndOfPeriode_GER.prpt", "Ticketreport_DS_VM50.zip");
+//        testRunRender("vaulemations/IPC007_IncidentsByCategory_GER.prpt", "Ticketreport_DS_VM50.zip");
+//        testRunRender("vaulemations/IPC008_OpenedIncidentsGER.prpt", "Ticketreport_DS_VM50.zip");
+//        testRunRender("vaulemations/IPC011_EscalatedIncidentsByCategory_GER.prpt", "Ticketreport_DS_VM50.zip");
+//        testRunRender("vaulemations/IPC012_NewReportedIncidents_GER.prpt", "Ticketreport_DS_VM50.zip");
+//        testRunRender("vaulemations/IPC014_IncidentsVsComplaints_GER.prpt", "Ticketreport_DS_VM50.zip");
+//        testRunRender("vaulemations/IPC016_FirstLevelSolutionRate_GER.prpt", "Ticketreport_DS_VM50.zip");
+//        testRunRender("vaulemations/IPC017_SolutionTimeByCategory_GER.prpt", "Ticketreport_DS_VM50.zip");
+//        testRunRender("vaulemations/IPC029_AlterationOfIncidentsClassifiedIncorrectly_GER.prpt", "Ticketreport_DS_VM50.zip");
+//        testRunRender("vaulemations/OrderSummary_jdbc.prpt", "Order_DS_VM45.zip");
+//        testRunRender("vaulemations/RMTasksForResources.prpt", "RMResource.zip");
+//        testRunRender("vaulemations/ServiceAgreement_ITIL.prpt", "SLA_for_Service_ITIL.zip");
+//        testRunRender("vaulemations/ServiceCatalog_GER.prpt", "Services_DS_VM50.zip");
+//        testRunRender("vaulemations/ServiceSpecification_GER.prpt", "Services_DS_VM50.zip");
+//        testRunRender("vaulemations/ServiceSpecification_ITIL.prpt", "Services_DS_ITIL.zip");
+//        testRunRender("vaulemations/Supplier review meeting.prpt", "Suppliers_DS_VM_50.zip");
+//        testRunRender("vaulemations/Suppliers Overview-Activity to be done.prpt", "Suppliers_DS_VM_50.zip");
+//        testRunRender("vaulemations/Suppliers Overview-Status.prpt", "Suppliers_DS_VM_50.zip");
+//    }
+
+
+    public void testHTMLs() throws Exception {
+       testRunRender("elementary-html.prpt", null);
+ //      testRunRender("html-render-all.prpt", null);
     }
 
-    public void testRequisitionReport() throws Exception {
-        testRunRender("pentahoRequisition9-fixed-v2-publish.prpt", "Requisition.zip");
-    }
 
-
-    public void testVaulemationsReports() throws Exception {
-        testRunRender("vaulemations/ContractSummary.prpt", "Contract_DS_VM50.zip");
-        testRunRender("vaulemations/FinalChargeback_ITIL.prpt", "FinalChargeback.zip");
-        testRunRender("vaulemations/FinalChargeback_ITIL_paginate.prpt", "FinalChargeback.zip");
-        testRunRender("vaulemations/IPC001_IncidentsByImpact_jdbc_GER.prpt", "Ticketreport_DS_VM50.zip");
-        testRunRender("vaulemations/IPC002_IncorrectlyClassifiedIncidents_GER.prpt", "Ticketreport_DS_VM50.zip");
-        testRunRender("vaulemations/IPC004_ReopenedIncidents_GER.prpt", "Ticketreport_DS_VM50.zip");
-        testRunRender("vaulemations/IPC005_IncidentsSolvedByServiceDesk_GER.prpt", "Ticketreport_DS_VM50.zip");
-        testRunRender("vaulemations/IPC006_CreatedClosedIncidentsAtTheEndOfPeriode_GER.prpt", "Ticketreport_DS_VM50.zip");
-        testRunRender("vaulemations/IPC007_IncidentsByCategory_GER.prpt", "Ticketreport_DS_VM50.zip");
-        testRunRender("vaulemations/IPC008_OpenedIncidentsGER.prpt", "Ticketreport_DS_VM50.zip");
-        testRunRender("vaulemations/IPC011_EscalatedIncidentsByCategory_GER.prpt", "Ticketreport_DS_VM50.zip");
-        testRunRender("vaulemations/IPC012_NewReportedIncidents_GER.prpt", "Ticketreport_DS_VM50.zip");
-        testRunRender("vaulemations/IPC014_IncidentsVsComplaints_GER.prpt", "Ticketreport_DS_VM50.zip");
-        testRunRender("vaulemations/IPC016_FirstLevelSolutionRate_GER.prpt", "Ticketreport_DS_VM50.zip");
-        testRunRender("vaulemations/IPC017_SolutionTimeByCategory_GER.prpt", "Ticketreport_DS_VM50.zip");
-        testRunRender("vaulemations/IPC029_AlterationOfIncidentsClassifiedIncorrectly_GER.prpt", "Ticketreport_DS_VM50.zip");
-        testRunRender("vaulemations/OrderSummary_jdbc.prpt", "Order_DS_VM45.zip");
-        testRunRender("vaulemations/RMTasksForResources.prpt", "RMResource.zip");
-        testRunRender("vaulemations/ServiceAgreement_ITIL.prpt", "SLA_for_Service_ITIL.zip");
-        testRunRender("vaulemations/ServiceCatalog_GER.prpt", "Services_DS_VM50.zip");
-        testRunRender("vaulemations/ServiceSpecification_GER.prpt", "Services_DS_VM50.zip");
-        testRunRender("vaulemations/ServiceSpecification_ITIL.prpt", "Services_DS_ITIL.zip");
-        testRunRender("vaulemations/Supplier review meeting.prpt", "Suppliers_DS_VM_50.zip");
-        testRunRender("vaulemations/Suppliers Overview-Activity to be done.prpt", "Suppliers_DS_VM_50.zip");
-        testRunRender("vaulemations/Suppliers Overview-Status.prpt", "Suppliers_DS_VM_50.zip");
-    }
-
-    // other tests here ...
+    // other tests goes here ...
 
 
     public void testRunRender(String reportFileName, String reportDatasourceFileName) throws Exception {
@@ -84,10 +91,12 @@ public class TestUsuReports  extends TestCase {
         final Resource parsed = mgr.createDirectly(resource, MasterReport.class);
         final MasterReport report = (MasterReport) parsed.getResource();
 
-        URL datasource = getClass().getResource( "/usu-reports/" + reportDatasourceFileName );
-        assertNotNull("Datasource " + reportDatasourceFileName + " not found", datasource);
+        if (reportDatasourceFileName != null) {
+            URL datasource = getClass().getResource("/usu-reports/" + reportDatasourceFileName);
+            assertNotNull("Datasource " + reportDatasourceFileName + " not found", datasource);
 
-        setDatasource(report, datasource);
+            setDatasource(report, datasource);
+        }
 
         writeToRTF(report, "report-of-" + reportFileName.replace('/', '_') + "-at-" + System.currentTimeMillis()+ ".rtf");
         writeToPDF(report, "report-of-" + reportFileName.replace('/', '_') + "-at-" + System.currentTimeMillis()+ ".pdf");
@@ -118,7 +127,7 @@ public class TestUsuReports  extends TestCase {
         try {
             //choose as you wish ...
             String tmpDirStr = System.getProperty("java.io.tmpdir");
-            //String tmpDirStr = "target";
+            //String tmpDirStr = "target/something";
 
             File tmpDir = new File(tmpDirStr);
             File testDir = new File(tmpDir, "PRD");

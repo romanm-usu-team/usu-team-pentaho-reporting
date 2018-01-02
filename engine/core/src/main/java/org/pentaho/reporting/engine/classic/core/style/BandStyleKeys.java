@@ -17,6 +17,8 @@
 
 package org.pentaho.reporting.engine.classic.core.style;
 
+import org.pentaho.reporting.engine.classic.core.layout.richtext.HtmlStylesRichTechConverter;
+
 /**
  * A band style sheet. Defines some base StyleKeys for all Bands.
  *
@@ -87,7 +89,10 @@ public class BandStyleKeys {
 
   public static final StyleKey TABLE_LAYOUT = StyleKey.getStyleKey( "table-layout", TableLayout.class, false, false );
 
-  /**
+  public static final StyleKey LIST_STYLE_KEY = StyleKey.getStyleKey( "list-style", HtmlStylesRichTechConverter.ListStyle.class, false, false );
+
+
+    /**
    * Creates a new band style-sheet.
    */
   private BandStyleKeys() {
