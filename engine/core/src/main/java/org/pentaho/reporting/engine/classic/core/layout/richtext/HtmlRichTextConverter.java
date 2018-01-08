@@ -144,7 +144,7 @@ public class HtmlRichTextConverter implements RichTextConverter {
 
           // we need to intercept for <UL> and <OL> here and everything between them
           if ((is(textElement, HTML.Tag.OL) || is(textElement, HTML.Tag.UL) || is(textElement, HTML.Tag.LI))
-                  || ((textElement.getParentElement() != null))) {
+                  || (currentListStyle != null || currentListItem != null)) {
 
               return processUlAndOlAndLi(textElement, currentListStyle, currentListItem);
           }
@@ -289,16 +289,8 @@ public class HtmlRichTextConverter implements RichTextConverter {
             }
 
             if (is(cellTextElem, HTML.Tag.TD) || is(cellTextElem, HTML.Tag.TH)) {
-                Band cell = new Band();
-                cell.setName(cellTextElem.getName());
-                //TODO colspan and rowspan should be processed
-
-                cell.getStyle().setStyleProperty(BandStyleKeys.LAYOUT, BandStyleKeys.LAYOUT_TABLE_CELL);
-                cell.getStyle().setStyleProperty( ElementStyleKeys.MIN_WIDTH, 10.0f );
-                cell.getStyle().setStyleProperty( ElementStyleKeys.MIN_HEIGHT, 10.0f );
-
-                cell.addElement(processed);
-                row.addElement(cell);
+                processed.getStyle().setStyleProperty(BandStyleKeys.LAYOUT, BandStyleKeys.LAYOUT_TABLE_CELL);
+                row.addElement(processed);
             } else {
                 tableWrapper.addElement(processed);
             }

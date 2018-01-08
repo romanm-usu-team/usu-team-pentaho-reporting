@@ -5,6 +5,7 @@ import org.pentaho.reporting.engine.classic.core.Element;
 import org.pentaho.reporting.engine.classic.core.modules.parser.base.ReportParserUtil;
 import org.pentaho.reporting.engine.classic.core.style.*;
 import org.pentaho.reporting.libraries.base.util.StringUtils;
+import org.pentaho.reporting.libraries.fonts.registry.FontFamily;
 import org.pentaho.reporting.libraries.xmlns.parser.ParseException;
 
 import javax.swing.text.AttributeSet;
@@ -26,6 +27,7 @@ import java.util.Enumeration;
 public class HtmlStylesRichTechConverter {
 
 
+    public static final int INITIAL_FONT_SIZE = 12;
 
     /**
      * Type of list (items), specified by list-style CSS property (and or HTML4's type attribute).
@@ -201,6 +203,10 @@ public class HtmlStylesRichTechConverter {
         final StyleSheet sheet = htmlDocument.getStyleSheet();
         final AttributeSet attr = computeStyle( textElement, sheet );
 
+
+        //((SimpleAttributeSet) attr).addAttribute("font-weight", "bold"); //XXXX
+
+
         parseBgAndFgColors(result, sheet, attr);
         parseBorder( result, sheet, attr );
         parseBoxStyle( result, attr );
@@ -213,6 +219,10 @@ public class HtmlStylesRichTechConverter {
         parseCssTheRestStyles(result, attr);
 
         parseAditionalStyleProperties(result, attr);
+/*
+        result.getStyle().setStyleProperty(TextStyleKeys.FONTSIZE, 64); //XXXX
+        result.getStyle().setStyleProperty(TextStyleKeys.BOLD, true);   //XXXXX
+*/
     }
 
     private void parseAditionalStyleProperties(Element result, AttributeSet attr) {
@@ -333,7 +343,30 @@ public class HtmlStylesRichTechConverter {
             result.getStyle().setBooleanStyleProperty( TextStyleKeys.ITALIC, font.isItalic() );
             result.getStyle().setBooleanStyleProperty( TextStyleKeys.BOLD, font.isBold() );
         }
+
+        final Object fontFamilyObj = attr.getAttribute( CSS.Attribute.FONT_FAMILY);
+        if ( fontFamilyObj  != null ) {
+            Object fontFamily = fontFamilyObj.toString();
+            result.getStyle().setStyleProperty( TextStyleKeys.FONT, fontFamily);
+        }
+        final Object fontSizeObj = attr.getAttribute( CSS.Attribute.FONT_SIZE);
+        if ( fontSizeObj  != null ) {
+            int current = result.getStyle().getIntStyleProperty(TextStyleKeys.FONTSIZE, INITIAL_FONT_SIZE);
+            //just a simple solution, it's difference between parent and initial
+            int fontSize = parseFontSize(fontSizeObj.toString(), current);
+            result.getStyle().setStyleProperty(TextStyleKeys.FONTSIZE, fontSize);
+        }
+        final Object fontWeightObj = attr.getAttribute(CSS.Attribute.FONT_WEIGHT);
+        if (fontWeightObj != null && "bold".equals(fontWeightObj.toString())){
+            result.getStyle().setStyleProperty(TextStyleKeys.BOLD, true);
+        }
+        final Object fontStyleObj = attr.getAttribute(CSS.Attribute.FONT_STYLE);
+        if (fontStyleObj != null && "italic".equals(fontStyleObj.toString())){
+            result.getStyle().setStyleProperty(TextStyleKeys.ITALIC, true);
+        }
+
     }
+
 
 
     private void parseBoxStyle( final Element result, final AttributeSet attr ) {
@@ -531,6 +564,51 @@ public class HtmlStylesRichTechConverter {
         }
     }
 
+
+
+    private Integer parseFontSize(final String value, int current) {
+        if (value == null) {
+            return null;
+        }
+
+        switch (value) {
+            case "medium":
+                return INITIAL_FONT_SIZE;
+            case "xx-small":
+                return INITIAL_FONT_SIZE - 6;
+            case "x-small":
+                return INITIAL_FONT_SIZE - 4;
+            case "small":
+                return INITIAL_FONT_SIZE - 2;
+            case "large":
+                return INITIAL_FONT_SIZE + 2;
+            case "x-large":
+                return INITIAL_FONT_SIZE + 4;
+            case "xx-large":
+                return INITIAL_FONT_SIZE + 6;
+            case "larger":
+                return current + 2;
+            case "smaller":
+                return current - 2;
+        }
+
+        if (value.endsWith("%")) {
+            final String substr = value.substring(0, value.length() - 1);
+            try {
+                final Integer percent = Integer.parseInt(substr);
+                return (current * percent) / 100;
+            } catch (Exception e) {
+                return null;
+            }
+        }
+
+        final Float len = parseLength(value);
+        if (len != null) {
+            return len.intValue();
+        }
+
+        return null;
+    }
 
     public Float parseLength( final String value ) {
         if ( value == null ) {
