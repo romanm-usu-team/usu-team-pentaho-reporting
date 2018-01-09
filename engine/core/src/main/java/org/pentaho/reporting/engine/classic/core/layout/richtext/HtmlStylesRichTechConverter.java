@@ -5,7 +5,6 @@ import org.pentaho.reporting.engine.classic.core.Element;
 import org.pentaho.reporting.engine.classic.core.modules.parser.base.ReportParserUtil;
 import org.pentaho.reporting.engine.classic.core.style.*;
 import org.pentaho.reporting.libraries.base.util.StringUtils;
-import org.pentaho.reporting.libraries.fonts.registry.FontFamily;
 import org.pentaho.reporting.libraries.xmlns.parser.ParseException;
 
 import javax.swing.text.AttributeSet;
@@ -204,13 +203,56 @@ public class HtmlStylesRichTechConverter {
         final AttributeSet attr = computeStyle( textElement, sheet );
 
 
+        processDocumentSheetStyles(sheet, result, attr);
         //((SimpleAttributeSet) attr).addAttribute("font-weight", "bold"); //XXXX
+        processElementsParentStyles(textElement, result, sheet, attr);
+
+        processElementOwnStyles(result, sheet, attr);
+/*
+        result.getStyle().setStyleProperty(TextStyleKeys.FONTSIZE, 64); //XXXX
+        result.getStyle().setStyleProperty(TextStyleKeys.BOLD, true);   //XXXXX
+*/
+    }
 
 
+    private void processDocumentSheetStyles(StyleSheet sheet, Element result, AttributeSet attr) {
+        //TODO
+        final Font font = sheet.getFont( attr );
+        if ( font != null ) {
+            result.getStyle().setStyleProperty( TextStyleKeys.FONT, font.getFamily() );
+            result.getStyle().setStyleProperty( TextStyleKeys.FONTSIZE, font.getSize() );
+            result.getStyle().setBooleanStyleProperty( TextStyleKeys.ITALIC, font.isItalic() );
+            result.getStyle().setBooleanStyleProperty( TextStyleKeys.BOLD, font.isBold() );
+        }
+    }
+
+    private void processElementsParentStyles(javax.swing.text.Element textElement, Element result, StyleSheet sheet, AttributeSet attr) {
+        javax.swing.text.Element element = textElement;
+        while ((element != null || element != element)
+                && (HtmlRichTextConverter.is(element, HTML.Tag.IMPLIED) || HtmlRichTextConverter.is(element, "content"))
+                //&& ("content".equals(element.getName()) || "p-implied".equals(element.getName()))
+                ) {
+            element = element.getParentElement();
+        }
+
+        if (element != null && element != textElement) {
+            copyStyles(element, result, sheet);
+        }
+    }
+
+    private void copyStyles(javax.swing.text.Element parent, Element result, StyleSheet sheet) {
+        final AttributeSet attr = computeStyle( parent, sheet );
+
+        processDocumentSheetStyles(sheet, result, attr);
+        processElementOwnStyles(result, sheet, attr);
+    }
+
+
+    private void processElementOwnStyles(Element result, StyleSheet sheet, AttributeSet attr) {
         parseBgAndFgColors(result, sheet, attr);
         parseBorder( result, sheet, attr );
         parseBoxStyle( result, attr );
-        parseFont(result, sheet, attr);
+        parseFont(result, attr);
         parseSpacing(result, attr);
         parseAlignments(result, attr);
         parseTextDecoration(result, attr);
@@ -219,10 +261,6 @@ public class HtmlStylesRichTechConverter {
         parseCssTheRestStyles(result, attr);
 
         parseAditionalStyleProperties(result, attr);
-/*
-        result.getStyle().setStyleProperty(TextStyleKeys.FONTSIZE, 64); //XXXX
-        result.getStyle().setStyleProperty(TextStyleKeys.BOLD, true);   //XXXXX
-*/
     }
 
     private void parseAditionalStyleProperties(Element result, AttributeSet attr) {
@@ -335,14 +373,7 @@ public class HtmlStylesRichTechConverter {
         }
     }
 
-    private void parseFont(Element result, StyleSheet sheet, AttributeSet attr) {
-        final Font font = sheet.getFont( attr );
-        if ( font != null ) {
-            result.getStyle().setStyleProperty( TextStyleKeys.FONT, font.getFamily() );
-            result.getStyle().setStyleProperty( TextStyleKeys.FONTSIZE, font.getSize() );
-            result.getStyle().setBooleanStyleProperty( TextStyleKeys.ITALIC, font.isItalic() );
-            result.getStyle().setBooleanStyleProperty( TextStyleKeys.BOLD, font.isBold() );
-        }
+    private void parseFont(Element result,  AttributeSet attr) {
 
         final Object fontFamilyObj = attr.getAttribute( CSS.Attribute.FONT_FAMILY);
         if ( fontFamilyObj  != null ) {
