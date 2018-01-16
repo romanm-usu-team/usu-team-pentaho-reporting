@@ -26,6 +26,7 @@ import java.util.Enumeration;
 public class HtmlStylesRichTechConverter {
 
 
+    public static final int INITIAL_FONT_SIZE = 12;
 
     /**
      * Type of list (items), specified by list-style CSS property (and or HTML4's type attribute).
@@ -201,10 +202,57 @@ public class HtmlStylesRichTechConverter {
         final StyleSheet sheet = htmlDocument.getStyleSheet();
         final AttributeSet attr = computeStyle( textElement, sheet );
 
+
+        processDocumentSheetStyles(sheet, result, attr);
+        //((SimpleAttributeSet) attr).addAttribute("font-weight", "bold"); //XXXX
+        processElementsParentStyles(textElement, result, sheet, attr);
+
+        processElementOwnStyles(result, sheet, attr);
+/*
+        result.getStyle().setStyleProperty(TextStyleKeys.FONTSIZE, 64); //XXXX
+        result.getStyle().setStyleProperty(TextStyleKeys.BOLD, true);   //XXXXX
+*/
+    }
+
+
+    private void processDocumentSheetStyles(StyleSheet sheet, Element result, AttributeSet attr) {
+        //TODO
+        final Font font = sheet.getFont( attr );
+        if ( font != null ) {
+            result.getStyle().setStyleProperty( TextStyleKeys.FONT, font.getFamily() );
+            result.getStyle().setStyleProperty( TextStyleKeys.FONTSIZE, font.getSize() );
+            result.getStyle().setBooleanStyleProperty( TextStyleKeys.ITALIC, font.isItalic() );
+            result.getStyle().setBooleanStyleProperty( TextStyleKeys.BOLD, font.isBold() );
+        }
+    }
+
+    private void processElementsParentStyles(javax.swing.text.Element textElement, Element result, StyleSheet sheet, AttributeSet attr) {
+        javax.swing.text.Element element = textElement;
+        while ((element != null || element != element)
+                && (HtmlRichTextConverter.is(element, HTML.Tag.IMPLIED) || HtmlRichTextConverter.is(element, "content"))
+                //&& ("content".equals(element.getName()) || "p-implied".equals(element.getName()))
+                ) {
+            element = element.getParentElement();
+        }
+
+        if (element != null && element != textElement) {
+            copyStyles(element, result, sheet);
+        }
+    }
+
+    private void copyStyles(javax.swing.text.Element parent, Element result, StyleSheet sheet) {
+        final AttributeSet attr = computeStyle( parent, sheet );
+
+        processDocumentSheetStyles(sheet, result, attr);
+        processElementOwnStyles(result, sheet, attr);
+    }
+
+
+    private void processElementOwnStyles(Element result, StyleSheet sheet, AttributeSet attr) {
         parseBgAndFgColors(result, sheet, attr);
         parseBorder( result, sheet, attr );
         parseBoxStyle( result, attr );
-        parseFont(result, sheet, attr);
+        parseFont(result, attr);
         parseSpacing(result, attr);
         parseAlignments(result, attr);
         parseTextDecoration(result, attr);
@@ -325,15 +373,31 @@ public class HtmlStylesRichTechConverter {
         }
     }
 
-    private void parseFont(Element result, StyleSheet sheet, AttributeSet attr) {
-        final Font font = sheet.getFont( attr );
-        if ( font != null ) {
-            result.getStyle().setStyleProperty( TextStyleKeys.FONT, font.getFamily() );
-            result.getStyle().setStyleProperty( TextStyleKeys.FONTSIZE, font.getSize() );
-            result.getStyle().setBooleanStyleProperty( TextStyleKeys.ITALIC, font.isItalic() );
-            result.getStyle().setBooleanStyleProperty( TextStyleKeys.BOLD, font.isBold() );
+    private void parseFont(Element result,  AttributeSet attr) {
+
+        final Object fontFamilyObj = attr.getAttribute( CSS.Attribute.FONT_FAMILY);
+        if ( fontFamilyObj  != null ) {
+            Object fontFamily = fontFamilyObj.toString();
+            result.getStyle().setStyleProperty( TextStyleKeys.FONT, fontFamily);
         }
+        final Object fontSizeObj = attr.getAttribute( CSS.Attribute.FONT_SIZE);
+        if ( fontSizeObj  != null ) {
+            int current = result.getStyle().getIntStyleProperty(TextStyleKeys.FONTSIZE, INITIAL_FONT_SIZE);
+            //just a simple solution, it's difference between parent and initial
+            int fontSize = parseFontSize(fontSizeObj.toString(), current);
+            result.getStyle().setStyleProperty(TextStyleKeys.FONTSIZE, fontSize);
+        }
+        final Object fontWeightObj = attr.getAttribute(CSS.Attribute.FONT_WEIGHT);
+        if (fontWeightObj != null && "bold".equals(fontWeightObj.toString())){
+            result.getStyle().setStyleProperty(TextStyleKeys.BOLD, true);
+        }
+        final Object fontStyleObj = attr.getAttribute(CSS.Attribute.FONT_STYLE);
+        if (fontStyleObj != null && "italic".equals(fontStyleObj.toString())){
+            result.getStyle().setStyleProperty(TextStyleKeys.ITALIC, true);
+        }
+
     }
+
 
 
     private void parseBoxStyle( final Element result, final AttributeSet attr ) {
@@ -531,6 +595,51 @@ public class HtmlStylesRichTechConverter {
         }
     }
 
+
+
+    private Integer parseFontSize(final String value, int current) {
+        if (value == null) {
+            return null;
+        }
+
+        switch (value) {
+            case "medium":
+                return INITIAL_FONT_SIZE;
+            case "xx-small":
+                return INITIAL_FONT_SIZE - 6;
+            case "x-small":
+                return INITIAL_FONT_SIZE - 4;
+            case "small":
+                return INITIAL_FONT_SIZE - 2;
+            case "large":
+                return INITIAL_FONT_SIZE + 2;
+            case "x-large":
+                return INITIAL_FONT_SIZE + 4;
+            case "xx-large":
+                return INITIAL_FONT_SIZE + 6;
+            case "larger":
+                return current + 2;
+            case "smaller":
+                return current - 2;
+        }
+
+        if (value.endsWith("%")) {
+            final String substr = value.substring(0, value.length() - 1);
+            try {
+                final Integer percent = Integer.parseInt(substr);
+                return (current * percent) / 100;
+            } catch (Exception e) {
+                return null;
+            }
+        }
+
+        final Float len = parseLength(value);
+        if (len != null) {
+            return len.intValue();
+        }
+
+        return null;
+    }
 
     public Float parseLength( final String value ) {
         if ( value == null ) {
