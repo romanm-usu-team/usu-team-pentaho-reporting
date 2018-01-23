@@ -76,6 +76,7 @@ public class TestUsuReports  extends TestCase {
     public void testHTMLs() throws Exception {
        testRunRender("elementary-html.prpt", null);
        testRunRender("html-render-all.prpt", null);
+     //   testRunRender("html-test-formats.prpt", null);
     }
 
 

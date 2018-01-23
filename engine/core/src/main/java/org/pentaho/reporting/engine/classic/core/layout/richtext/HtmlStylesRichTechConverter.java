@@ -4,8 +4,10 @@ import org.pentaho.reporting.engine.classic.core.AttributeNames;
 import org.pentaho.reporting.engine.classic.core.Element;
 import org.pentaho.reporting.engine.classic.core.modules.parser.base.ReportParserUtil;
 import org.pentaho.reporting.engine.classic.core.style.*;
+import org.pentaho.reporting.engine.classic.core.wizard.EmptyDataAttributes;
 import org.pentaho.reporting.libraries.base.util.StringUtils;
 import org.pentaho.reporting.libraries.xmlns.parser.ParseException;
+import sun.java2d.pipe.SpanShapeRenderer;
 
 import javax.swing.text.AttributeSet;
 import javax.swing.text.MutableAttributeSet;
@@ -200,18 +202,13 @@ public class HtmlStylesRichTechConverter {
     public void configureStyle( final javax.swing.text.Element textElement, final Element result ) {
         final HTMLDocument htmlDocument = (HTMLDocument) textElement.getDocument();
         final StyleSheet sheet = htmlDocument.getStyleSheet();
-        final AttributeSet attr = computeStyle( textElement, sheet );
+        AttributeSet attr = computeStyle( textElement, sheet );
 
 
         processDocumentSheetStyles(sheet, result, attr);
-        //((SimpleAttributeSet) attr).addAttribute("font-weight", "bold"); //XXXX
-        processElementsParentStyles(textElement, result, sheet, attr);
-
+        //attr = processElementsParentStyles(textElement, result, sheet, attr);
         processElementOwnStyles(result, sheet, attr);
-/*
-        result.getStyle().setStyleProperty(TextStyleKeys.FONTSIZE, 64); //XXXX
-        result.getStyle().setStyleProperty(TextStyleKeys.BOLD, true);   //XXXXX
-*/
+
     }
 
 
@@ -226,25 +223,79 @@ public class HtmlStylesRichTechConverter {
         }
     }
 
-    private void processElementsParentStyles(javax.swing.text.Element textElement, Element result, StyleSheet sheet, AttributeSet attr) {
+    private AttributeSet processElementsParentStyles(javax.swing.text.Element textElement, Element result, StyleSheet sheet, AttributeSet attr) {
         javax.swing.text.Element element = textElement;
-        while ((element != null || element != element)
-                && (HtmlRichTextConverter.is(element, HTML.Tag.IMPLIED) || HtmlRichTextConverter.is(element, "content"))
-                //&& ("content".equals(element.getName()) || "p-implied".equals(element.getName()))
-                ) {
+        do {
             element = element.getParentElement();
-        }
+        } while ((element != null && element.getParentElement() != element)
+                && (HtmlRichTextConverter.is(element, HTML.Tag.IMPLIED) || HtmlRichTextConverter.is(element, "content")));
 
-        if (element != null && element != textElement) {
-            copyStyles(element, result, sheet);
+        if (element != null) {
+            return copyTextStyles(element, textElement, result, sheet);
+        } else {
+            return attr;
         }
     }
 
-    private void copyStyles(javax.swing.text.Element parent, Element result, StyleSheet sheet) {
+    private AttributeSet copyTextStyles(javax.swing.text.Element parent, javax.swing.text.Element textElement, Element result, StyleSheet sheet) {
         final AttributeSet attr = computeStyle( parent, sheet );
 
-        processDocumentSheetStyles(sheet, result, attr);
-        processElementOwnStyles(result, sheet, attr);
+
+        SimpleAttributeSet set = new SimpleAttributeSet();
+
+        Enumeration<?> names = attr.getAttributeNames();
+        while (names.hasMoreElements()) {
+            Object name = names.nextElement();
+            set.addAttribute(name, parent.getAttributes().getAttribute(name));
+        }
+
+        copyIfSo(parent, set, CSS.Attribute.COLOR);
+        copyIfSo(parent, set, CSS.Attribute.FONT);
+        copyIfSo(parent, set, CSS.Attribute.FONT_FAMILY);
+        copyIfSo(parent, set, CSS.Attribute.FONT_SIZE);
+        copyIfSo(parent, set, CSS.Attribute.FONT_STYLE);
+        copyIfSo(parent, set, CSS.Attribute.FONT_VARIANT);
+        copyIfSo(parent, set, CSS.Attribute.FONT_WEIGHT);
+        copyIfSo(parent, set, CSS.Attribute.LETTER_SPACING);
+        copyIfSo(parent, set, CSS.Attribute.LINE_HEIGHT);
+        copyIfSo(parent, set, CSS.Attribute.TEXT_DECORATION);
+        copyIfSo(parent, set, CSS.Attribute.VERTICAL_ALIGN);
+        copyIfSo(parent, set, CSS.Attribute.WHITE_SPACE);
+        copyIfSo(parent, set, CSS.Attribute.WORD_SPACING);
+//        copyIfSo(parent, set, CSS.Attribute.FONT);
+//        copyIfSo(parent, set, CSS.Attribute.FONT);
+//
+//
+//        set.addAttribute(CSS.Attribute.FONT, parent.getAttributes().getAttribute(CSS.Attribute.FONT));
+//
+//        set.addAttribute(CSS.Attribute.FONT_SIZE, parent.getAttributes().getAttribute(CSS.Attribute.FONT_SIZE));
+//        set.addAttribute(CSS.Attribute.FONT_FAMILY, parent.getAttributes().getAttribute(CSS.Attribute.FONT_FAMILY));
+//        set.addAttribute(CSS.Attribute.FONT_STYLE, parent.getAttributes().getAttribute(CSS.Attribute.FONT_STYLE));
+//        set.addAttribute(CSS.Attribute.FONT_WEIGHT, parent.getAttributes().getAttribute(CSS.Attribute.FONT_WEIGHT));
+//        set.addAttribute(CSS.Attribute.FONT_VARIANT, parent.getAttributes().getAttribute(CSS.Attribute.FONT_VARIANT));
+//        set.addAttribute(CSS.Attribute.COLOR, parent.getAttributes().getAttribute(CSS.Attribute.COLOR));
+//        set.addAttribute(CSS.Attribute.LETTER_SPACING, parent.getAttributes().getAttribute(CSS.Attribute.LETTER_SPACING));
+//        set.addAttribute(CSS.Attribute.LINE_HEIGHT, parent.getAttributes().getAttribute(CSS.Attribute.LINE_HEIGHT));
+//        set.addAttribute(CSS.Attribute.TEXT_DECORATION, parent.getAttributes().getAttribute(CSS.Attribute.TEXT_DECORATION));
+//        set.addAttribute(CSS.Attribute.VERTICAL_ALIGN, parent.getAttributes().getAttribute(CSS.Attribute.VERTICAL_ALIGN));
+//        set.addAttribute(CSS.Attribute.WHITE_SPACE, parent.getAttributes().getAttribute(CSS.Attribute.WHITE_SPACE));
+//        set.addAttribute(CSS.Attribute.WORD_SPACING, parent.getAttributes().getAttribute(CSS.Attribute.WORD_SPACING));
+//        //TODO CHECKME add more styles here ???
+
+
+        //processDocumentSheetStyles(sheet, result, attr);
+
+//        parseFont(result, attr);parseTextDecoration(result, attr);
+//        parseWhitespace(result, attr);
+
+        return set;
+    }
+
+    private void copyIfSo(javax.swing.text.Element from, SimpleAttributeSet toSet, javax.swing.text.html.CSS.Attribute attribute) {
+        Object value = from.getAttributes().getAttribute(attribute);
+        if (value != null && toSet.getAttribute(attribute) == null) { // TODO fixme disables overriding, yes?
+            toSet.addAttribute(attribute, value);
+        }
     }
 
 
@@ -485,6 +536,17 @@ public class HtmlStylesRichTechConverter {
 
     private void parseBorder(final Element result, final StyleSheet sheet, final AttributeSet attr ) {
 
+        processAllBorder(result, sheet, attr);
+
+        processLeftBorder(result, sheet, attr);
+        processTopBorder(result, sheet, attr);
+        processRightBorder(result, sheet, attr);
+        processBottomBorder(result, sheet, attr);
+    }
+
+
+
+    private void processAllBorder(Element result, StyleSheet sheet, AttributeSet attr) {
         final Object borderStyleText = attr.getAttribute( CSS.Attribute.BORDER_STYLE );
         if ( borderStyleText != null ) {
             final BorderStyle borderStyle = BorderStyle.getBorderStyle( String.valueOf( borderStyleText ) );
@@ -503,31 +565,6 @@ public class HtmlStylesRichTechConverter {
             result.getStyle().setStyleProperty( ElementStyleKeys.BORDER_LEFT_WIDTH, borderWidth );
             result.getStyle().setStyleProperty( ElementStyleKeys.BORDER_RIGHT_WIDTH, borderWidth );
         }
-
-        final Object borderBottomWidthText = attr.getAttribute( CSS.Attribute.BORDER_BOTTOM_WIDTH );
-        if ( borderBottomWidthText != null ) {
-            final Float borderWidth = parseLength( String.valueOf( borderBottomWidthText ) );
-            result.getStyle().setStyleProperty( ElementStyleKeys.BORDER_BOTTOM_WIDTH, borderWidth );
-        }
-
-        final Object borderRightWidthText = attr.getAttribute( CSS.Attribute.BORDER_RIGHT_WIDTH );
-        if ( borderRightWidthText != null ) {
-            final Float borderWidth = parseLength( String.valueOf( borderRightWidthText ) );
-            result.getStyle().setStyleProperty( ElementStyleKeys.BORDER_RIGHT_WIDTH, borderWidth );
-        }
-
-        final Object borderTopWidthText = attr.getAttribute( CSS.Attribute.BORDER_TOP_WIDTH );
-        if ( borderTopWidthText != null ) {
-            final Float borderWidth = parseLength( String.valueOf( borderTopWidthText ) );
-            result.getStyle().setStyleProperty( ElementStyleKeys.BORDER_TOP_WIDTH, borderWidth );
-        }
-
-        final Object borderLeftWidth = attr.getAttribute( CSS.Attribute.BORDER_LEFT_WIDTH );
-        if ( borderLeftWidth != null ) {
-            final Float borderWidth = parseLength( String.valueOf( borderLeftWidth ) );
-            result.getStyle().setStyleProperty( ElementStyleKeys.BORDER_LEFT_WIDTH, borderWidth );
-        }
-
         final Object borderColorText = attr.getAttribute( CSS.Attribute.BORDER_COLOR );
         if ( borderColorText != null ) {
             final Color borderColor = sheet.stringToColor( String.valueOf( borderColorText ) );
@@ -536,7 +573,92 @@ public class HtmlStylesRichTechConverter {
             result.getStyle().setStyleProperty( ElementStyleKeys.BORDER_LEFT_COLOR, borderColor );
             result.getStyle().setStyleProperty( ElementStyleKeys.BORDER_RIGHT_COLOR, borderColor );
         }
+    }
 
+    private void processLeftBorder(Element result, StyleSheet sheet, AttributeSet attr) {
+        final Object borderStyleText = attr.getAttribute( CSS.Attribute.BORDER_LEFT_STYLE );
+        if ( borderStyleText != null ) {
+            final BorderStyle borderStyle = BorderStyle.getBorderStyle(String.valueOf(borderStyleText));
+            if (borderStyle != null) {
+                result.getStyle().setStyleProperty(ElementStyleKeys.BORDER_LEFT_STYLE, borderStyle);
+            }
+        }
+
+        final Object borderWidthText = attr.getAttribute( CSS.Attribute.BORDER_LEFT_WIDTH );
+        if ( borderWidthText != null ) {
+            final Float borderWidth = parseLength(String.valueOf(borderWidthText));
+            result.getStyle().setStyleProperty(ElementStyleKeys.BORDER_LEFT_WIDTH, borderWidth);
+        }
+
+        final Object borderColorText = attr.getAttribute( CSS.Attribute.BORDER_LEFT_COLOR );
+        if ( borderColorText != null ) {
+            final Color borderColor = sheet.stringToColor(String.valueOf(borderColorText));
+            result.getStyle().setStyleProperty(ElementStyleKeys.BORDER_LEFT_COLOR, borderColor);
+        }
+    }
+
+    private void processTopBorder(Element result, StyleSheet sheet, AttributeSet attr) {
+        final Object borderStyleText = attr.getAttribute( CSS.Attribute.BORDER_TOP_STYLE );
+        if ( borderStyleText != null ) {
+            final BorderStyle borderStyle = BorderStyle.getBorderStyle(String.valueOf(borderStyleText));
+            if (borderStyle != null) {
+                result.getStyle().setStyleProperty(ElementStyleKeys.BORDER_TOP_STYLE, borderStyle);
+            }
+        }
+
+        final Object borderWidthText = attr.getAttribute( CSS.Attribute.BORDER_TOP_WIDTH );
+        if ( borderWidthText != null ) {
+            final Float borderWidth = parseLength(String.valueOf(borderWidthText));
+            result.getStyle().setStyleProperty(ElementStyleKeys.BORDER_TOP_WIDTH, borderWidth);
+        }
+
+        final Object borderColorText = attr.getAttribute( CSS.Attribute.BORDER_TOP_COLOR );
+        if ( borderColorText != null ) {
+            final Color borderColor = sheet.stringToColor(String.valueOf(borderColorText));
+            result.getStyle().setStyleProperty(ElementStyleKeys.BORDER_TOP_COLOR, borderColor);
+        }
+    }
+    private void processRightBorder(Element result, StyleSheet sheet, AttributeSet attr) {
+        final Object borderStyleText = attr.getAttribute( CSS.Attribute.BORDER_RIGHT_STYLE );
+        if ( borderStyleText != null ) {
+            final BorderStyle borderStyle = BorderStyle.getBorderStyle(String.valueOf(borderStyleText));
+            if (borderStyle != null) {
+                result.getStyle().setStyleProperty(ElementStyleKeys.BORDER_RIGHT_STYLE, borderStyle);
+            }
+        }
+
+        final Object borderWidthText = attr.getAttribute( CSS.Attribute.BORDER_RIGHT_WIDTH );
+        if ( borderWidthText != null ) {
+            final Float borderWidth = parseLength(String.valueOf(borderWidthText));
+            result.getStyle().setStyleProperty(ElementStyleKeys.BORDER_RIGHT_WIDTH, borderWidth);
+        }
+
+        final Object borderColorText = attr.getAttribute( CSS.Attribute.BORDER_RIGHT_COLOR );
+        if ( borderColorText != null ) {
+            final Color borderColor = sheet.stringToColor(String.valueOf(borderColorText));
+            result.getStyle().setStyleProperty(ElementStyleKeys.BORDER_RIGHT_COLOR, borderColor);
+        }
+    }
+    private void processBottomBorder(Element result, StyleSheet sheet, AttributeSet attr) {
+        final Object borderStyleText = attr.getAttribute( CSS.Attribute.BORDER_BOTTOM_STYLE );
+        if ( borderStyleText != null ) {
+            final BorderStyle borderStyle = BorderStyle.getBorderStyle(String.valueOf(borderStyleText));
+            if (borderStyle != null) {
+                result.getStyle().setStyleProperty(ElementStyleKeys.BORDER_BOTTOM_STYLE, borderStyle);
+            }
+        }
+
+        final Object borderWidthText = attr.getAttribute( CSS.Attribute.BORDER_BOTTOM_WIDTH );
+        if ( borderWidthText != null ) {
+            final Float borderWidth = parseLength(String.valueOf(borderWidthText));
+            result.getStyle().setStyleProperty(ElementStyleKeys.BORDER_BOTTOM_WIDTH, borderWidth);
+        }
+
+        final Object borderColorText = attr.getAttribute( CSS.Attribute.BORDER_BOTTOM_COLOR );
+        if ( borderColorText != null ) {
+            final Color borderColor = sheet.stringToColor(String.valueOf(borderColorText));
+            result.getStyle().setStyleProperty(ElementStyleKeys.BORDER_BOTTOM_COLOR, borderColor);
+        }
     }
 
     private void parseBgAndFgColors(Element result, StyleSheet sheet, AttributeSet attr) {
@@ -564,6 +686,8 @@ public class HtmlStylesRichTechConverter {
             //TODO complete and tes me!
             result.getStyle().setBooleanStyleProperty(BandStyleKeys.PAGEBREAK_AFTER, true);
         }
+
+        //TODO rotated text, use somehow RotatedTextDrawable ?
 
     }
 

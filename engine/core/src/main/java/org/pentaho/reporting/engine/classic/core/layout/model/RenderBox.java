@@ -249,8 +249,10 @@ public abstract class RenderBox extends RenderNode {
 
   public long getInsets() {
     return staticBoxLayoutProperties.getBorderLeft() + staticBoxLayoutProperties.getBorderRight()
-        + boxDefinition.getPaddingLeft() + boxDefinition.getPaddingRight();
+            + boxDefinition.getPaddingLeft() + boxDefinition.getPaddingRight();
   }
+
+
 
   public RenderNode getFirstChild() {
     return firstChildNode;
@@ -1316,6 +1318,12 @@ public abstract class RenderBox extends RenderNode {
     final long insetBottom = staticBoxLayoutProperties.getBorderBottom() + boxDefinition.getPaddingBottom();
     final long insetTop = staticBoxLayoutProperties.getBorderTop() + boxDefinition.getPaddingTop();
     return insetBottom + insetTop;
+  }
+
+
+  public long getHorizontalInsets() {
+    return staticBoxLayoutProperties.getBorderTop() + staticBoxLayoutProperties.getBorderBottom()
+            + boxDefinition.getPaddingTop() + boxDefinition.getPaddingBottom();
   }
 
   public boolean isContainsReservedContent() {
