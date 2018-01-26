@@ -77,6 +77,7 @@ public class TestUsuReports  extends TestCase {
        testRunRender("elementary-html.prpt", null);
        testRunRender("html-render-all.prpt", null);
      //   testRunRender("html-test-formats.prpt", null);
+        testRunRender("html-render-big-htmls.prpt", null);
     }
 
 

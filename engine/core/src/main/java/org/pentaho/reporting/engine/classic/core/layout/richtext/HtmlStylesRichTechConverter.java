@@ -49,13 +49,13 @@ public class HtmlStylesRichTechConverter {
                     return "";
 
                 case DISC:
-                    return "() ";
+                    return "\u25CB ";
 
                 case CIRCLE:
-                    return "o ";
+                    return "\u25CF ";
 
                 case SQUARE:
-                    return "[] ";
+                    return "\u25A0 ";
 
                 case ARABIC:
                     return Integer.toString(item) + ". ";
@@ -105,31 +105,35 @@ public class HtmlStylesRichTechConverter {
         }
 
         public static ListStyle parse(String cssText) {
-            if ("none.".equals(cssText)) {
+            if (cssText == null) {
+                return null;
+            }
+
+            if (cssText.contains("none")) {
                 return ListStyle.NONE;
             }
-            if ("circle".equals(cssText)) {
+            if (cssText.contains("circle")) {
                 return ListStyle.CIRCLE;
             }
-            if ("disc".equals(cssText)) {
+            if (cssText.contains("disc")) {
                 return ListStyle.DISC;
             }
-            if ("square".equals(cssText)) {
+            if (cssText.contains("square")) {
                 return ListStyle.SQUARE;
             }
-            if ("decimal".equals(cssText) || "arabic".equals(cssText)) { //just for case
+            if (cssText.contains("arabic") || cssText.contains("decimal")) { //just for case
                 return ListStyle.ARABIC;
             }
-            if ("lower-alpha".equals(cssText)) {
+            if (cssText.contains("lower-alpha")) {
                 return ListStyle.LOWER_ALPHA;
             }
-            if ("upper-alpha".equals(cssText)) {
+            if (cssText.contains("upper-alpha")) {
                 return ListStyle.CAPS_ALPHA;
             }
-            if ("lower-roman".equals(cssText)) {
+            if (cssText.contains("lower-roman")) {
                 return ListStyle.LOWER_ROMAN;
             }
-            if ("upper-roman".equals(cssText)) {
+            if (cssText.contains("upper-roman")) {
                 return ListStyle.CAPS_ROMAN;
             }
 
@@ -491,36 +495,41 @@ public class HtmlStylesRichTechConverter {
     }
     private void parseMargin(Element result, AttributeSet attr) {
         // margin in our case means just an other word for padding, no difference
+        final float paddingTop = (float) result.getStyle().getDoubleStyleProperty(ElementStyleKeys.PADDING_TOP, 0.0);
+        final float paddingLeft = (float) result.getStyle().getDoubleStyleProperty(ElementStyleKeys.PADDING_LEFT, 0.0);
+        final float paddingBottom = (float) result.getStyle().getDoubleStyleProperty(ElementStyleKeys.PADDING_BOTTOM, 0.0);
+        final float paddingRight = (float) result.getStyle().getDoubleStyleProperty(ElementStyleKeys.PADDING_RIGHT, 0.0);
 
-        final Object paddingText = attr.getAttribute( CSS.Attribute.MARGIN );
-        if ( paddingText != null ) {
-            final Float padding = parseLength( String.valueOf( paddingText ) );
-            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_TOP, padding );
-            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_LEFT, padding );
-            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_BOTTOM, padding );
-            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_RIGHT, padding );
+        final Object marginText = attr.getAttribute( CSS.Attribute.MARGIN );
+        if ( marginText != null ) {
+            final Float margin = parseLength( String.valueOf( marginText ) );
+            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_TOP, margin + paddingTop);
+            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_LEFT, margin  + paddingLeft);
+            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_BOTTOM, margin  + paddingBottom);
+            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_RIGHT, margin  + paddingRight);
         }
 
-        final Object paddingTop = attr.getAttribute( CSS.Attribute.MARGIN_TOP );
-        if ( paddingTop != null ) {
-            final Float padding = parseLength( String.valueOf( paddingTop ) );
-            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_TOP, padding );
+        final Object marginTop = attr.getAttribute( CSS.Attribute.MARGIN_TOP );
+        if ( marginTop != null ) {
+            final Float margin = parseLength( String.valueOf( marginTop ) );
+            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_TOP, margin + paddingTop);
         }
-        final Object paddingLeft = attr.getAttribute( CSS.Attribute.MARGIN_LEFT );
-        if ( paddingLeft != null ) {
-            final Float padding = parseLength( String.valueOf( paddingLeft ) );
-            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_LEFT, padding );
+        final Object marginLeft = attr.getAttribute( CSS.Attribute.MARGIN_LEFT );
+        if ( marginLeft != null ) {
+            final Float margin = parseLength( String.valueOf( marginLeft ) );
+            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_LEFT, margin + paddingLeft);
         }
-        final Object paddingBottom = attr.getAttribute( CSS.Attribute.MARGIN_BOTTOM);
-        if ( paddingBottom != null ) {
-            final Float padding = parseLength( String.valueOf( paddingBottom ) );
-            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_BOTTOM, padding );
+        final Object marginBottom = attr.getAttribute( CSS.Attribute.MARGIN_BOTTOM);
+        if ( marginBottom != null ) {
+            final Float margin = parseLength( String.valueOf( marginBottom ) );
+            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_BOTTOM, margin + paddingBottom);
         }
-        final Object paddingRight = attr.getAttribute( CSS.Attribute.MARGIN_RIGHT );
-        if ( paddingRight != null ) {
-            final Float padding = parseLength( String.valueOf( paddingRight ) );
-            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_RIGHT, padding );
+        final Object marginRight = attr.getAttribute( CSS.Attribute.MARGIN_RIGHT );
+        if ( marginRight != null ) {
+            final Float margin = parseLength( String.valueOf( marginRight ) );
+            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_RIGHT, margin + paddingRight);
         }
+
     }
 
     private void parseSize(Element result, AttributeSet attr) {
@@ -692,30 +701,30 @@ public class HtmlStylesRichTechConverter {
     }
 
     private void parseCssListStyles(Element result, AttributeSet attr) {
-        final Object listStyleText = attr.getAttribute(CSS.Attribute.LIST_STYLE);
+        Object listStyleText = attr.getAttribute(CSS.Attribute.LIST_STYLE);
         if (listStyleText != null) {
-            ListStyle listStyleObj = ListStyle.parse(String.valueOf(listStyleText));
             // just simply, assuming list-style === list-style-type
+            ListStyle listStyleObj = ListStyle.parse(String.valueOf(listStyleText));
             result.getStyle().setStyleProperty(BandStyleKeys.LIST_STYLE_KEY, listStyleObj);
+        } else {
+            // list-style-type is automatically set to decimal if not explicitelly specified by css property
+            final Object listStyleTypeText = attr.getAttribute(CSS.Attribute.LIST_STYLE_TYPE);
+            if (listStyleTypeText != null) {
+                ListStyle listStyleObj = ListStyle.parse(String.valueOf(listStyleTypeText));
+                result.getStyle().setStyleProperty(BandStyleKeys.LIST_STYLE_KEY, listStyleObj);
+            }
 
-        }
+            final Object listStyleImageText = attr.getAttribute(CSS.Attribute.LIST_STYLE_IMAGE);
+            if (listStyleImageText != null) {
+                //ListStyle listStyleObj = ListStyle.parse(String.valueOf(listStyleImageText));
+                //TODO list-style-image
+            }
 
-        final Object listStyleTypeText = attr.getAttribute(CSS.Attribute.LIST_STYLE_TYPE);
-        if (listStyleTypeText != null) {
-            ListStyle listStyleObj = ListStyle.parse(String.valueOf(listStyleTypeText));
-            result.getStyle().setStyleProperty(BandStyleKeys.LIST_STYLE_KEY, listStyleObj);
-        }
-
-        final Object listStyleImageText = attr.getAttribute(CSS.Attribute.LIST_STYLE_IMAGE);
-        if (listStyleImageText != null) {
-            //ListStyle listStyleObj = ListStyle.parse(String.valueOf(listStyleImageText));
-            //TODO list-style-image
-        }
-
-        final Object listStylePositionText = attr.getAttribute(CSS.Attribute.LIST_STYLE_POSITION);
-        if (listStylePositionText != null) {
-            //ListStyle listStyleObj = ListStyle.parse(String.valueOf(listStylePositionText));
-            //TODO list-style-position
+            final Object listStylePositionText = attr.getAttribute(CSS.Attribute.LIST_STYLE_POSITION);
+            if (listStylePositionText != null) {
+                //ListStyle listStyleObj = ListStyle.parse(String.valueOf(listStylePositionText));
+                //TODO list-style-position
+            }
         }
     }
 
@@ -789,15 +798,11 @@ public class HtmlStylesRichTechConverter {
             if ( "%".equals( unit ) ) {
                 return new Float( -nval );
             }
-            if ( "cm".equals( unit ) ) { // cm - in - pt
+            if ( "cm".equals( unit ) ) { // cm -> in -> pt
                 return new Float( nval * 25.4 / 72 );
             }
-
-            if ( "mm".equals( unit ) ) { // mm - in - pt
+            if ( "mm".equals( unit ) ) { // mm -> in -> pt
                 return new Float( nval * 2.54 / 72 );
-            }
-            if ( "pt".equals( unit ) ) { // base unit
-                return new Float( nval );
             }
             if ( "in".equals( unit ) ) {
                 return new Float( nval * 72 );
@@ -805,9 +810,23 @@ public class HtmlStylesRichTechConverter {
             if ( "px".equals( unit ) ) { // assuming 96dpi: 3pt = 4px
                 return new Float( nval * 3.0 / 4.0 );
             }
+            if ( "pt".equals( unit ) ) { // base unit
+                return new Float( nval );
+            }
             if ( "pc".equals( unit ) ) {
                 return new Float( nval * 12 );
             }
+
+            if ( "em".equalsIgnoreCase( unit ) ) { // Em = font size = 12pt
+                return new Float( 12 );
+            }
+            if ( "ex".equalsIgnoreCase( unit ) ) { // Ex = font size = 12pt
+                return new Float( 12 );
+            }
+            if ( "ch".equalsIgnoreCase( unit ) ) { // Ex = font size = 12pt
+                return new Float( 12 );
+            }
+
             return null;
         } catch ( IOException ioe ) {
             return null;

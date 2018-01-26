@@ -252,7 +252,7 @@ public final class InfiniteMajorAxisLayoutStep extends AbstractMajorAxisLayoutSt
   }
 
   private static long computeTableHeightAndAlign( final RenderBox box ) {
-    return computeBlockHeightAndAlign( box, BoxDefinition.EMPTY, 0, true );
+    return computeBlockHeightAndAlign( box, box.getBoxDefinition(), 0, true );
   }
 
   public static long computeBlockHeightAndAlign( final RenderBox box, final BoxDefinition boxDefinition,

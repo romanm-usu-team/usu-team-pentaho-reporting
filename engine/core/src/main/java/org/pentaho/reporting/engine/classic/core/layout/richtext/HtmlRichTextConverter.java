@@ -17,6 +17,7 @@
 
 package org.pentaho.reporting.engine.classic.core.layout.richtext;
 
+import java.awt.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
@@ -33,6 +34,7 @@ import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
+import javax.xml.soap.Text;
 
 import org.antlr.misc.MutableInteger;
 import org.pentaho.reporting.engine.classic.core.AttributeNames;
@@ -134,6 +136,11 @@ public class HtmlRichTextConverter implements RichTextConverter {
           if (is(textElement, HTML.Tag.BR)) {
               return processBr(textElement);
           }
+          if (is(textElement, HTML.Tag.HR)) {
+              return processHr(textElement);
+          }
+
+
 
           return processText(textElement);
       } else {
@@ -343,9 +350,10 @@ public class HtmlRichTextConverter implements RichTextConverter {
 
             if ("li".equals(child.getName())) {
                 band.getStyle().setStyleProperty(BandStyleKeys.LAYOUT, "block");
+                band.getStyle().setStyleProperty(TextStyleKeys.TEXT_INDENT, -20f);
                 Band elemlistband = new Band();
                 elemlistband.getStyle().setStyleProperty(BandStyleKeys.LAYOUT, "block");
-                elemlistband.getStyle().setStyleProperty(ElementStyleKeys.PADDING_LEFT, 10f);
+                elemlistband.getStyle().setStyleProperty(ElementStyleKeys.PADDING_LEFT, 20f);
                 elemlistband.addElement(element);
                 band.addElement(elemlistband);
                 continue;
@@ -404,14 +412,24 @@ public class HtmlRichTextConverter implements RichTextConverter {
     }
 
     private Element processBr(javax.swing.text.Element textElement) {
-    Element result = new Element();
-    preprocessResulting(textElement, result, LabelType.INSTANCE, "\n");
+        Element result = new Element();
+        preprocessResulting(textElement, result, LabelType.INSTANCE, "\n");
 
-    result.getStyle().setStyleProperty( TextStyleKeys.TRIM_TEXT_CONTENT, Boolean.FALSE );
-    result.getStyle().setStyleProperty( TextStyleKeys.WHITE_SPACE_COLLAPSE, WhitespaceCollapse.PRESERVE );
+        result.getStyle().setStyleProperty( TextStyleKeys.TRIM_TEXT_CONTENT, Boolean.FALSE );
+        result.getStyle().setStyleProperty( TextStyleKeys.WHITE_SPACE_COLLAPSE, WhitespaceCollapse.PRESERVE );
 
-    return result;
-  }
+        return result;
+    }
+    private Element processHr(javax.swing.text.Element textElement) {
+        Band result = new Band();
+        preprocessResulting(textElement, result, null, null);
+
+        result.getStyle().setStyleProperty(BandStyleKeys.LAYOUT, BandStyleKeys.LAYOUT_BLOCK);
+        result.getStyle().setStyleProperty(ElementStyleKeys.BORDER_TOP_STYLE, BorderStyle.SOLID);
+        result.getStyle().setStyleProperty(ElementStyleKeys.BORDER_TOP_WIDTH, 1.0f);
+
+        return result;
+    }
 
   private boolean isAritificalNewline(javax.swing.text.Element textElement, String text) {
     final javax.swing.text.Element parent = textElement.getParentElement();
