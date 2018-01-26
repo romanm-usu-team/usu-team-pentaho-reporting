@@ -106,7 +106,7 @@ public class HtmlRichTextConverter implements RichTextConverter {
         return value;
       }
 
-      final Element element = process( doc.getDefaultRootElement(), null, null);
+      final Element element = process( doc.getDefaultRootElement(), null,null, null);
       return RichTextConverterUtilities.convertToBand( StyleKey.getDefinedStyleKeysList(), source, element );
     } catch ( Exception e ) {
       return value;
@@ -122,7 +122,7 @@ public class HtmlRichTextConverter implements RichTextConverter {
     }
   }
 
-  private Element process(final javax.swing.text.Element textElement, HtmlStylesRichTechConverter.ListStyle currentListStyle, MutableInteger currentListItem) throws BadLocationException {
+  private Element process(final javax.swing.text.Element textElement, final Element parentOfResult, HtmlStylesRichTechConverter.ListStyle currentListStyle, MutableInteger currentListItem) throws BadLocationException {
       if (isInvisible(textElement)) {
           return null;
       }
@@ -130,42 +130,42 @@ public class HtmlRichTextConverter implements RichTextConverter {
 
 
           if (is(textElement, HTML.Tag.IMG)) {
-              return processImg(textElement);
+              return processImg(textElement, parentOfResult);
           }
 
           if (is(textElement, HTML.Tag.BR)) {
-              return processBr(textElement);
+              return processBr(textElement, parentOfResult);
           }
           if (is(textElement, HTML.Tag.HR)) {
-              return processHr(textElement);
+              return processHr(textElement, parentOfResult);
           }
 
 
 
-          return processText(textElement);
+          return processText(textElement, parentOfResult);
       } else {
 
           if (is(textElement, HTML.Tag.TABLE) /*| | is(textElement, HTML.Tag.TR) || is(textElement, HTML.Tag.TH) || is(textElement, HTML.Tag.TD) || is(textElement, HTML.Tag.CAPTION)*/) {
-              return processTable(textElement, currentListStyle, currentListItem);
+              return processTable(textElement, parentOfResult, currentListStyle, currentListItem);
           }
 
           // we need to intercept for <UL> and <OL> here and everything between them
           if ((is(textElement, HTML.Tag.OL) || is(textElement, HTML.Tag.UL) || is(textElement, HTML.Tag.LI))
                   || (currentListStyle != null || currentListItem != null)) {
 
-              return processUlAndOlAndLi(textElement, currentListStyle, currentListItem);
+              return processUlAndOlAndLi(textElement, parentOfResult, currentListStyle, currentListItem);
           }
 
-          return processGeneralCompositeElement(textElement, currentListStyle, currentListItem);
+          return processGeneralCompositeElement(textElement, parentOfResult, currentListStyle, currentListItem);
       }
 
   }
 
-    private Element processGeneralCompositeElement(javax.swing.text.Element textElement, HtmlStylesRichTechConverter.ListStyle currentListStyle, MutableInteger currentListItem) throws BadLocationException {
+    private Element processGeneralCompositeElement(javax.swing.text.Element textElement, final Element parentOfResult, HtmlStylesRichTechConverter.ListStyle currentListStyle, MutableInteger currentListItem) throws BadLocationException {
         // created by extraction from UL, LI and OL process
 
         final Band band = new Band();
-        preprocessResulting(textElement, band, null, null);
+        preprocessResulting(textElement, band, parentOfResult, null, null);
         configureBand(textElement, band);
 
         final boolean bandIsInline = isInlineElement(band);
@@ -174,7 +174,7 @@ public class HtmlRichTextConverter implements RichTextConverter {
         for (int i = 0; i < textElement.getElementCount(); i++) {
             final javax.swing.text.Element child = textElement.getElement(i);
 
-            final Element element = process(child, currentListStyle, currentListItem);
+            final Element element = process(child, band, currentListStyle, currentListItem);
             if (element == null) {
                 continue;
             }
@@ -213,7 +213,7 @@ public class HtmlRichTextConverter implements RichTextConverter {
     }
 
 
-    private Element processTable(javax.swing.text.Element textElement, HtmlStylesRichTechConverter.ListStyle currentListStyle, MutableInteger currentListItem) throws BadLocationException {
+    private Element processTable(javax.swing.text.Element textElement, final Element parentOfResult,  HtmlStylesRichTechConverter.ListStyle currentListStyle, MutableInteger currentListItem) throws BadLocationException {
 
         final Band tableWrapper = new Band();
         //tableWrapper.setName("p-implied");
@@ -221,7 +221,7 @@ public class HtmlRichTextConverter implements RichTextConverter {
          tableWrapper.getStyle().setStyleProperty(BandStyleKeys.LAYOUT, BandStyleKeys.LAYOUT_BLOCK);
 
         final Band table = new Band();
-        preprocessResulting(textElement, table, null, null);
+        preprocessResulting(textElement, table, parentOfResult, null, null);
         table.getStyle().setStyleProperty( BandStyleKeys.TABLE_LAYOUT, TableLayout.fixed );
         //configureBand(textElement, table);
         table.getStyle().setStyleProperty(BandStyleKeys.LAYOUT, BandStyleKeys.LAYOUT_TABLE);
@@ -238,14 +238,14 @@ public class HtmlRichTextConverter implements RichTextConverter {
             final javax.swing.text.Element child = textElement.getElement(i);
 
             if (is(child, HTML.Tag.TR)) {
-                final Element processedRow = processTableRow(child, currentListStyle, currentListItem, tableWrapper);
+                final Element processedRow = processTableRow(child, table, currentListStyle, currentListItem, tableWrapper);
                 tableBody.addElement(processedRow);
             } else if (is(child, "thead") || is(child, "tbody")) {
                 for (int j = 0; j < child.getElementCount(); j++) {
                     final javax.swing.text.Element subchild = textElement.getElement(i);
 
                     if (is(subchild, HTML.Tag.TR)) {
-                        final Element processedRow = processTableRow(subchild, currentListStyle, currentListItem, tableWrapper);
+                        final Element processedRow = processTableRow(subchild, table, currentListStyle, currentListItem, tableWrapper);
 
                         if (is(child, "thead")) {
                             tableHeader.addElement(processedRow);
@@ -255,7 +255,7 @@ public class HtmlRichTextConverter implements RichTextConverter {
                             tableBody.addElement(processedRow);
                         }
                     } else {
-                        final Element processedRest = process(subchild, currentListStyle, currentListItem);
+                        final Element processedRest = process(subchild, table, currentListStyle, currentListItem);
                         if (processedRest != null) {
                             tableWrapper.addElement(processedRest);
                         }
@@ -263,11 +263,11 @@ public class HtmlRichTextConverter implements RichTextConverter {
                     }
                 }
             } else if (is(child, "caption")) {
-                final Element processedCaption = process(child, currentListStyle, currentListItem);
+                final Element processedCaption = process(child, table, currentListStyle, currentListItem);
                 processedCaption.getStyle().setStyleProperty(BandStyleKeys.LAYOUT, BandStyleKeys.LAYOUT_BLOCK);
                 tableWrapper.addElement(processedCaption);
             } else {
-                final Element processedRest = process(child, currentListStyle, currentListItem);
+                final Element processedRest = process(child, table, currentListStyle, currentListItem);
                 tableWrapper.addElement(processedRest);
             }
         }
@@ -280,7 +280,7 @@ public class HtmlRichTextConverter implements RichTextConverter {
     }
 
 
-    private Element processTableRow(javax.swing.text.Element rowTextElement, HtmlStylesRichTechConverter.ListStyle currentListStyle, MutableInteger currentListItem, Band tableWrapper) throws BadLocationException {
+    private Element processTableRow(javax.swing.text.Element rowTextElement, final Element tableResult, HtmlStylesRichTechConverter.ListStyle currentListStyle, MutableInteger currentListItem, Band tableWrapper) throws BadLocationException {
         Band row = new Band();
         row.setName(rowTextElement.getName());
         row.getStyle().setStyleProperty(BandStyleKeys.LAYOUT, BandStyleKeys.LAYOUT_TABLE_ROW);
@@ -289,7 +289,7 @@ public class HtmlRichTextConverter implements RichTextConverter {
             final javax.swing.text.Element cellTextElem = rowTextElement.getElement(i);
 
             final Element processed = //process(cellTextElem, currentListStyle, currentListItem);
-                processGeneralCompositeElement(cellTextElem, currentListStyle, currentListItem);
+                processGeneralCompositeElement(cellTextElem, row, currentListStyle, currentListItem);
 
             if (processed == null) {
                 continue;
@@ -306,11 +306,11 @@ public class HtmlRichTextConverter implements RichTextConverter {
     }
 
 
-    private Element processUlAndOlAndLi(javax.swing.text.Element textElement, HtmlStylesRichTechConverter.ListStyle currentListStyle, MutableInteger currentListItem) throws BadLocationException {
+    private Element processUlAndOlAndLi(javax.swing.text.Element textElement, final Element parentOfResult, HtmlStylesRichTechConverter.ListStyle currentListStyle, MutableInteger currentListItem) throws BadLocationException {
         // don't ask me, I have absolutelly no idea what this bulk of magic do
         // but would also work with particullar different element
         final Band band = new Band();
-        preprocessResulting(textElement, band, null, null);
+        preprocessResulting(textElement, band, parentOfResult, null, null);
         configureBand(textElement, band);
 
         final boolean bandIsInline = isInlineElement(band);
@@ -343,7 +343,7 @@ public class HtmlRichTextConverter implements RichTextConverter {
         for (int i = 0; i < size; i++) {
             final javax.swing.text.Element child = textElement.getElement(i);
 
-            final Element element = process(child, listStyle, listItemNumber);
+            final Element element = process(child, band, listStyle, listItemNumber);
             if (element == null) {
                 continue;
             }
@@ -398,7 +398,7 @@ public class HtmlRichTextConverter implements RichTextConverter {
         return band;
     }
 
-    private Element processText(javax.swing.text.Element textElement) throws BadLocationException {
+    private Element processText(javax.swing.text.Element textElement, final Element parentOfResult) throws BadLocationException {
         final String text = stringContentOfElement(textElement);
 
         if (isAritificalNewline(textElement, text)) {
@@ -406,23 +406,23 @@ public class HtmlRichTextConverter implements RichTextConverter {
         }
 
         final Element result = new Element();
-        preprocessResulting(textElement, result, LabelType.INSTANCE, text);
+        preprocessResulting(textElement, result, parentOfResult, LabelType.INSTANCE, text);
 
         return result;
     }
 
-    private Element processBr(javax.swing.text.Element textElement) {
+    private Element processBr(javax.swing.text.Element textElement, final Element parentOfResult) {
         Element result = new Element();
-        preprocessResulting(textElement, result, LabelType.INSTANCE, "\n");
+        preprocessResulting(textElement, result, parentOfResult, LabelType.INSTANCE, "\n");
 
         result.getStyle().setStyleProperty( TextStyleKeys.TRIM_TEXT_CONTENT, Boolean.FALSE );
         result.getStyle().setStyleProperty( TextStyleKeys.WHITE_SPACE_COLLAPSE, WhitespaceCollapse.PRESERVE );
 
         return result;
     }
-    private Element processHr(javax.swing.text.Element textElement) {
+    private Element processHr(javax.swing.text.Element textElement, final Element parentOfResult) {
         Band result = new Band();
-        preprocessResulting(textElement, result, null, null);
+        preprocessResulting(textElement, result, parentOfResult, null, null);
 
         result.getStyle().setStyleProperty(BandStyleKeys.LAYOUT, BandStyleKeys.LAYOUT_BLOCK);
         result.getStyle().setStyleProperty(ElementStyleKeys.BORDER_TOP_STYLE, BorderStyle.SOLID);
@@ -431,31 +431,8 @@ public class HtmlRichTextConverter implements RichTextConverter {
         return result;
     }
 
-  private boolean isAritificalNewline(javax.swing.text.Element textElement, String text) {
-    final javax.swing.text.Element parent = textElement.getParentElement();
-    if ( parent != null ) {
-      final HTML.Tag tag = findTag( parent.getAttributes() );
-      if ( "\n".equals( text ) ) {
-        if ( BLOCK_ELEMENTS.contains( tag ) || "paragraph".equals( textElement.getName() )
-                || "section".equals( textElement.getName() ) ) {
-          if ( parent.getElementCount() > 0 && parent.getElement( parent.getElementCount() - 1 ) == textElement ) {
-            // Skipping an artificial \n at the end of paragraph element. This is generated by the swing
-            // parser and really messes things up here.
-            return true;
-          }
-        }
-      }
-    }
-    return false;
-  }
 
-  private String stringContentOfElement(javax.swing.text.Element textElement) throws BadLocationException {
-    final int endOffset = textElement.getEndOffset();
-    final int startOffset = textElement.getStartOffset();
-    return textElement.getDocument().getText( startOffset, endOffset - startOffset );
-  }
-
-  private Element processImg(javax.swing.text.Element textElement) {
+  private Element processImg(javax.swing.text.Element textElement, final Element parentOfResult) {
     final AttributeSet attributes = textElement.getAttributes();
     final Element result = new Element();
 
@@ -490,11 +467,36 @@ public class HtmlRichTextConverter implements RichTextConverter {
       result.getStyle().setStyleProperty( ElementStyleKeys.DYNAMIC_HEIGHT, Boolean.TRUE );
     }
 
-      preprocessResulting(textElement, result, new ContentType(), null);
+      preprocessResulting(textElement, result, parentOfResult, new ContentType(), null);
     return result;
   }
 
-  private Element createLiNumElement(HtmlStylesRichTechConverter.ListStyle listStyle, MutableInteger listItemNumber) {
+    private boolean isAritificalNewline(javax.swing.text.Element textElement, String text) {
+        final javax.swing.text.Element parent = textElement.getParentElement();
+        if ( parent != null ) {
+            final HTML.Tag tag = findTag( parent.getAttributes() );
+            if ( "\n".equals( text ) ) {
+                if ( BLOCK_ELEMENTS.contains( tag ) || "paragraph".equals( textElement.getName() )
+                        || "section".equals( textElement.getName() ) ) {
+                    if ( parent.getElementCount() > 0 && parent.getElement( parent.getElementCount() - 1 ) == textElement ) {
+                        // Skipping an artificial \n at the end of paragraph element. This is generated by the swing
+                        // parser and really messes things up here.
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private String stringContentOfElement(javax.swing.text.Element textElement) throws BadLocationException {
+        final int endOffset = textElement.getEndOffset();
+        final int startOffset = textElement.getStartOffset();
+        return textElement.getDocument().getText( startOffset, endOffset - startOffset );
+    }
+
+
+    private Element createLiNumElement(HtmlStylesRichTechConverter.ListStyle listStyle, MutableInteger listItemNumber) {
     final Element linum = new Element();
     linum.setName( "point" );
     linum.setElementType( LabelType.INSTANCE );
@@ -508,7 +510,7 @@ public class HtmlRichTextConverter implements RichTextConverter {
   }
 
 
-    private void preprocessResulting(javax.swing.text.Element textElement, final Element result, final ElementType type, final String value) {
+    private void preprocessResulting(javax.swing.text.Element textElement, final Element result, final Element parentOfResult, final ElementType type, final String value) {
 
         result.setName( textElement.getName() );
 
@@ -520,7 +522,7 @@ public class HtmlRichTextConverter implements RichTextConverter {
             result.setAttribute(AttributeNames.Core.NAMESPACE, AttributeNames.Core.VALUE, value);
         }
 
-        styles.configureStyle( textElement, result );
+        styles.configureStyle( textElement, result, parentOfResult);
     }
 
 
