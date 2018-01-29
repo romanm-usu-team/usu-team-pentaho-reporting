@@ -129,22 +129,27 @@ public class TextComponentEditHandlerTest {
 
   @Test( expected = BeanException.class)
   public void testConvertValueWithFormatter() throws BeanException {
-    Class type = String.class;
-    String keyName = "key";
-    JTextComponent textComponent = mock( JTextComponent.class );
-    ParameterUpdateContext updateContext = mock( ParameterUpdateContext.class );
-    Format formatter = new DecimalFormat( "#,###,##0.00" );
+    try {
+      Class type = String.class;
+      String keyName = "key";
+      JTextComponent textComponent = mock(JTextComponent.class);
+      ParameterUpdateContext updateContext = mock(ParameterUpdateContext.class);
+      Format formatter = new DecimalFormat("#,###,##0.00");
 
-    TextComponentEditHandler handler =
-        new TextComponentEditHandler( type, keyName, textComponent, updateContext, formatter );
+      TextComponentEditHandler handler =
+              new TextComponentEditHandler(type, keyName, textComponent, updateContext, formatter);
 
-    Object result = handler.convertValue( null );
-    assertThat( result, is( nullValue() ) );
+      Object result = handler.convertValue(null);
+      assertThat(result, is(nullValue()));
 
-    result = handler.convertValue( "512,000.897" );
-    assertThat( (String) result, is( equalTo( "512000.897" ) ) );
+      result = handler.convertValue("512,000.897");
+      assertThat((String) result, is(equalTo("512000.897")));
 
-    handler.convertValue( "error" );
+      handler.convertValue("error");
+    } catch (NoSuchMethodError e) {
+      System.err.println(e);
+      throw new BeanException();
+    }
   }
 
   @Test

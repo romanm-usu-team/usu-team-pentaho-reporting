@@ -22,6 +22,10 @@ public class BaseHtmlRichTextConverterTest extends TestCase {
         converter = new HtmlRichTextConverter();
     }
 
+    public void test() {
+        //okay, ready
+    }
+
 
     protected Band checkResultAndGetBody(Element result) {
         Band html = (Band) ((Band) result).getElement(0);

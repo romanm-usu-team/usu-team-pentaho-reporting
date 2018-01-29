@@ -36,6 +36,7 @@ import com.lowagie.text.rtf.style.RtfParagraphStyle;
 import com.lowagie.text.rtf.text.PatchRtfParagraph;
 import com.lowagie.text.rtf.text.RtfParagraph;
 
+import javax.print.Doc;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -524,9 +525,11 @@ public class PatchRtfCell extends Cell implements RtfExtendedElement {
       result.write( DocWriter.getISOBytes( "\\clpadfr3" ) );
       result.write( DocWriter.getISOBytes( "\\clpadfb3" ) );
     }
+
     result.write( DocWriter.getISOBytes( "\\cellx" ) );
     result.write( intToByteArray( this.cellRight ) );
   }
+
 
   /**
    * Write the content of this PatchRtfCell

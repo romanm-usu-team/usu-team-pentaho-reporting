@@ -34,6 +34,13 @@ public class HtmlBaseTagsRichTextConverterTest extends BaseHtmlRichTextConverter
 
         checkName(body, "div", 0);
         checkName(body, "div", 1);
+        checkName(body, "p-implied", 0, 0);
+        checkName(body, "p-implied", 1, 0);
+        checkName(body, "", 0, 0, 0);
+        checkName(body, "", 1, 0, 0);
+        checkName(body, "content", 0, 0, 0, 0);
+        checkName(body, "content", 1, 0, 0, 0);
+
         checkValue(body, "foo", 0, 0, 0, 0);
         checkValue(body, "bar", 1, 0, 0, 0);
     }

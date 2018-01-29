@@ -144,7 +144,7 @@ public abstract class AbstractMinorAxisLayoutStep extends IterateVisualProcessSt
       columnModel.validateSizes( (TableRenderBox) box );
       tableContext.setStructureValidated( true );
     }
-    box.setCachedWidth( columnModel.getCachedSize() );
+    box.setCachedWidth( columnModel.getCachedSize() + tableContext.getTable().getHorizontalInsets());
     tableContext = tableContext.pop();
     return true;
   }

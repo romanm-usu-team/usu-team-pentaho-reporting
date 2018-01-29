@@ -107,7 +107,11 @@ public class TableRowHeightCalculation {
   }
 
   public void finishTable( final TableRenderBox box ) {
-    final long newHeight = currentTable.getFilledHeight();
+    long newHeight = currentTable.getFilledHeight();
+
+    //someone forgot to add it to final table height
+    newHeight += box.getVerticalInsets();
+
     box.setCachedHeight( newHeight );
 
     currentTable = currentTable.pop();

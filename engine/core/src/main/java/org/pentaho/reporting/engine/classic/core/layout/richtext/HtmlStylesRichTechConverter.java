@@ -47,13 +47,13 @@ public class HtmlStylesRichTechConverter {
                     return "";
 
                 case DISC:
-                    return "() ";
+                    return "\u25CB ";
 
                 case CIRCLE:
-                    return "o ";
+                    return "\u25CF ";
 
                 case SQUARE:
-                    return "[] ";
+                    return "\u25A0 ";
 
                 case ARABIC:
                     return Integer.toString(item) + ". ";
@@ -103,31 +103,35 @@ public class HtmlStylesRichTechConverter {
         }
 
         public static ListStyle parse(String cssText) {
-            if ("none.".equals(cssText)) {
+            if (cssText == null) {
+                return null;
+            }
+
+            if (cssText.contains("none")) {
                 return ListStyle.NONE;
             }
-            if ("circle".equals(cssText)) {
+            if (cssText.contains("circle")) {
                 return ListStyle.CIRCLE;
             }
-            if ("disc".equals(cssText)) {
+            if (cssText.contains("disc")) {
                 return ListStyle.DISC;
             }
-            if ("square".equals(cssText)) {
+            if (cssText.contains("square")) {
                 return ListStyle.SQUARE;
             }
-            if ("decimal".equals(cssText) || "arabic".equals(cssText)) { //just for case
+            if (cssText.contains("arabic") || cssText.contains("decimal")) { //just for case
                 return ListStyle.ARABIC;
             }
-            if ("lower-alpha".equals(cssText)) {
+            if (cssText.contains("lower-alpha")) {
                 return ListStyle.LOWER_ALPHA;
             }
-            if ("upper-alpha".equals(cssText)) {
+            if (cssText.contains("upper-alpha")) {
                 return ListStyle.CAPS_ALPHA;
             }
-            if ("lower-roman".equals(cssText)) {
+            if (cssText.contains("lower-roman")) {
                 return ListStyle.LOWER_ROMAN;
             }
-            if ("upper-roman".equals(cssText)) {
+            if (cssText.contains("upper-roman")) {
                 return ListStyle.CAPS_ROMAN;
             }
 
@@ -197,21 +201,21 @@ public class HtmlStylesRichTechConverter {
     }
 
 
-    public void configureStyle( final javax.swing.text.Element textElement, final Element result ) {
+    /**
+     * Main method for styles computation. Gets styles from textElement AND element's document's stylesheet's styles and converts them into result's style.
+     * @param textElement
+     * @param result
+     */
+    public void configureStyle( final javax.swing.text.Element textElement, final Element result , final Element parentOfResult) {
         final HTMLDocument htmlDocument = (HTMLDocument) textElement.getDocument();
         final StyleSheet sheet = htmlDocument.getStyleSheet();
-        final AttributeSet attr = computeStyle( textElement, sheet );
+        AttributeSet attr = computeStyle( textElement, sheet );
 
 
         processDocumentSheetStyles(sheet, result, attr);
-        //((SimpleAttributeSet) attr).addAttribute("font-weight", "bold"); //XXXX
-        processElementsParentStyles(textElement, result, sheet, attr);
-
+        attr = processElementsParentStyles(textElement, result, parentOfResult, sheet, attr);
         processElementOwnStyles(result, sheet, attr);
-/*
-        result.getStyle().setStyleProperty(TextStyleKeys.FONTSIZE, 64); //XXXX
-        result.getStyle().setStyleProperty(TextStyleKeys.BOLD, true);   //XXXXX
-*/
+
     }
 
 
@@ -226,25 +230,88 @@ public class HtmlStylesRichTechConverter {
         }
     }
 
-    private void processElementsParentStyles(javax.swing.text.Element textElement, Element result, StyleSheet sheet, AttributeSet attr) {
+    private AttributeSet processElementsParentStyles(final javax.swing.text.Element textElement, final Element result, final Element parentOfResult, final StyleSheet sheet, final AttributeSet attr) {
+        /*
         javax.swing.text.Element element = textElement;
-        while ((element != null || element != element)
-                && (HtmlRichTextConverter.is(element, HTML.Tag.IMPLIED) || HtmlRichTextConverter.is(element, "content"))
-                //&& ("content".equals(element.getName()) || "p-implied".equals(element.getName()))
-                ) {
+        do {
             element = element.getParentElement();
+        } while ((element != null && element.getParentElement() != element)
+                && (HtmlRichTextConverter.is(element, HTML.Tag.IMPLIED) || HtmlRichTextConverter.is(element, "content")));
+*/
+        if (parentOfResult != null) {
+            copyTextStyles(parentOfResult, result);
         }
+        return attr;
+   /*
+        } else {
+            return attr;
+        }
+        */
+        //TODO here ...
 
-        if (element != null && element != textElement) {
-            copyStyles(element, result, sheet);
-        }
     }
 
-    private void copyStyles(javax.swing.text.Element parent, Element result, StyleSheet sheet) {
+
+    private void copyTextStyles(final Element parent, final Element result) {
+
+        copyIfSo(parent, result, ElementStyleKeys.PAINT);
+        copyIfSo(parent, result, ElementStyleKeys.FILL_COLOR);
+
+        for (StyleKey style: TextStyleKeys.ALL) {
+            copyIfSo(parent, result, style);
+        }
+
+    }
+
+/*
+    private AttributeSet copyTextStyles(javax.swing.text.Element parent, javax.swing.text.Element textElement, Element result, StyleSheet sheet) {
         final AttributeSet attr = computeStyle( parent, sheet );
 
-        processDocumentSheetStyles(sheet, result, attr);
-        processElementOwnStyles(result, sheet, attr);
+
+        SimpleAttributeSet set = new SimpleAttributeSet();
+
+        Enumeration<?> names = attr.getAttributeNames();
+        while (names.hasMoreElements()) {
+            Object name = names.nextElement();
+            set.addAttribute(name, parent.getAttributes().getAttribute(name));
+        }
+
+//        copyIfSo(parent, set, CSS.Attribute.FONT);
+//        copyIfSo(parent, set, CSS.Attribute.FONT);
+//
+//
+//        set.addAttribute(CSS.Attribute.FONT, parent.getAttributes().getAttribute(CSS.Attribute.FONT));
+//
+//        set.addAttribute(CSS.Attribute.FONT_SIZE, parent.getAttributes().getAttribute(CSS.Attribute.FONT_SIZE));
+//        set.addAttribute(CSS.Attribute.FONT_FAMILY, parent.getAttributes().getAttribute(CSS.Attribute.FONT_FAMILY));
+//        set.addAttribute(CSS.Attribute.FONT_STYLE, parent.getAttributes().getAttribute(CSS.Attribute.FONT_STYLE));
+//        set.addAttribute(CSS.Attribute.FONT_WEIGHT, parent.getAttributes().getAttribute(CSS.Attribute.FONT_WEIGHT));
+//        set.addAttribute(CSS.Attribute.FONT_VARIANT, parent.getAttributes().getAttribute(CSS.Attribute.FONT_VARIANT));
+//        set.addAttribute(CSS.Attribute.COLOR, parent.getAttributes().getAttribute(CSS.Attribute.COLOR));
+//        set.addAttribute(CSS.Attribute.LETTER_SPACING, parent.getAttributes().getAttribute(CSS.Attribute.LETTER_SPACING));
+//        set.addAttribute(CSS.Attribute.LINE_HEIGHT, parent.getAttributes().getAttribute(CSS.Attribute.LINE_HEIGHT));
+//        set.addAttribute(CSS.Attribute.TEXT_DECORATION, parent.getAttributes().getAttribute(CSS.Attribute.TEXT_DECORATION));
+//        set.addAttribute(CSS.Attribute.VERTICAL_ALIGN, parent.getAttributes().getAttribute(CSS.Attribute.VERTICAL_ALIGN));
+//        set.addAttribute(CSS.Attribute.WHITE_SPACE, parent.getAttributes().getAttribute(CSS.Attribute.WHITE_SPACE));
+//        set.addAttribute(CSS.Attribute.WORD_SPACING, parent.getAttributes().getAttribute(CSS.Attribute.WORD_SPACING));
+//        //TODO CHECKME add more styles here ???
+
+
+        //processDocumentSheetStyles(sheet, result, attr);
+
+//        parseFont(result, attr);parseTextDecoration(result, attr);
+//        parseWhitespace(result, attr);
+
+        return set;
+    }
+*/
+
+    private void copyIfSo(Element from, Element to, StyleKey attribute) {
+        Object value = from.getStyle().getStyleProperty(attribute);
+        if (value != null/* && to.getStyle().getStyleProperty(attribute) == null*/) {
+            // TODO fixme disables overriding, yes?
+            to.getStyle().setStyleProperty(attribute, value);
+        }
     }
 
 
@@ -440,36 +507,41 @@ public class HtmlStylesRichTechConverter {
     }
     private void parseMargin(Element result, AttributeSet attr) {
         // margin in our case means just an other word for padding, no difference
+        final float paddingTop = (float) result.getStyle().getDoubleStyleProperty(ElementStyleKeys.PADDING_TOP, 0.0);
+        final float paddingLeft = (float) result.getStyle().getDoubleStyleProperty(ElementStyleKeys.PADDING_LEFT, 0.0);
+        final float paddingBottom = (float) result.getStyle().getDoubleStyleProperty(ElementStyleKeys.PADDING_BOTTOM, 0.0);
+        final float paddingRight = (float) result.getStyle().getDoubleStyleProperty(ElementStyleKeys.PADDING_RIGHT, 0.0);
 
-        final Object paddingText = attr.getAttribute( CSS.Attribute.MARGIN );
-        if ( paddingText != null ) {
-            final Float padding = parseLength( String.valueOf( paddingText ) );
-            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_TOP, padding );
-            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_LEFT, padding );
-            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_BOTTOM, padding );
-            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_RIGHT, padding );
+        final Object marginText = attr.getAttribute( CSS.Attribute.MARGIN );
+        if ( marginText != null ) {
+            final Float margin = parseLength( String.valueOf( marginText ) );
+            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_TOP, margin + paddingTop);
+            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_LEFT, margin  + paddingLeft);
+            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_BOTTOM, margin  + paddingBottom);
+            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_RIGHT, margin  + paddingRight);
         }
 
-        final Object paddingTop = attr.getAttribute( CSS.Attribute.MARGIN_TOP );
-        if ( paddingTop != null ) {
-            final Float padding = parseLength( String.valueOf( paddingTop ) );
-            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_TOP, padding );
+        final Object marginTop = attr.getAttribute( CSS.Attribute.MARGIN_TOP );
+        if ( marginTop != null ) {
+            final Float margin = parseLength( String.valueOf( marginTop ) );
+            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_TOP, margin + paddingTop);
         }
-        final Object paddingLeft = attr.getAttribute( CSS.Attribute.MARGIN_LEFT );
-        if ( paddingLeft != null ) {
-            final Float padding = parseLength( String.valueOf( paddingLeft ) );
-            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_LEFT, padding );
+        final Object marginLeft = attr.getAttribute( CSS.Attribute.MARGIN_LEFT );
+        if ( marginLeft != null ) {
+            final Float margin = parseLength( String.valueOf( marginLeft ) );
+            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_LEFT, margin + paddingLeft);
         }
-        final Object paddingBottom = attr.getAttribute( CSS.Attribute.MARGIN_BOTTOM);
-        if ( paddingBottom != null ) {
-            final Float padding = parseLength( String.valueOf( paddingBottom ) );
-            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_BOTTOM, padding );
+        final Object marginBottom = attr.getAttribute( CSS.Attribute.MARGIN_BOTTOM);
+        if ( marginBottom != null ) {
+            final Float margin = parseLength( String.valueOf( marginBottom ) );
+            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_BOTTOM, margin + paddingBottom);
         }
-        final Object paddingRight = attr.getAttribute( CSS.Attribute.MARGIN_RIGHT );
-        if ( paddingRight != null ) {
-            final Float padding = parseLength( String.valueOf( paddingRight ) );
-            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_RIGHT, padding );
+        final Object marginRight = attr.getAttribute( CSS.Attribute.MARGIN_RIGHT );
+        if ( marginRight != null ) {
+            final Float margin = parseLength( String.valueOf( marginRight ) );
+            result.getStyle().setStyleProperty( ElementStyleKeys.PADDING_RIGHT, margin + paddingRight);
         }
+
     }
 
     private void parseSize(Element result, AttributeSet attr) {
@@ -485,6 +557,17 @@ public class HtmlStylesRichTechConverter {
 
     private void parseBorder(final Element result, final StyleSheet sheet, final AttributeSet attr ) {
 
+        processAllBorder(result, sheet, attr);
+
+        processLeftBorder(result, sheet, attr);
+        processTopBorder(result, sheet, attr);
+        processRightBorder(result, sheet, attr);
+        processBottomBorder(result, sheet, attr);
+    }
+
+
+
+    private void processAllBorder(Element result, StyleSheet sheet, AttributeSet attr) {
         final Object borderStyleText = attr.getAttribute( CSS.Attribute.BORDER_STYLE );
         if ( borderStyleText != null ) {
             final BorderStyle borderStyle = BorderStyle.getBorderStyle( String.valueOf( borderStyleText ) );
@@ -503,31 +586,6 @@ public class HtmlStylesRichTechConverter {
             result.getStyle().setStyleProperty( ElementStyleKeys.BORDER_LEFT_WIDTH, borderWidth );
             result.getStyle().setStyleProperty( ElementStyleKeys.BORDER_RIGHT_WIDTH, borderWidth );
         }
-
-        final Object borderBottomWidthText = attr.getAttribute( CSS.Attribute.BORDER_BOTTOM_WIDTH );
-        if ( borderBottomWidthText != null ) {
-            final Float borderWidth = parseLength( String.valueOf( borderBottomWidthText ) );
-            result.getStyle().setStyleProperty( ElementStyleKeys.BORDER_BOTTOM_WIDTH, borderWidth );
-        }
-
-        final Object borderRightWidthText = attr.getAttribute( CSS.Attribute.BORDER_RIGHT_WIDTH );
-        if ( borderRightWidthText != null ) {
-            final Float borderWidth = parseLength( String.valueOf( borderRightWidthText ) );
-            result.getStyle().setStyleProperty( ElementStyleKeys.BORDER_RIGHT_WIDTH, borderWidth );
-        }
-
-        final Object borderTopWidthText = attr.getAttribute( CSS.Attribute.BORDER_TOP_WIDTH );
-        if ( borderTopWidthText != null ) {
-            final Float borderWidth = parseLength( String.valueOf( borderTopWidthText ) );
-            result.getStyle().setStyleProperty( ElementStyleKeys.BORDER_TOP_WIDTH, borderWidth );
-        }
-
-        final Object borderLeftWidth = attr.getAttribute( CSS.Attribute.BORDER_LEFT_WIDTH );
-        if ( borderLeftWidth != null ) {
-            final Float borderWidth = parseLength( String.valueOf( borderLeftWidth ) );
-            result.getStyle().setStyleProperty( ElementStyleKeys.BORDER_LEFT_WIDTH, borderWidth );
-        }
-
         final Object borderColorText = attr.getAttribute( CSS.Attribute.BORDER_COLOR );
         if ( borderColorText != null ) {
             final Color borderColor = sheet.stringToColor( String.valueOf( borderColorText ) );
@@ -536,7 +594,92 @@ public class HtmlStylesRichTechConverter {
             result.getStyle().setStyleProperty( ElementStyleKeys.BORDER_LEFT_COLOR, borderColor );
             result.getStyle().setStyleProperty( ElementStyleKeys.BORDER_RIGHT_COLOR, borderColor );
         }
+    }
 
+    private void processLeftBorder(Element result, StyleSheet sheet, AttributeSet attr) {
+        final Object borderStyleText = attr.getAttribute( CSS.Attribute.BORDER_LEFT_STYLE );
+        if ( borderStyleText != null ) {
+            final BorderStyle borderStyle = BorderStyle.getBorderStyle(String.valueOf(borderStyleText));
+            if (borderStyle != null) {
+                result.getStyle().setStyleProperty(ElementStyleKeys.BORDER_LEFT_STYLE, borderStyle);
+            }
+        }
+
+        final Object borderWidthText = attr.getAttribute( CSS.Attribute.BORDER_LEFT_WIDTH );
+        if ( borderWidthText != null ) {
+            final Float borderWidth = parseLength(String.valueOf(borderWidthText));
+            result.getStyle().setStyleProperty(ElementStyleKeys.BORDER_LEFT_WIDTH, borderWidth);
+        }
+
+        final Object borderColorText = attr.getAttribute( CSS.Attribute.BORDER_LEFT_COLOR );
+        if ( borderColorText != null ) {
+            final Color borderColor = sheet.stringToColor(String.valueOf(borderColorText));
+            result.getStyle().setStyleProperty(ElementStyleKeys.BORDER_LEFT_COLOR, borderColor);
+        }
+    }
+
+    private void processTopBorder(Element result, StyleSheet sheet, AttributeSet attr) {
+        final Object borderStyleText = attr.getAttribute( CSS.Attribute.BORDER_TOP_STYLE );
+        if ( borderStyleText != null ) {
+            final BorderStyle borderStyle = BorderStyle.getBorderStyle(String.valueOf(borderStyleText));
+            if (borderStyle != null) {
+                result.getStyle().setStyleProperty(ElementStyleKeys.BORDER_TOP_STYLE, borderStyle);
+            }
+        }
+
+        final Object borderWidthText = attr.getAttribute( CSS.Attribute.BORDER_TOP_WIDTH );
+        if ( borderWidthText != null ) {
+            final Float borderWidth = parseLength(String.valueOf(borderWidthText));
+            result.getStyle().setStyleProperty(ElementStyleKeys.BORDER_TOP_WIDTH, borderWidth);
+        }
+
+        final Object borderColorText = attr.getAttribute( CSS.Attribute.BORDER_TOP_COLOR );
+        if ( borderColorText != null ) {
+            final Color borderColor = sheet.stringToColor(String.valueOf(borderColorText));
+            result.getStyle().setStyleProperty(ElementStyleKeys.BORDER_TOP_COLOR, borderColor);
+        }
+    }
+    private void processRightBorder(Element result, StyleSheet sheet, AttributeSet attr) {
+        final Object borderStyleText = attr.getAttribute( CSS.Attribute.BORDER_RIGHT_STYLE );
+        if ( borderStyleText != null ) {
+            final BorderStyle borderStyle = BorderStyle.getBorderStyle(String.valueOf(borderStyleText));
+            if (borderStyle != null) {
+                result.getStyle().setStyleProperty(ElementStyleKeys.BORDER_RIGHT_STYLE, borderStyle);
+            }
+        }
+
+        final Object borderWidthText = attr.getAttribute( CSS.Attribute.BORDER_RIGHT_WIDTH );
+        if ( borderWidthText != null ) {
+            final Float borderWidth = parseLength(String.valueOf(borderWidthText));
+            result.getStyle().setStyleProperty(ElementStyleKeys.BORDER_RIGHT_WIDTH, borderWidth);
+        }
+
+        final Object borderColorText = attr.getAttribute( CSS.Attribute.BORDER_RIGHT_COLOR );
+        if ( borderColorText != null ) {
+            final Color borderColor = sheet.stringToColor(String.valueOf(borderColorText));
+            result.getStyle().setStyleProperty(ElementStyleKeys.BORDER_RIGHT_COLOR, borderColor);
+        }
+    }
+    private void processBottomBorder(Element result, StyleSheet sheet, AttributeSet attr) {
+        final Object borderStyleText = attr.getAttribute( CSS.Attribute.BORDER_BOTTOM_STYLE );
+        if ( borderStyleText != null ) {
+            final BorderStyle borderStyle = BorderStyle.getBorderStyle(String.valueOf(borderStyleText));
+            if (borderStyle != null) {
+                result.getStyle().setStyleProperty(ElementStyleKeys.BORDER_BOTTOM_STYLE, borderStyle);
+            }
+        }
+
+        final Object borderWidthText = attr.getAttribute( CSS.Attribute.BORDER_BOTTOM_WIDTH );
+        if ( borderWidthText != null ) {
+            final Float borderWidth = parseLength(String.valueOf(borderWidthText));
+            result.getStyle().setStyleProperty(ElementStyleKeys.BORDER_BOTTOM_WIDTH, borderWidth);
+        }
+
+        final Object borderColorText = attr.getAttribute( CSS.Attribute.BORDER_BOTTOM_COLOR );
+        if ( borderColorText != null ) {
+            final Color borderColor = sheet.stringToColor(String.valueOf(borderColorText));
+            result.getStyle().setStyleProperty(ElementStyleKeys.BORDER_BOTTOM_COLOR, borderColor);
+        }
     }
 
     private void parseBgAndFgColors(Element result, StyleSheet sheet, AttributeSet attr) {
@@ -565,33 +708,35 @@ public class HtmlStylesRichTechConverter {
             result.getStyle().setBooleanStyleProperty(BandStyleKeys.PAGEBREAK_AFTER, true);
         }
 
+        //TODO rotated text, use somehow RotatedTextDrawable ?
+
     }
 
     private void parseCssListStyles(Element result, AttributeSet attr) {
-        final Object listStyleText = attr.getAttribute(CSS.Attribute.LIST_STYLE);
+        Object listStyleText = attr.getAttribute(CSS.Attribute.LIST_STYLE);
         if (listStyleText != null) {
-            ListStyle listStyleObj = ListStyle.parse(String.valueOf(listStyleText));
             // just simply, assuming list-style === list-style-type
+            ListStyle listStyleObj = ListStyle.parse(String.valueOf(listStyleText));
             result.getStyle().setStyleProperty(BandStyleKeys.LIST_STYLE_KEY, listStyleObj);
+        } else {
+            // list-style-type is automatically set to decimal if not explicitelly specified by css property
+            final Object listStyleTypeText = attr.getAttribute(CSS.Attribute.LIST_STYLE_TYPE);
+            if (listStyleTypeText != null) {
+                ListStyle listStyleObj = ListStyle.parse(String.valueOf(listStyleTypeText));
+                result.getStyle().setStyleProperty(BandStyleKeys.LIST_STYLE_KEY, listStyleObj);
+            }
 
-        }
+            final Object listStyleImageText = attr.getAttribute(CSS.Attribute.LIST_STYLE_IMAGE);
+            if (listStyleImageText != null) {
+                //ListStyle listStyleObj = ListStyle.parse(String.valueOf(listStyleImageText));
+                //TODO list-style-image
+            }
 
-        final Object listStyleTypeText = attr.getAttribute(CSS.Attribute.LIST_STYLE_TYPE);
-        if (listStyleTypeText != null) {
-            ListStyle listStyleObj = ListStyle.parse(String.valueOf(listStyleTypeText));
-            result.getStyle().setStyleProperty(BandStyleKeys.LIST_STYLE_KEY, listStyleObj);
-        }
-
-        final Object listStyleImageText = attr.getAttribute(CSS.Attribute.LIST_STYLE_IMAGE);
-        if (listStyleImageText != null) {
-            //ListStyle listStyleObj = ListStyle.parse(String.valueOf(listStyleImageText));
-            //TODO list-style-image
-        }
-
-        final Object listStylePositionText = attr.getAttribute(CSS.Attribute.LIST_STYLE_POSITION);
-        if (listStylePositionText != null) {
-            //ListStyle listStyleObj = ListStyle.parse(String.valueOf(listStylePositionText));
-            //TODO list-style-position
+            final Object listStylePositionText = attr.getAttribute(CSS.Attribute.LIST_STYLE_POSITION);
+            if (listStylePositionText != null) {
+                //ListStyle listStyleObj = ListStyle.parse(String.valueOf(listStylePositionText));
+                //TODO list-style-position
+            }
         }
     }
 
@@ -665,15 +810,11 @@ public class HtmlStylesRichTechConverter {
             if ( "%".equals( unit ) ) {
                 return new Float( -nval );
             }
-            if ( "cm".equals( unit ) ) { // cm - in - pt
+            if ( "cm".equals( unit ) ) { // cm -> in -> pt
                 return new Float( nval * 25.4 / 72 );
             }
-
-            if ( "mm".equals( unit ) ) { // mm - in - pt
+            if ( "mm".equals( unit ) ) { // mm -> in -> pt
                 return new Float( nval * 2.54 / 72 );
-            }
-            if ( "pt".equals( unit ) ) { // base unit
-                return new Float( nval );
             }
             if ( "in".equals( unit ) ) {
                 return new Float( nval * 72 );
@@ -681,9 +822,23 @@ public class HtmlStylesRichTechConverter {
             if ( "px".equals( unit ) ) { // assuming 96dpi: 3pt = 4px
                 return new Float( nval * 3.0 / 4.0 );
             }
+            if ( "pt".equals( unit ) ) { // base unit
+                return new Float( nval );
+            }
             if ( "pc".equals( unit ) ) {
                 return new Float( nval * 12 );
             }
+
+            if ( "em".equalsIgnoreCase( unit ) ) { // Em = font size = 12pt
+                return new Float( 12 );
+            }
+            if ( "ex".equalsIgnoreCase( unit ) ) { // Ex = font size = 12pt
+                return new Float( 12 );
+            }
+            if ( "ch".equalsIgnoreCase( unit ) ) { // Ex = font size = 12pt
+                return new Float( 12 );
+            }
+
             return null;
         } catch ( IOException ioe ) {
             return null;
@@ -691,3 +846,4 @@ public class HtmlStylesRichTechConverter {
     }
 
 }
+
