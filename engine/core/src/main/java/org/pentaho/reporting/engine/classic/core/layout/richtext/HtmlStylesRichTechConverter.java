@@ -47,13 +47,13 @@ public class HtmlStylesRichTechConverter {
                     return "";
 
                 case DISC:
-                    return "() ";
+                    return "- ";
 
                 case CIRCLE:
-                    return "o ";
+                    return "- ";
 
                 case SQUARE:
-                    return "[] ";
+                    return "- ";
 
                 case ARABIC:
                     return Integer.toString(item) + ". ";
