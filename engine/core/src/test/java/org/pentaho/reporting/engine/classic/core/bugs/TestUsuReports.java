@@ -74,10 +74,10 @@ public class TestUsuReports  extends TestCase {
 
 
     public void testHTMLs() throws Exception {
-       testRunRender("elementary-html.prpt", null);
+       // testRunRender("elementary-html.prpt", null);
       testRunRender("html-render-all.prpt", null);
-        testRunRender("html-test-formats.prpt", null);
-        testRunRender("html-render-big-htmls.prpt", null);
+        /// testRunRender("html-test-formats.prpt", null);
+        // testRunRender("html-render-big-htmls.prpt", null);
     }
 
 
@@ -151,7 +151,7 @@ public class TestUsuReports  extends TestCase {
 
             public java.sql.Connection createConnection(String arg0, String arg1) throws SQLException {
                 VMDSJDBCDriver driver = new VMDSJDBCDriver();
-                return driver.connectWithZip(aZIPFile);
+                return driver.connectWithZip(aZIPFile, pathToZip.toString());
             }
 
             public Object getConnectionHash() {

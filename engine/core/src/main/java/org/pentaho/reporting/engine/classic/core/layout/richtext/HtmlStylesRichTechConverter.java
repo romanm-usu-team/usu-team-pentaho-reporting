@@ -53,7 +53,7 @@ public class HtmlStylesRichTechConverter {
                     return "- ";
 
                 case SQUARE:
-                    return "- ";
+                    return ((char) 150) + " ";
 
                 case ARABIC:
                     return Integer.toString(item) + ". ";
