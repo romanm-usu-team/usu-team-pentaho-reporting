@@ -12,7 +12,7 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
- * Copyright (c) 2001 - 2016 Object Refinery Ltd, Hitachi Vantara and Contributors..  All rights reserved.
+ * Copyright (c) 2001 - 2018 Object Refinery Ltd, Hitachi Vantara and Contributors.  All rights reserved.
  */
 
 package org.pentaho.reporting.engine.classic.core.modules.misc.datafactory.sql;
@@ -31,6 +31,7 @@ import org.pentaho.reporting.libraries.base.util.ObjectUtilities;
 import javax.swing.table.TableModel;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -61,10 +62,15 @@ public class SimpleSQLReportDataFactory extends AbstractDataFactory {
   private String userField;
   private String passwordField;
 
+  public static Configuration globalConfig;
+
   public SimpleSQLReportDataFactory() {
-    final Configuration globalConfig = ClassicEngineBoot.getInstance().getGlobalConfig();
-    this.columnNameMapping = "Name".equalsIgnoreCase( globalConfig.getConfigProperty( //$NON-NLS-1$
-        SimpleSQLReportDataFactory.COLUMN_NAME_MAPPING_KEY, "Name" ) ); //$NON-NLS-1$
+    globalConfig = ClassicEngineBoot.getInstance().getGlobalConfig();
+
+    if ( globalConfig != null ) {
+      this.columnNameMapping = "Name".equalsIgnoreCase( globalConfig.getConfigProperty( //$NON-NLS-1$
+              SimpleSQLReportDataFactory.COLUMN_NAME_MAPPING_KEY, "Name" ) ); //$NON-NLS-1$
+    }
   }
 
   public SimpleSQLReportDataFactory( final Connection connection ) {
@@ -129,9 +135,9 @@ public class SimpleSQLReportDataFactory extends AbstractDataFactory {
     return connection;
   }
 
-  private int getBestResultSetType( final DataRow dataRow ) throws SQLException {
-    if ( "simple".equalsIgnoreCase( getConfiguration().getConfigProperty( //$NON-NLS-1$
-        ResultSetTableModelFactory.RESULTSET_FACTORY_MODE ) ) ) { //$NON-NLS-1$
+  public int getBestResultSetType( final DataRow dataRow ) throws SQLException {
+    if ( globalConfig != null && "simple".equalsIgnoreCase( globalConfig.getConfigProperty( //$NON-NLS-1$
+            ResultSetTableModelFactory.RESULTSET_FACTORY_MODE ) ) ) { //$NON-NLS-1$
       return ResultSet.TYPE_FORWARD_ONLY;
     }
 
@@ -188,9 +194,13 @@ public class SimpleSQLReportDataFactory extends AbstractDataFactory {
 
   private ParametrizationProviderFactory createParametrizationProviderFactory() throws ReportDataFactoryException {
     final ParametrizationProviderFactory factory;
-    final String parametrizationProviderClassname =
-        getConfiguration().getConfigProperty(
-            "org.pentaho.reporting.engine.classic.core.modules.misc.datafactory.sql.ParametrizationProviderFactory" );
+
+    String parametrizationProviderClassname = null;
+    if ( globalConfig != null ) {
+      parametrizationProviderClassname = globalConfig.getConfigProperty(
+              "org.pentaho.reporting.engine.classic.core.modules.misc.datafactory.sql.ParametrizationProviderFactory" );
+    }
+
     if ( parametrizationProviderClassname == null ) {
       factory = new DefaultParametrizationProviderFactory();
     } else {
@@ -310,19 +320,17 @@ public class SimpleSQLReportDataFactory extends AbstractDataFactory {
     final ResultSet res;
     try {
       currentRunningStatement = statement;
-      if ( preparedParameterNames.length == 0 ) {
-        res = statement.executeQuery( translatedQuery );
-      } else {
-        final PreparedStatement pstmt = (PreparedStatement) statement;
-        res = pstmt.executeQuery();
-      }
+      res = performQuery( statement, translatedQuery, preparedParameterNames );
     } finally {
       currentRunningStatement = null;
     }
 
     // equalsIgnore, as this is what the ResultSetTableModelFactory uses.
-    final boolean simpleMode = "simple".equalsIgnoreCase( getConfiguration().getConfigProperty( //$NON-NLS-1$
-      ResultSetTableModelFactory.RESULTSET_FACTORY_MODE ) ); //$NON-NLS-1$
+    boolean simpleMode = true;
+    if ( globalConfig != null ) {
+      simpleMode = "simple".equalsIgnoreCase( globalConfig.getConfigProperty( //$NON-NLS-1$
+              ResultSetTableModelFactory.RESULTSET_FACTORY_MODE ) );
+    }
 
     if ( simpleMode ) {
       return ResultSetTableModelFactory.getInstance().generateDefaultTableModel( res, columnNameMapping );
@@ -330,13 +338,39 @@ public class SimpleSQLReportDataFactory extends AbstractDataFactory {
     return ResultSetTableModelFactory.getInstance().createTableModel( res, columnNameMapping, true );
   }
 
+  public ResultSet performQuery( Statement statement, final String translatedQuery, final String[] preparedParameterNames )
+    throws SQLException {
+    final ResultSet res;
+    if ( preparedParameterNames.length == 0 ) {
+      res = statement.executeQuery( translatedQuery );
+    } else {
+      final PreparedStatement pstmt = (PreparedStatement) statement;
+      res = pstmt.executeQuery();
+    }
+    return res;
+  }
+
   private void parametrize( final DataRow parameters, final String[] params, final PreparedStatement pstmt,
       final boolean expandArrays, final int parameterOffset ) throws SQLException {
     pstmt.clearParameters();
     int paramIndex = parameterOffset;
+    ParameterMetaData parameterMetaData = null;
+    try {
+      parameterMetaData = pstmt.getParameterMetaData();
+    } catch ( SQLException e ) {
+      logger.debug( "Parameter metadata fetching threw an exception:" + e.getMessage() );
+    }
     for ( int i = 0; i < params.length; i++ ) {
       final String param = params[i];
       final Object pvalue = parameters.get( param );
+      String typeClass = null;
+      if ( parameterMetaData != null ) {
+        try {
+          typeClass = parameterMetaData.getParameterClassName( paramIndex + 1 );
+        } catch ( SQLException e ) {
+          logger.debug( "Parameter metadata fetching threw an exception:" + e.getMessage() );
+        }
+      }
       if ( pvalue == null ) {
         // this should work, but some driver are known to die here.
         // they should be fed with setNull(..) instead; something
@@ -357,6 +391,8 @@ public class SimpleSQLReportDataFactory extends AbstractDataFactory {
               // if problems come from this, we can create workaround them as discovered
               final Date d = (Date) ivalue;
               pstmt.setObject( paramIndex + 1, new Timestamp( d.getTime() ) );
+            } else if ( typeClass != null && typeClass.equals( "java.lang.String" ) ) {
+              pstmt.setObject( paramIndex + 1, String.valueOf( ivalue ) );
             } else {
               pstmt.setObject( paramIndex + 1, ivalue );
             }
@@ -375,6 +411,8 @@ public class SimpleSQLReportDataFactory extends AbstractDataFactory {
           // see comment above about java.util.Date/java.sql.Timestamp conversion
           final Date d = (Date) pvalue;
           pstmt.setObject( paramIndex + 1, new Timestamp( d.getTime() ) );
+        } else if ( typeClass != null && typeClass.equals( "java.lang.String" ) ) {
+          pstmt.setObject( paramIndex + 1, String.valueOf( pvalue ) );
         } else {
           pstmt.setObject( paramIndex + 1, pvalue );
         }
