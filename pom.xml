@@ -2885,7 +2885,21 @@
     <repository>
       <id>pentaho-public</id>
       <name>Pentaho Public</name>
-      <url>http://git.usu.co.at/repo_prd/</url>
+      <url>http://nfs.vma.usucz.usu.grp/repo_prd/</url>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>daily</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>interval:15</updatePolicy>
+      </snapshots>
+    </repository>
+	
+	<repository>
+      <id>vma-public</id>
+      <name>VMA Public</name>
+      <url>http://ci.vma.usucz.usu.grp:81/nexus/content/repositories/report-assembler/</url>
       <releases>
         <enabled>true</enabled>
         <updatePolicy>daily</updatePolicy>
