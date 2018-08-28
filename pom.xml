@@ -2882,6 +2882,7 @@
 
 
   <repositories>
+  <!--
     <repository>
       <id>pentaho-public</id>
       <name>Pentaho Public</name>
@@ -2895,11 +2896,11 @@
         <updatePolicy>interval:15</updatePolicy>
       </snapshots>
     </repository>
-	
+	-->
 	<repository>
       <id>vma-public</id>
       <name>VMA Public</name>
-      <url>http://ci.vma.usucz.usu.grp:81/nexus/content/repositories/report-assembler/</url>
+      <url>http://ci.vma.usucz.usu.grp:81/nexus/content/repositories/prd_81_build_libs/</url>
       <releases>
         <enabled>true</enabled>
         <updatePolicy>daily</updatePolicy>
