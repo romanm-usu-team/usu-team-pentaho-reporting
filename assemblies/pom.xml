@@ -556,4 +556,12 @@
       </modules>
     </profile>
   </profiles>
+  
+  <distributionManagement>
+    <repository>
+      <id>internal.repo</id>
+      <name>MyCo Internal Repository</name>
+      <url>http://ci.vma.usucz.usu.grp:81/nexus/content/repositories/vma_prd_build/</url>
+    </repository>
+  </distributionManagement>
 </project>
