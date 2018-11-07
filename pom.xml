@@ -167,7 +167,7 @@
     <commons-collections4.version>4.1</commons-collections4.version>
     <servlet2.version>2.5</servlet2.version>
     <odfdom-java.version>0.8.6</odfdom-java.version>
-    <dom4j.version>1.6.1</dom4j.version>
+    <dom4j.version>2.1.1</dom4j.version>
     <commons-math.version>1.1</commons-math.version>
     <gwt.version>2.5.1</gwt.version>
     <javassist.version>3.20.0-GA</javassist.version>
@@ -1765,7 +1765,7 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>dom4j</groupId>
+        <groupId>org.dom4j</groupId>
         <artifactId>dom4j</artifactId>
         <version>${dom4j.version}</version>
         <exclusions>
