@@ -43,7 +43,6 @@
     <commons-vfs2.version>2.2</commons-vfs2.version>
     <pentaho-cassandra-plugin.version>8.1.0.4-542</pentaho-cassandra-plugin.version>
     <pentaho-osgi-bundles.version>8.1.0.4-542</pentaho-osgi-bundles.version>
-    <poi.version>3.17</poi.version>
     <pentaho-cassandra-plugin.version>9.2.0.0-SNAPSHOT</pentaho-cassandra-plugin.version>
     <pentaho-osgi-bundles.version>9.2.0.0-SNAPSHOT</pentaho-osgi-bundles.version>
     <poi.version>4.1.1</poi.version>
