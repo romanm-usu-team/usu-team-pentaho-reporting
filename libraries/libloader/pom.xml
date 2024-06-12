@@ -5,10 +5,10 @@
   <parent>
     <groupId>org.pentaho.reporting.library</groupId>
     <artifactId>reporting-libraries</artifactId>
-    <version>9.5.0.0-SNAPSHOT</version>
+    <version>10.2.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>libloader</artifactId>
-  <version>9.5.0.0-SNAPSHOT</version>
+  <version>10.2.0.0-SNAPSHOT</version>
   <name>LibLoader</name>
   <description>LibLoader is a general purpose resource loading framework. It has been
     designed to allow to load resources from any physical location and to
@@ -125,8 +125,8 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>rhino</groupId>
-      <artifactId>js</artifactId>
+      <groupId>org.mozilla</groupId>
+      <artifactId>rhino</artifactId>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -137,6 +137,7 @@
     <dependency>
       <groupId>org.apache.xmlgraphics</groupId>
       <artifactId>xmlgraphics-commons</artifactId>
+      <version>${xml-graphics-common.version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -158,6 +159,16 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-vfs2</artifactId>
+      <exclusions>
+        <exclusion>
+          <artifactId>*</artifactId>
+          <groupId>*</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
       <exclusions>
         <exclusion>
           <artifactId>*</artifactId>

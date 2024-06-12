@@ -5,11 +5,11 @@
   <parent>
     <groupId>org.pentaho.reporting</groupId>
     <artifactId>pentaho-reporting</artifactId>
-    <version>9.5.0.0-SNAPSHOT</version>
+    <version>10.2.0.0-SNAPSHOT</version>
   </parent>
   <groupId>org.pentaho.reporting.designer</groupId>
   <artifactId>reporting-designer</artifactId>
-  <version>9.5.0.0-SNAPSHOT</version>
+  <version>10.2.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Pentaho Reporting Designer Modules</name>
   <modules>
@@ -26,7 +26,6 @@
     <module>datasource-editor-scriptable</module>
     <module>datasource-editor-table</module>
     <module>datasource-editor-xpath</module>
-    <module>datasource-editor-openerp</module>
     <module>report-designer-extension-legacy-charts</module>
     <module>report-designer-extension-pentaho</module>
     <module>report-designer-extension-toc</module>
@@ -96,11 +95,6 @@
       </dependency>
       <dependency>
         <groupId>org.pentaho.reporting.engine</groupId>
-        <artifactId>classic-extensions-openerp</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.pentaho.reporting.engine</groupId>
         <artifactId>wizard-core</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -138,6 +132,24 @@
         <groupId>org.pentaho.reporting.library</groupId>
         <artifactId>configuration-editor</artifactId>
         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>net.bytebuddy</groupId>
+        <artifactId>byte-buddy-agent</artifactId>
+        <version>1.12.16</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>net.bytebuddy</groupId>
+        <artifactId>byte-buddy</artifactId>
+        <version>1.12.16</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.objenesis</groupId>
+        <artifactId>objenesis</artifactId>
+        <version>2.3</version>
+        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>

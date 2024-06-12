@@ -5,10 +5,10 @@
   <parent>
     <groupId>org.pentaho.reporting.designer</groupId>
     <artifactId>reporting-designer</artifactId>
-    <version>9.5.0.0-SNAPSHOT</version>
+    <version>10.2.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>datasource-editor-kettle</artifactId>
-  <version>9.5.0.0-SNAPSHOT</version>
+  <version>10.2.0.0-SNAPSHOT</version>
   <licenses>
     <license>
       <name>GNU Lesser General Public License, version 2.1</name>
@@ -82,6 +82,18 @@
       <artifactId>kettle-core</artifactId>
       <version>${project.version}</version>
       <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>${log4j.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.pentaho.reporting.designer</groupId>
+      <artifactId>report-designer</artifactId>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -5,11 +5,11 @@
   <parent>
     <groupId>org.pentaho</groupId>
     <artifactId>pentaho-ce-jar-parent-pom</artifactId>
-    <version>9.5.0.0-SNAPSHOT</version>
+    <version>10.2.0.0-SNAPSHOT</version>
   </parent>
   <groupId>org.pentaho.reporting</groupId>
   <artifactId>pentaho-reporting</artifactId>
-  <version>9.5.0.0-SNAPSHOT</version>
+  <version>10.2.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Pentaho Reporting</name>
   <licenses>
@@ -30,7 +30,7 @@
   </issueManagement>
   <properties>
     <bcel.version>5.1</bcel.version>
-    <pentaho-mql-editor.version>9.5.0.0-SNAPSHOT</pentaho-mql-editor.version>
+    <pentaho-mql-editor.version>10.2.0.0-SNAPSHOT</pentaho-mql-editor.version>
     <wstx.version>3.2.4</wstx.version>
     <monetdb.version>2.8</monetdb.version>
     <plugin.enforcer.version>1.4.1</plugin.enforcer.version>
@@ -38,27 +38,22 @@
     <ftp4che.version>0.7.1</ftp4che.version>
     <hibernate.version>3.6.9.Final</hibernate.version>
     <groovy.version>2.4.8</groovy.version>
-    <mockito.version>1.10.19</mockito.version>
+    <mockito.version>5.10.0</mockito.version>
     <powermock.version>1.6.3</powermock.version>
-    <pentaho-cassandra-plugin.version>9.5.0.0-SNAPSHOT</pentaho-cassandra-plugin.version>
-    <pentaho-osgi-bundles.version>9.5.0.0-SNAPSHOT</pentaho-osgi-bundles.version>
-    <poi.version>4.1.1</poi.version>
+    <pentaho-osgi-bundles.version>10.2.0.0-SNAPSHOT</pentaho-osgi-bundles.version>
+    <poi.version>5.2.5</poi.version>
     <commons-math3.version>3.6.1</commons-math3.version>
     <curvesapi.version>1.06</curvesapi.version>
-    <commons-compress.version>1.20</commons-compress.version>
-    <xmlrpc.version>3.1.3</xmlrpc.version>
-    <commons-beanutils.version>1.9.3</commons-beanutils.version>
     <syslo4j.version>0.9.46</syslo4j.version>
     <jersey.version>1.19.1</jersey.version>
-    <commons-database.version>9.5.0.0-SNAPSHOT</commons-database.version>
+    <commons-database.version>10.2.0.0-SNAPSHOT</commons-database.version>
     <wsdl4j.version>1.6.2</wsdl4j.version>
     <infobright.version>3.4</infobright.version>
     <mstor.version>0.9.13</mstor.version>
     <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
-    <openerp.report.version>0.10.0</openerp.report.version>
     <plugin.checkstyle.version>2.17</plugin.checkstyle.version>
     <jaxrpc.version>1.1</jaxrpc.version>
-    <commons-dbcp.version>1.4</commons-dbcp.version>
+    <commons-dbcp2.version>2.9.0</commons-dbcp2.version>
     <test.long>false</test.long>
     <sapdb.version>7.4.4</sapdb.version>
     <akka.version>2.3.3</akka.version>
@@ -69,59 +64,56 @@
     <snp4j.version>1.9.3d</snp4j.version>
     <barcode4j.version>2.0</barcode4j.version>
     <luciddb.version>0.9.4</luciddb.version>
-    <pdi-osgi-bridge.version>9.5.0.0-SNAPSHOT</pdi-osgi-bridge.version>
+    <pdi-osgi-bridge.version>10.2.0.0-SNAPSHOT</pdi-osgi-bridge.version>
     <antlr.version>3.5.2</antlr.version>
     <sqleonardo.version>2020.02</sqleonardo.version>
     <commons-validator.version>1.3.1</commons-validator.version>
-    <pentaho-metadata.version>9.5.0.0-SNAPSHOT</pentaho-metadata.version>
+    <pentaho-metadata.version>10.2.0.0-SNAPSHOT</pentaho-metadata.version>
     <pentaho.pentaho-versionchecker.version>${project.version}</pentaho.pentaho-versionchecker.version>
     <jsonpath.vesrion>1.0</jsonpath.vesrion>
     <ognl.version>2.6.9</ognl.version>
     <contiperf.version>2.2.0</contiperf.version>
     <feed4j.version>1.0</feed4j.version>
-    <launcher.version>9.5.0.0-SNAPSHOT</launcher.version>
+    <launcher.version>10.2.0.0-SNAPSHOT</launcher.version>
     <swt-linux.version>4.3.2</swt-linux.version>
     <jackcess.version>1.2.6</jackcess.version>
     <swingx.version>1.6.1</swingx.version>
-    <pentaho-karaf.version>9.5.0.0-SNAPSHOT</pentaho-karaf.version>
+    <pentaho-karaf.version>10.2.0.0-SNAPSHOT</pentaho-karaf.version>
     <commons-configuration.version>1.9</commons-configuration.version>
     <commons-collections.version>3.2.2</commons-collections.version>
     <joda.version>2.10.2</joda.version>
     <xmlgraphics-commons.version>2.2</xmlgraphics-commons.version>
     <sassy.version>0.5</sassy.version>
-    <platform.version>9.5.0.0-SNAPSHOT</platform.version>
-    <rhino.version>1.7R3</rhino.version>
+    <platform.version>10.2.0.0-SNAPSHOT</platform.version>
     <bsf.version>2.4.0</bsf.version>
-    <pentaho-connections.version>9.5.0.0-SNAPSHOT</pentaho-connections.version>
+    <pentaho-connections.version>10.2.0.0-SNAPSHOT</pentaho-connections.version>
     <commons-lang.version>2.6</commons-lang.version>
     <xml-apis-ext.version>1.3.04</xml-apis-ext.version>
     <javax.mail.version>1.6.1</javax.mail.version>
     <xmlunit.version>1.3</xmlunit.version>
     <plugin.sortpom.version>2.4.0</plugin.sortpom.version>
-    <ehcache.version>2.5.1</ehcache.version>
+    <ehcache.version>2.10.6</ehcache.version>
     <trilead-ssh2.version>build213</trilead-ssh2.version>
-    <xmlbeans.version>3.1.0</xmlbeans.version>
+    <xmlbeans.version>5.2.0</xmlbeans.version>
     <jettyson.version>1.2</jettyson.version>
     <ldapjdk.version>20000524</ldapjdk.version>
     <jcifs.version>1.3.3</jcifs.version>
-    <commons-xul.version>9.5.0.0-SNAPSHOT</commons-xul.version>
-    <sqlite.version>3.7.2</sqlite.version>
-    <big-data-plugin.version>9.5.0.0-SNAPSHOT</big-data-plugin.version>
+    <commons-xul.version>10.2.0.0-SNAPSHOT</commons-xul.version>
+    <big-data-plugin.version>10.2.0.0-SNAPSHOT</big-data-plugin.version>
     <avalon.version>4.1.5</avalon.version>
-    <metastore.version>9.5.0.0-SNAPSHOT</metastore.version>
+    <metastore.version>10.2.0.0-SNAPSHOT</metastore.version>
     <jxl.version>2.6.12</jxl.version>
     <stax.version>1.2.0</stax.version>
     <jug.version>2.0.0</jug.version>
     <rsyntaxtextarea.version>1.3.2</rsyntaxtextarea.version>
     <asm.version>3.2</asm.version>
-    <pdi.version>9.5.0.0-SNAPSHOT</pdi.version>
+    <pdi.version>10.2.0.0-SNAPSHOT</pdi.version>
     <edtftpj.version>2.1.0</edtftpj.version>
-    <commons-net.version>1.4.1</commons-net.version>
     <eclipse.commands.version>3.3.0-I20070605-0010</eclipse.commands.version>
-    <pdi-json-plugin.version>9.5.0.0-SNAPSHOT</pdi-json-plugin.version>
+    <pdi-json-plugin.version>10.2.0.0-SNAPSHOT</pdi-json-plugin.version>
     <license.header.file>license/templates/licenseHeader.txt</license.header.file>
     <hamcrest.version>1.3</hamcrest.version>
-    <junit.version>4.11</junit.version>
+    <junit.version>4.13.2</junit.version>
     <javadbf.version>20081125</javadbf.version>
     <scannotation.version>1.0.2</scannotation.version>
     <olap4j.version>1.2.0</olap4j.version>
@@ -129,13 +121,10 @@
     <equinox.version>3.3.0-v20070426</equinox.version>
     <jcommon.version>1.0.16</jcommon.version>
     <javax.ws.rs.version>1.1.1</javax.ws.rs.version>
-    <oss-licenses.version>9.5.0.0-SNAPSHOT</oss-licenses.version>
-    <openerp.version>1.1.0</openerp.version>
-    <pdi-dataservice-client-plugin.version>9.5.0.0-SNAPSHOT</pdi-dataservice-client-plugin.version>
-    <batik.version>1.9.1</batik.version>
-    <itext.version>2.1.7</itext.version>
-    <mondrian.version>9.5.0.0-SNAPSHOT</mondrian.version>
-    <pdi-xml-plugin.version>9.5.0.0-SNAPSHOT</pdi-xml-plugin.version>
+    <oss-licenses.version>10.2.0.0-SNAPSHOT</oss-licenses.version>
+    <pdi-dataservice-client-plugin.version>10.2.0.0-SNAPSHOT</pdi-dataservice-client-plugin.version>
+    <mondrian.version>10.2.0.0-SNAPSHOT</mondrian.version>
+    <pdi-xml-plugin.version>10.2.0.0-SNAPSHOT</pdi-xml-plugin.version>
     <javacc-maven-plugin.version>2.6</javacc-maven-plugin.version>
     <wsdl4j-qname.version>1.6.1</wsdl4j-qname.version>
     <w3c.version>1.3</w3c.version>
@@ -148,9 +137,7 @@
     <javassist.version>3.20.0-GA</javassist.version>
     <grizzly.version>1.9.45</grizzly.version>
     <saxon.version>9.1.0.8</saxon.version>
-    <guava.version>17.0</guava.version>
-    <commons-pool.version>1.5.7</commons-pool.version>
-    <jsch.version>0.1.54</jsch.version>
+    <commons-pool2.version>2.11.1</commons-pool2.version>
     <test.workers>1</test.workers>
     <checkstyle.source.directory>${basedir}/src/main/java</checkstyle.source.directory>
 
@@ -163,17 +150,20 @@
     <axis.version>1.5</axis.version>
     <jsendnsca.version>2.0.1</jsendnsca.version>
     <barbecue.version>1.5-beta1</barbecue.version>
-    <snappy-java.version>1.1.0</snappy-java.version>
     <license.inception.year>2002</license.inception.year>
-    <commons-lang3.version>3.0</commons-lang3.version>
+    <commons-lang3.version>3.12.0</commons-lang3.version>
     <pentaho.coding.standards.version>1.0.5</pentaho.coding.standards.version>
     <runITs>false</runITs>
     <cglib.version>2.2</cglib.version>
     <jt400.version>6.1</jt400.version>
     <test.performance>false</test.performance>
-    <pentaho-metaverse.version>9.5.0.0-SNAPSHOT</pentaho-metaverse.version>
-    <encryption-support.version>9.5.0.0-SNAPSHOT</encryption-support.version>
+    <pentaho-metaverse.version>10.2.0.0-SNAPSHOT</pentaho-metaverse.version>
+    <encryption-support.version>10.2.0.0-SNAPSHOT</encryption-support.version>
     <jakarta-annotation-api.version>1.3.5</jakarta-annotation-api.version>
+    <safeyaml.version>1.34.1</safeyaml.version>
+    <commons-compress.version>1.26.1</commons-compress.version>
+    <commons-io.version>2.16.1</commons-io.version>
+    <log4j.version>2.23.1</log4j.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -411,12 +401,6 @@
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
         <version>${guava.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>*</artifactId>
-            <groupId>*</groupId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.ini4j</groupId>
@@ -444,17 +428,6 @@
         <groupId>javadbf</groupId>
         <artifactId>javadbf</artifactId>
         <version>${javadbf.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>*</artifactId>
-            <groupId>*</groupId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>com.jcraft</groupId>
-        <artifactId>jsch</artifactId>
-        <version>${jsch.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -532,9 +505,9 @@
         <version>${saxon.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.yaml</groupId>
-        <artifactId>snakeyaml</artifactId>
-        <version>${snakeyaml.version}</version>
+        <groupId>org.hitachivantara</groupId>
+        <artifactId>safeyaml</artifactId>
+        <version>${safeyaml.version}</version>
       </dependency>
       <dependency>
         <groupId>org.xerial.snappy</groupId>
@@ -1109,7 +1082,7 @@
       <dependency>
         <groupId>org.xerial</groupId>
         <artifactId>sqlite-jdbc</artifactId>
-        <version>${sqlite.version}</version>
+        <version>${sqlite-jdbc.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -1240,18 +1213,6 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>org.pentaho</groupId>
-        <artifactId>pentaho-cassandra-plugin-package</artifactId>
-        <version>${pentaho-cassandra-plugin.version}</version>
-        <type>zip</type>
-        <exclusions>
-          <exclusion>
-            <artifactId>*</artifactId>
-            <groupId>*</groupId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
         <groupId>org.pentaho.di.plugins</groupId>
         <artifactId>pdi-xml-plugin</artifactId>
         <version>${pdi-xml-plugin.version}</version>
@@ -1332,14 +1293,8 @@
       </dependency>
       <dependency>
         <groupId>org.apache.poi</groupId>
-        <artifactId>poi-ooxml-schemas</artifactId>
+        <artifactId>poi-ooxml-full</artifactId>
         <version>${poi.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>*</artifactId>
-            <groupId>*</groupId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.apache.poi</groupId>
@@ -1471,9 +1426,9 @@
         <version>${asm.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.lowagie</groupId>
-        <artifactId>itext-rtf</artifactId>
-        <version>${itext.version}</version>
+        <groupId>com.github.librepdf</groupId>
+        <artifactId>openrtf</artifactId>
+        <version>${openrtf.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -1523,11 +1478,6 @@
             <groupId>*</groupId>
           </exclusion>
         </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>rhino</groupId>
-        <artifactId>js</artifactId>
-        <version>${rhino.version}</version>
       </dependency>
       <dependency>
         <groupId>xalan</groupId>
@@ -1603,11 +1553,6 @@
             <groupId>*</groupId>
           </exclusion>
         </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>commons-net</groupId>
-        <artifactId>commons-net</artifactId>
-        <version>${commons-net.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.commons</groupId>
@@ -1698,7 +1643,7 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>org.apache.axis2</groupId>
+        <groupId>org.pentaho.axis2</groupId>
         <artifactId>axis2-kernel</artifactId>
         <version>${axis.version}</version>
         <exclusions>
@@ -1766,31 +1711,6 @@
         <groupId>org.olap4j</groupId>
         <artifactId>olap4j</artifactId>
         <version>${olap4j.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.xmlrpc</groupId>
-        <artifactId>xmlrpc-client</artifactId>
-        <version>${xmlrpc.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>xml-apis</artifactId>
-            <groupId>xml-apis</groupId>
-          </exclusion>
-          <exclusion>
-            <artifactId>junit</artifactId>
-            <groupId>junit</groupId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>com.debortoliwines.openerp</groupId>
-        <artifactId>openerp-java-api</artifactId>
-        <version>${openerp.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>openerp</groupId>
-        <artifactId>openerp-java-report-helper</artifactId>
-        <version>${openerp.report.version}</version>
       </dependency>
       <dependency>
         <groupId>org.pentaho</groupId>
@@ -1963,9 +1883,9 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>com.lowagie</groupId>
-        <artifactId>itext</artifactId>
-        <version>${itext.version}</version>
+        <groupId>com.github.librepdf</groupId>
+        <artifactId>openpdf</artifactId>
+        <version>${openpdf.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -2343,8 +2263,8 @@
       </dependency>
       <dependency>
         <groupId>org.mockito</groupId>
-        <artifactId>mockito-all</artifactId>
-        <version>${mockito.version}</version>
+        <artifactId>mockito-core</artifactId>
+        <version>${mockito-core.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -2530,9 +2450,9 @@
         <version>${encryption-support.version}</version>
       </dependency>
       <dependency>
-        <groupId>commons-dbcp</groupId>
-        <artifactId>commons-dbcp</artifactId>
-        <version>${commons-dbcp.version}</version>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-dbcp2</artifactId>
+        <version>${commons-dbcp2.version}</version>
       </dependency>
       <dependency>
         <groupId>pentaho</groupId>
@@ -2547,16 +2467,12 @@
             <artifactId>servlet-api</artifactId>
             <groupId>javax.servlet</groupId>
           </exclusion>
-          <exclusion>
-            <artifactId>xml-apis</artifactId>
-            <groupId>xml-apis</groupId>
-          </exclusion>
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>commons-pool</groupId>
-        <artifactId>commons-pool</artifactId>
-        <version>${commons-pool.version}</version>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-pool2</artifactId>
+        <version>${commons-pool2.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.kafka</groupId>

@@ -6,10 +6,10 @@
   <parent>
     <groupId>org.pentaho.reporting</groupId>
     <artifactId>reporting-assemblies</artifactId>
-    <version>9.5.0.0-SNAPSHOT</version>
+    <version>10.2.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>prd-ce</artifactId>
-  <version>9.5.0.0-SNAPSHOT</version>
+  <version>10.2.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Pentaho Report Designer CE Assembly</name>
   <licenses>
@@ -20,8 +20,8 @@
     </license>
   </licenses>
   <properties>
-    <pentaho-mongodb-plugin.version>9.5.0.0-SNAPSHOT</pentaho-mongodb-plugin.version>
-    <pentaho-hadoop-shims.version>9.5.0.0-SNAPSHOT</pentaho-hadoop-shims.version>
+    <pentaho-mongodb-plugin.version>10.2.0.0-SNAPSHOT</pentaho-mongodb-plugin.version>
+    <pentaho-hadoop-shims.version>10.2.0.0-SNAPSHOT</pentaho-hadoop-shims.version>
     <assembly_appendId>false</assembly_appendId>
   </properties>
 
@@ -65,12 +65,6 @@
     <dependency>
       <groupId>org.pentaho.reporting.designer</groupId>
       <artifactId>datasource-editor-olap4j</artifactId>
-      <version>${project.version}</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.pentaho.reporting.designer</groupId>
-      <artifactId>datasource-editor-openerp</artifactId>
       <version>${project.version}</version>
       <scope>compile</scope>
     </dependency>
@@ -264,12 +258,6 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>org.pentaho</groupId>
-      <artifactId>pentaho-cassandra-plugin-package</artifactId>
-      <type>zip</type>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
       <groupId>org.pentaho.di.plugins</groupId>
       <artifactId>pdi-xml-plugin</artifactId>
       <type>zip</type>
@@ -443,7 +431,7 @@
                 <goal>unpack-dependencies</goal>
               </goals>
               <configuration>
-                <includeArtifactIds>mongodb-plugin,pentaho-cassandra-plugin,pdi-xml-plugin,kettle-json-plugin,pentaho-metastore-locator-plugin,kettle-repository-locator-plugin</includeArtifactIds>
+                <includeArtifactIds>mongodb-plugin,pdi-xml-plugin,kettle-json-plugin,pentaho-metastore-locator-plugin,kettle-repository-locator-plugin</includeArtifactIds>
                 <outputDirectory>${stage.dir.designer}/plugins</outputDirectory>
               </configuration>
             </execution>
