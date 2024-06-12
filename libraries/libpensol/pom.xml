@@ -5,10 +5,10 @@
   <parent>
     <groupId>org.pentaho.reporting.library</groupId>
     <artifactId>reporting-libraries</artifactId>
-    <version>8.3.0.0-SNAPSHOT</version>
+    <version>9.5.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>libpensol</artifactId>
-  <version>8.3.0.0-SNAPSHOT</version>
+  <version>9.5.0.0-SNAPSHOT</version>
   <name>LibPensol</name>
   <description>LibPensol is an access layer for accessing a remote Pentaho Solution Repository
     via an Apache-VFS filesystem. It handles all HTTP calls and the parsing of
@@ -42,6 +42,10 @@
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
       <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpcore</artifactId>
     </dependency>
     <dependency>
       <groupId>commons-logging</groupId>
@@ -201,6 +205,7 @@
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-servlet</artifactId>
+      <version>${gwt.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

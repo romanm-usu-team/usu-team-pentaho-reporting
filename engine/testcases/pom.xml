@@ -5,10 +5,10 @@
   <parent>
     <groupId>org.pentaho.reporting.engine</groupId>
     <artifactId>reporting-engine</artifactId>
-    <version>8.3.0.0-SNAPSHOT</version>
+    <version>9.5.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>classic-testcases</artifactId>
-  <version>8.3.0.0-SNAPSHOT</version>
+  <version>9.5.0.0-SNAPSHOT</version>
   <licenses>
     <license>
       <name>GNU Lesser General Public License, version 2.1</name>
@@ -128,6 +128,13 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>pentaho-kettle</groupId>
+      <artifactId>kettle-core</artifactId>
+      <version>${project.version}</version>
+      <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -5,11 +5,11 @@
   <parent>
     <groupId>org.pentaho</groupId>
     <artifactId>pentaho-ce-jar-parent-pom</artifactId>
-    <version>8.3.0.0-SNAPSHOT</version>
+    <version>9.5.0.0-SNAPSHOT</version>
   </parent>
   <groupId>org.pentaho.reporting</groupId>
   <artifactId>pentaho-reporting</artifactId>
-  <version>8.3.0.0-SNAPSHOT</version>
+  <version>9.5.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Pentaho Reporting</name>
   <licenses>
@@ -30,7 +30,7 @@
   </issueManagement>
   <properties>
     <bcel.version>5.1</bcel.version>
-    <pentaho-mql-editor.version>8.3.0.0-SNAPSHOT</pentaho-mql-editor.version>
+    <pentaho-mql-editor.version>9.5.0.0-SNAPSHOT</pentaho-mql-editor.version>
     <wstx.version>3.2.4</wstx.version>
     <monetdb.version>2.8</monetdb.version>
     <plugin.enforcer.version>1.4.1</plugin.enforcer.version>
@@ -40,25 +40,21 @@
     <groovy.version>2.4.8</groovy.version>
     <mockito.version>1.10.19</mockito.version>
     <powermock.version>1.6.3</powermock.version>
-    <commons-vfs2.version>2.2</commons-vfs2.version>
-    <pentaho-cassandra-plugin.version>8.3.0.0-SNAPSHOT</pentaho-cassandra-plugin.version>
-    <pentaho-osgi-bundles.version>8.3.0.0-SNAPSHOT</pentaho-osgi-bundles.version>
+    <pentaho-cassandra-plugin.version>9.5.0.0-SNAPSHOT</pentaho-cassandra-plugin.version>
+    <pentaho-osgi-bundles.version>9.5.0.0-SNAPSHOT</pentaho-osgi-bundles.version>
     <poi.version>4.1.1</poi.version>
-    <commons-codec.version>1.13</commons-codec.version>
     <commons-math3.version>3.6.1</commons-math3.version>
     <curvesapi.version>1.06</curvesapi.version>
     <commons-compress.version>1.20</commons-compress.version>
     <xmlrpc.version>3.1.3</xmlrpc.version>
     <commons-beanutils.version>1.9.3</commons-beanutils.version>
-    <bsh.version>1.3.0</bsh.version>
-    <pentaho.jndi.version>1.0.2</pentaho.jndi.version>
     <syslo4j.version>0.9.46</syslo4j.version>
     <jersey.version>1.19.1</jersey.version>
-    <commons-database.version>8.3.0.0-SNAPSHOT</commons-database.version>
+    <commons-database.version>9.5.0.0-SNAPSHOT</commons-database.version>
     <wsdl4j.version>1.6.2</wsdl4j.version>
     <infobright.version>3.4</infobright.version>
     <mstor.version>0.9.13</mstor.version>
-    <servlet3.version>3.0.1</servlet3.version>
+    <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
     <openerp.report.version>0.10.0</openerp.report.version>
     <plugin.checkstyle.version>2.17</plugin.checkstyle.version>
     <jaxrpc.version>1.1</jaxrpc.version>
@@ -73,94 +69,82 @@
     <snp4j.version>1.9.3d</snp4j.version>
     <barcode4j.version>2.0</barcode4j.version>
     <luciddb.version>0.9.4</luciddb.version>
-    <pdi-osgi-bridge.version>8.3.0.0-SNAPSHOT</pdi-osgi-bridge.version>
+    <pdi-osgi-bridge.version>9.5.0.0-SNAPSHOT</pdi-osgi-bridge.version>
     <antlr.version>3.5.2</antlr.version>
     <sqleonardo.version>2020.02</sqleonardo.version>
     <commons-validator.version>1.3.1</commons-validator.version>
-    <pentaho-metadata.version>8.3.0.0-SNAPSHOT</pentaho-metadata.version>
+    <pentaho-metadata.version>9.5.0.0-SNAPSHOT</pentaho-metadata.version>
     <pentaho.pentaho-versionchecker.version>${project.version}</pentaho.pentaho-versionchecker.version>
     <jsonpath.vesrion>1.0</jsonpath.vesrion>
     <ognl.version>2.6.9</ognl.version>
     <contiperf.version>2.2.0</contiperf.version>
     <feed4j.version>1.0</feed4j.version>
-    <launcher.version>8.3.0.0-SNAPSHOT</launcher.version>
+    <launcher.version>9.5.0.0-SNAPSHOT</launcher.version>
     <swt-linux.version>4.3.2</swt-linux.version>
     <jackcess.version>1.2.6</jackcess.version>
     <swingx.version>1.6.1</swingx.version>
-    <commons-logging.version>1.2</commons-logging.version>
-    <pentaho-karaf.version>8.3.0.0-SNAPSHOT</pentaho-karaf.version>
+    <pentaho-karaf.version>9.5.0.0-SNAPSHOT</pentaho-karaf.version>
     <commons-configuration.version>1.9</commons-configuration.version>
     <commons-collections.version>3.2.2</commons-collections.version>
-    <joda.version>1.6</joda.version>
+    <joda.version>2.10.2</joda.version>
     <xmlgraphics-commons.version>2.2</xmlgraphics-commons.version>
-    <commons-io.version>2.11.0</commons-io.version>
     <sassy.version>0.5</sassy.version>
-    <platform.version>8.3.0.0-SNAPSHOT</platform.version>
-    <browserlauncher2.version>1.3</browserlauncher2.version>
+    <platform.version>9.5.0.0-SNAPSHOT</platform.version>
     <rhino.version>1.7R3</rhino.version>
     <bsf.version>2.4.0</bsf.version>
-    <pentaho-connections.version>8.3.0.0-SNAPSHOT</pentaho-connections.version>
-    <georss-rome.version>0.9.8</georss-rome.version>
-    <bouncycastl.version>138</bouncycastl.version>
+    <pentaho-connections.version>9.5.0.0-SNAPSHOT</pentaho-connections.version>
     <commons-lang.version>2.6</commons-lang.version>
     <xml-apis-ext.version>1.3.04</xml-apis-ext.version>
     <javax.mail.version>1.6.1</javax.mail.version>
     <xmlunit.version>1.3</xmlunit.version>
     <plugin.sortpom.version>2.4.0</plugin.sortpom.version>
-    <jetty.version>8.1.15.v20140411</jetty.version>
     <ehcache.version>2.5.1</ehcache.version>
     <trilead-ssh2.version>build213</trilead-ssh2.version>
     <xmlbeans.version>3.1.0</xmlbeans.version>
     <jettyson.version>1.2</jettyson.version>
     <ldapjdk.version>20000524</ldapjdk.version>
     <jcifs.version>1.3.3</jcifs.version>
-    <commons-xul.version>8.3.0.0-SNAPSHOT</commons-xul.version>
+    <commons-xul.version>9.5.0.0-SNAPSHOT</commons-xul.version>
     <sqlite.version>3.7.2</sqlite.version>
-    <big-data-plugin.version>8.3.0.0-SNAPSHOT</big-data-plugin.version>
+    <big-data-plugin.version>9.5.0.0-SNAPSHOT</big-data-plugin.version>
     <avalon.version>4.1.5</avalon.version>
-    <metastore.version>8.3.0.0-SNAPSHOT</metastore.version>
+    <metastore.version>9.5.0.0-SNAPSHOT</metastore.version>
     <jxl.version>2.6.12</jxl.version>
     <stax.version>1.2.0</stax.version>
     <jug.version>2.0.0</jug.version>
     <rsyntaxtextarea.version>1.3.2</rsyntaxtextarea.version>
     <asm.version>3.2</asm.version>
-    <pdi.version>8.3.0.0-SNAPSHOT</pdi.version>
+    <pdi.version>9.5.0.0-SNAPSHOT</pdi.version>
     <edtftpj.version>2.1.0</edtftpj.version>
     <commons-net.version>1.4.1</commons-net.version>
     <eclipse.commands.version>3.3.0-I20070605-0010</eclipse.commands.version>
-    <pdi-json-plugin.version>8.3.0.0-SNAPSHOT</pdi-json-plugin.version>
+    <pdi-json-plugin.version>9.5.0.0-SNAPSHOT</pdi-json-plugin.version>
     <license.header.file>license/templates/licenseHeader.txt</license.header.file>
     <hamcrest.version>1.3</hamcrest.version>
     <junit.version>4.11</junit.version>
-    <ini4j.version>0.5.1</ini4j.version>
     <javadbf.version>20081125</javadbf.version>
     <scannotation.version>1.0.2</scannotation.version>
     <olap4j.version>1.2.0</olap4j.version>
-    <httpclient.version>4.5.3</httpclient.version>
     <ehcache-core.version>2.5.1</ehcache-core.version>
     <equinox.version>3.3.0-v20070426</equinox.version>
     <jcommon.version>1.0.16</jcommon.version>
     <javax.ws.rs.version>1.1.1</javax.ws.rs.version>
-    <oss-licenses.version>8.3.0.0-SNAPSHOT</oss-licenses.version>
+    <oss-licenses.version>9.5.0.0-SNAPSHOT</oss-licenses.version>
     <openerp.version>1.1.0</openerp.version>
-    <pdi-dataservice-client-plugin.version>8.3.0.0-SNAPSHOT</pdi-dataservice-client-plugin.version>
+    <pdi-dataservice-client-plugin.version>9.5.0.0-SNAPSHOT</pdi-dataservice-client-plugin.version>
     <batik.version>1.9.1</batik.version>
     <itext.version>2.1.7</itext.version>
-    <mondrian.version>8.3.0.0-SNAPSHOT</mondrian.version>
-    <pdi-xml-plugin.version>8.3.0.0-SNAPSHOT</pdi-xml-plugin.version>
+    <mondrian.version>9.5.0.0-SNAPSHOT</mondrian.version>
+    <pdi-xml-plugin.version>9.5.0.0-SNAPSHOT</pdi-xml-plugin.version>
     <javacc-maven-plugin.version>2.6</javacc-maven-plugin.version>
-    <yaml.version>1.7</yaml.version>
     <wsdl4j-qname.version>1.6.1</wsdl4j-qname.version>
     <w3c.version>1.3</w3c.version>
-    <rome.version>1.0</rome.version>
     <hsql.version>2.3.2</hsql.version>
-    <nekohtml.vesrion>1.9.15</nekohtml.vesrion>
     <jfreechart.version>1.0.13</jfreechart.version>
     <commons-collections4.version>4.4</commons-collections4.version>
     <servlet2.version>2.5</servlet2.version>
     <odfdom-java.version>0.8.6</odfdom-java.version>
     <commons-math.version>1.1</commons-math.version>
-    <gwt.version>2.5.1</gwt.version>
     <javassist.version>3.20.0-GA</javassist.version>
     <grizzly.version>1.9.45</grizzly.version>
     <saxon.version>9.1.0.8</saxon.version>
@@ -169,7 +153,7 @@
     <jsch.version>0.1.54</jsch.version>
     <test.workers>1</test.workers>
     <checkstyle.source.directory>${basedir}/src/main/java</checkstyle.source.directory>
-    <h2.version>1.2.131</h2.version>
+
     <commons-cli.version>1.2</commons-cli.version>
     <license-maven-plugin.version>3.0</license-maven-plugin.version>
     <eigenbase.version>1.3.5</eigenbase.version>
@@ -181,17 +165,15 @@
     <barbecue.version>1.5-beta1</barbecue.version>
     <snappy-java.version>1.1.0</snappy-java.version>
     <license.inception.year>2002</license.inception.year>
-    <maven.compiler.target>1.8</maven.compiler.target>
     <commons-lang3.version>3.0</commons-lang3.version>
     <pentaho.coding.standards.version>1.0.5</pentaho.coding.standards.version>
     <runITs>false</runITs>
     <cglib.version>2.2</cglib.version>
     <jt400.version>6.1</jt400.version>
-    <maven.compiler.source>1.8</maven.compiler.source>
     <test.performance>false</test.performance>
-    <kafka-clients.version>0.10.2.1</kafka-clients.version>
-    <paho.version>1.2.0</paho.version>
-    <pentaho-metaverse.version>8.3.0.0-SNAPSHOT</pentaho-metaverse.version>
+    <pentaho-metaverse.version>9.5.0.0-SNAPSHOT</pentaho-metaverse.version>
+    <encryption-support.version>9.5.0.0-SNAPSHOT</encryption-support.version>
+    <jakarta-annotation-api.version>1.3.5</jakarta-annotation-api.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -415,11 +397,6 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>org.geonames</groupId>
-        <artifactId>georss-rome</artifactId>
-        <version>${georss-rome.version}</version>
-      </dependency>
-      <dependency>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-c3p0</artifactId>
         <version>${hibernate.version}</version>
@@ -496,21 +473,6 @@
         <version>${jersey.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-continuation</artifactId>
-        <version>${jetty.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-http</artifactId>
-        <version>${jetty.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-util</artifactId>
-        <version>${jetty.version}</version>
-      </dependency>
-      <dependency>
         <groupId>com.googlecode.jsendnsca</groupId>
         <artifactId>jsendnsca</artifactId>
         <version>${jsendnsca.version}</version>
@@ -538,25 +500,9 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>net.sourceforge.nekohtml</groupId>
-        <artifactId>nekohtml</artifactId>
-        <version>${nekohtml.vesrion}</version>
-      </dependency>
-      <dependency>
         <groupId>org.odftoolkit</groupId>
         <artifactId>odfdom-java</artifactId>
         <version>${odfdom-java.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>*</artifactId>
-            <groupId>*</groupId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>rome</groupId>
-        <artifactId>rome</artifactId>
-        <version>${rome.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -588,7 +534,7 @@
       <dependency>
         <groupId>org.yaml</groupId>
         <artifactId>snakeyaml</artifactId>
-        <version>${yaml.version}</version>
+        <version>${snakeyaml.version}</version>
       </dependency>
       <dependency>
         <groupId>org.xerial.snappy</groupId>
@@ -715,6 +661,18 @@
           </exclusion>
           <exclusion>
             <artifactId>*</artifactId>
+            <groupId>commons-codec</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>*</artifactId>
+            <groupId>org.apache.commons</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>*</artifactId>
+            <groupId>com.github.virtuald</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>*</artifactId>
             <groupId>org.eclipse</groupId>
           </exclusion>
           <exclusion>
@@ -736,10 +694,6 @@
           <exclusion>
             <artifactId>*</artifactId>
             <groupId>junit</groupId>
-          </exclusion>
-          <exclusion>
-            <artifactId>*</artifactId>
-            <groupId>simple-jndi</groupId>
           </exclusion>
           <exclusion>
             <artifactId>*</artifactId>
@@ -942,7 +896,7 @@
       <dependency>
         <groupId>pentaho</groupId>
         <artifactId>simple-jndi</artifactId>
-        <version>${pentaho.jndi.version}</version>
+        <version>${simple-jndi.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -987,11 +941,10 @@
         <version>${pentaho-osgi-bundles.version}</version>
       </dependency>
       <dependency>
-        <groupId>pentaho</groupId>
-        <artifactId>pentaho-karaf-assembly</artifactId>
+        <groupId>org.hitachivantara.karaf.assemblies</groupId>
+        <artifactId>prd</artifactId>
         <version>${pentaho-karaf.version}</version>
         <type>zip</type>
-        <classifier>prd</classifier>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -1488,7 +1441,7 @@
       <dependency>
         <groupId>org.apache-extras.beanshell</groupId>
         <artifactId>bsh</artifactId>
-        <version>${bsh.version}</version>
+        <version>${beanshell.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.groovy</groupId>
@@ -1529,26 +1482,9 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>bouncycastle</groupId>
-        <artifactId>bcprov-jdk14</artifactId>
-        <version>${bouncycastl.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>*</artifactId>
-            <groupId>*</groupId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>bouncycastle</groupId>
-        <artifactId>bcmail-jdk14</artifactId>
-        <version>${bouncycastl.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>*</artifactId>
-            <groupId>*</groupId>
-          </exclusion>
-        </exclusions>
+        <groupId>org.bouncycastle</groupId>
+        <artifactId>bcmail-jdk15to18</artifactId>
+        <version>${bcprov-jdk15to18.version}</version>
       </dependency>
       <dependency>
         <groupId>barbecue</groupId>
@@ -1875,15 +1811,11 @@
           </exclusion>
           <exclusion>
             <artifactId>*</artifactId>
-            <groupId>simple-jndi</groupId>
-          </exclusion>
-          <exclusion>
-            <artifactId>*</artifactId>
             <groupId>commons-logging</groupId>
           </exclusion>
           <exclusion>
             <artifactId>activation</artifactId>
-            <groupId>javax.activation</groupId>
+            <groupId>jakarta.activation</groupId>
           </exclusion>
           <exclusion>
             <artifactId>xml-apis</artifactId>
@@ -2240,11 +2172,6 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>commons-logging</groupId>
-        <artifactId>commons-logging</artifactId>
-        <version>${commons-logging.version}</version>
-      </dependency>
-      <dependency>
         <groupId>pentaho</groupId>
         <artifactId>pentaho-platform-repository</artifactId>
         <version>${platform.version}</version>
@@ -2296,6 +2223,17 @@
           <exclusion>
             <artifactId>*</artifactId>
             <groupId>*</groupId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>jakarta.annotation</groupId>
+        <artifactId>jakarta.annotation-api</artifactId>
+        <version>${jakarta-annotation-api.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>*</groupId>
+            <artifactId>*</artifactId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -2559,7 +2497,7 @@
       <dependency>
         <groupId>javax.servlet</groupId>
         <artifactId>javax.servlet-api</artifactId>
-        <version>${servlet3.version}</version>
+        <version>${javax.servlet-api.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>*</artifactId>
@@ -2570,7 +2508,6 @@
       <dependency>
         <groupId>com.google.gwt</groupId>
         <artifactId>gwt-servlet</artifactId>
-        <version>${gwt.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
@@ -2583,14 +2520,14 @@
         <version>${ehcache-core.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.apache.httpcomponents</groupId>
-        <artifactId>httpclient</artifactId>
-        <version>${httpclient.version}</version>
-      </dependency>
-      <dependency>
         <groupId>pentaho-kettle</groupId>
         <artifactId>kettle-core</artifactId>
         <version>${pdi.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.pentaho</groupId>
+        <artifactId>pentaho-encryption-support</artifactId>
+        <version>${encryption-support.version}</version>
       </dependency>
       <dependency>
         <groupId>commons-dbcp</groupId>
@@ -2627,14 +2564,16 @@
         <version>${kafka-clients.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.eclipse.paho</groupId>
-        <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
-        <version>${paho.version}</version>
-      </dependency>
-      <dependency>
         <groupId>pentaho</groupId>
         <artifactId>pentaho-metaverse-api</artifactId>
         <version>${pentaho-metaverse.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>pentaho-kettle</groupId>
+        <artifactId>kettle-core</artifactId>
+        <version>${pdi.version}</version>
+        <classifier>tests</classifier>
+        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -2651,6 +2590,7 @@
             <org.pentaho.reporting.engine.classic.test.ExecuteLongRunningTest>${test.long}</org.pentaho.reporting.engine.classic.test.ExecuteLongRunningTest>
             <org.pentaho.reporting.engine.classic.test.ExecutePerformanceTest>${test.performance}</org.pentaho.reporting.engine.classic.test.ExecutePerformanceTest>
             <org.pentaho.reporting.engine.classic.core.testsupport.gold.MaxWorkerThreads>${test.workers}</org.pentaho.reporting.engine.classic.core.testsupport.gold.MaxWorkerThreads>
+            <java.locale.providers>COMPAT,SPI</java.locale.providers>
           </systemPropertyVariables>
         </configuration>
       </plugin>
@@ -2762,53 +2702,94 @@
         <module>assemblies</module>
       </modules>
     </profile>
+
+    <profile>
+      <id>osgi</id>
+
+      <activation>
+        <property>
+          <name>osgi</name>
+        </property>
+      </activation>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-clean-plugin</artifactId>
+            <executions>
+              <execution>
+                <!-- override clean and don't delete the zips in target, this helps hadoop-addon and makes the pipeline cleaner
+                     if you really need a full cleaning run clean without activating this profile -->
+                <id>default-clean</id>
+                <configuration>
+                  <excludeDefaultDirectories>true</excludeDefaultDirectories>
+                  <filesets>
+                    <fileset>
+                      <directory>${project.build.directory}</directory>
+                      <followSymlinks>false</followSymlinks>
+                      <useDefaultExcludes>true</useDefaultExcludes>
+                      <excludes>
+                        <exclude>*.zip</exclude>
+                      </excludes>
+                    </fileset>
+                  </filesets>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+
+    </profile>
+
   </profiles>
 
 
   <repositories>
-  <!--
-    <repository>
-      <id>pentaho-public</id>
-      <name>Pentaho Public</name>
-      <url>https://repo.orl.eng.hitachivantara.com/artifactory/pnt-mvn/</url>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>daily</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>interval:15</updatePolicy>
-      </snapshots>
-    </repository>
-	-->
-	<repository>
-      <id>vma-public</id>
-      <name>VMA Public</name>
-      <url>http://ci.vma.usucz.usu.grp:81/nexus/content/repositories/prd_81_build_libs/</url>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>daily</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>interval:15</updatePolicy>
-      </snapshots>
-    </repository>
-  </repositories>
+      <!--
+          <repository>
+            <id>pentaho-public</id>
+            <name>Pentaho Public</name>
+            <url>https://repo.orl.eng.hitachivantara.com/artifactory/pnt-mvn/</url>
+            <releases>
+              <enabled>true</enabled>
+              <updatePolicy>daily</updatePolicy>
+            </releases>
+            <snapshots>
+              <enabled>true</enabled>
+              <updatePolicy>interval:15</updatePolicy>
+            </snapshots>
+          </repository>
+      -->
+          <repository>
+            <id>vma-public</id>
+            <name>VMA Public</name>
+            <url>http://ci.vma.usucz.usu.grp:81/nexus/content/repositories/prd_81_build_libs/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>interval:15</updatePolicy>
+            </snapshots>
+           </repository>
+        </repositories>
 
-  <pluginRepositories>
-    <pluginRepository>
-      <id>pentaho-public-plugins</id>
-      <name>Pentaho Public Plugins</name>
-      <url>https://repo.orl.eng.hitachivantara.com/artifactory/pnt-mvn/</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-    </pluginRepository>
-  </pluginRepositories>
+        <pluginRepositories>
+          <pluginRepository>
+            <id>pentaho-public-plugins</id>
+            <name>Pentaho Public Plugins</name>
+            <url>https://repo.orl.eng.hitachivantara.com/artifactory/pnt-mvn/</url>
+            <snapshots>
+              <enabled>false</enabled>
+            </snapshots>
+            <releases>
+              <updatePolicy>never</updatePolicy>
+            </releases>
+          </pluginRepository>
+        </pluginRepositories>
 
 
-</project>
+      </project>

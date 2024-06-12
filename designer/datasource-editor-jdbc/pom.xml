@@ -5,10 +5,10 @@
   <parent>
     <groupId>org.pentaho.reporting.designer</groupId>
     <artifactId>reporting-designer</artifactId>
-    <version>8.3.0.0-SNAPSHOT</version>
+    <version>9.5.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>datasource-editor-jdbc</artifactId>
-  <version>8.3.0.0-SNAPSHOT</version>
+  <version>9.5.0.0-SNAPSHOT</version>
   <licenses>
     <license>
       <name>GNU Lesser General Public License, version 2.1</name>
@@ -87,10 +87,6 @@
       <artifactId>ftp4che</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.geonames</groupId>
-      <artifactId>georss-rome</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-c3p0</artifactId>
     </dependency>
@@ -132,18 +128,6 @@
       <artifactId>jersey-bundle</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-continuation</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-http</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-util</artifactId>
-    </dependency>
-    <dependency>
       <groupId>com.googlecode.jsendnsca</groupId>
       <artifactId>jsendnsca</artifactId>
     </dependency>
@@ -156,16 +140,8 @@
       <artifactId>mstor</artifactId>
     </dependency>
     <dependency>
-      <groupId>net.sourceforge.nekohtml</groupId>
-      <artifactId>nekohtml</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.odftoolkit</groupId>
       <artifactId>odfdom-java</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>rome</groupId>
-      <artifactId>rome</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eobjects.sassyreader</groupId>
@@ -240,12 +216,15 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-vfs2</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>pentaho-kettle</groupId>
+      <artifactId>kettle-core</artifactId>
+      <version>${project.version}</version>
+      <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
   </dependencies>

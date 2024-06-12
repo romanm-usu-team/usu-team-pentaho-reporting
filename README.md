@@ -5,20 +5,31 @@ Fork of Open-source Pentaho reporting ( http://www.pentaho.com/products/reportin
 
 #### Pre-requisites for building the project:
 * Maven, version 3+
-* Java JDK 1.8
+* Java JDK 11
 * This [settings.xml](https://github.com/pentaho/maven-parent-poms/blob/master/maven-support-files/settings.xml) in your <user-home>/.m2 directory
 
 #### Building it
 
 __Build for nightly/release__
 
-All required profiles are activated by the presence of a property named "release".
+All required profiles for the "with-osgi" or standard build are activated by the presence of a property named "release".
 
 ```
 $ mvn clean install -Drelease
 ```
 
-This will build, unit test, and package the whole project (all of the sub-modules). The artifact will be generated in: ```assemblies/winlinux/target```
+This will build, unit test, and package the whole project (all of the sub-modules). The artifact will be generated in: ```assemblies/prd-ce/target```
+
+__Build witn no-osgi__
+
+All required profiles for the smaller "no-osgi" build are activated by the presence of two properties named "no-osgi" and "release".
+
+```
+$ mvn clean install -Dno-osgi -Drelease
+```
+
+This will build, unit test, and package the whole project (all of the sub-modules). The artifact will be generated in: ```assemblies/prd-ce/target```
+
 
 __Build for CI/dev__
 
@@ -125,8 +136,8 @@ process reports. Reports with more than 400 pages or about 50.000 rows of data
 may require additional memory and/or adjustments to the global configuration
 parameters of the reporting engine.
 
-The Pentaho Reporting Engine requires Java 1.8 or higher. The Pentaho Report
-Designer and Pentaho Report Design Wizard also need at least Java 1.8 or higher.
+The Pentaho Reporting Engine requires Java 11 or higher. The Pentaho Report
+Designer and Pentaho Report Design Wizard also need at least Java 11 or higher.
 
 ##### Warning:
   

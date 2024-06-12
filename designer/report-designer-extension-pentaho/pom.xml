@@ -5,10 +5,10 @@
   <parent>
     <groupId>org.pentaho.reporting.designer</groupId>
     <artifactId>reporting-designer</artifactId>
-    <version>8.3.0.0-SNAPSHOT</version>
+    <version>9.5.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>ext-pentaho</artifactId>
-  <version>8.3.0.0-SNAPSHOT</version>
+  <version>9.5.0.0-SNAPSHOT</version>
   <licenses>
     <license>
       <name>GNU Lesser General Public License, version 2.1</name>
@@ -16,6 +16,9 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+  <properties>
+    <jaxb-runtime.version>2.3.3</jaxb-runtime.version>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>org.pentaho.reporting.designer</groupId>
@@ -38,6 +41,19 @@
       <groupId>com.jcraft</groupId>
       <artifactId>jsch</artifactId>
     </dependency>
+
+    <!-- Endorsed Standards Excluded from Java 11+ -->
+    <dependency>
+      <groupId>jakarta.xml.bind</groupId>
+      <artifactId>jakarta.xml.bind-api</artifactId>
+      <version>${jakarta.xml.bind-api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jaxb</groupId>
+      <artifactId>jaxb-runtime</artifactId>
+      <version>${jaxb-runtime.version}</version>
+    </dependency>
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -73,6 +89,14 @@
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest-core</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpcore</artifactId>
     </dependency>
   </dependencies>
 </project>

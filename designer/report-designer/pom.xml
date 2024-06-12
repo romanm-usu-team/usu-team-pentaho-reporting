@@ -5,10 +5,10 @@
   <parent>
     <groupId>org.pentaho.reporting.designer</groupId>
     <artifactId>reporting-designer</artifactId>
-    <version>8.3.0.0-SNAPSHOT</version>
+    <version>9.5.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>report-designer</artifactId>
-  <version>8.3.0.0-SNAPSHOT</version>
+  <version>9.5.0.0-SNAPSHOT</version>
   <licenses>
     <license>
       <name>GNU Lesser General Public License, version 2.1</name>
@@ -57,10 +57,6 @@
     <dependency>
       <groupId>org.pentaho</groupId>
       <artifactId>commons-xul-swing</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>browserlauncher2</groupId>
-      <artifactId>browserlauncher2</artifactId>
     </dependency>
     <dependency>
       <groupId>org.fife.ui</groupId>
@@ -125,7 +121,6 @@
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
-      <version>4.5.3</version>
     </dependency>
   </dependencies>
 </project>

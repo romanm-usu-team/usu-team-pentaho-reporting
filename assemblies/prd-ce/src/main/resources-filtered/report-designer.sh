@@ -18,18 +18,24 @@
 # -----------------------------------------------------------------------------------------------
 
 #
-#  WARNING: Hitachi Vantara Report Designer needs JDK 1.7 or newer to run.
+#  WARNING: Hitachi Vantara Report Designer needs JDK 11 or newer to run.
 #
 
-DIR_REL=`dirname "$0"`
-cd $DIR_REL
-DIR=`pwd`
+DIR=$( cd "$( dirname "$0" )" && pwd )
 
 . "$DIR/set-pentaho-env.sh"
 setPentahoEnv
 
-if [[ "$OSTYPE" == "darwin"* ]]; then 
-	"$_PENTAHO_JAVA" -Xms1024m -Xmx2048m -Dapple.laf.useScreenMenuBar=true -jar "$DIR/launcher.jar" $@
+JAVA_LOCALE_COMPAT=
+JAVA_ADD_OPENS=
+if $($_PENTAHO_JAVA -version 2>&1 | grep "version \"11\..*" > /dev/null )
+then
+  JAVA_LOCALE_COMPAT="-Djava.locale.providers=COMPAT,SPI"
+  JAVA_ADD_OPENS="--add-opens java.base/java.net=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/sun.net.www.protocol.jar=ALL-UNNAMED  --add-opens java.desktop/com.apple.eawt=ALL-UNNAMED"
+fi
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+	"$_PENTAHO_JAVA" $JAVA_ADD_OPENS -Xms1024m -Xmx2048m -Dapple.laf.useScreenMenuBar=true $JAVA_LOCALE_COMPAT -jar "$DIR/launcher.jar" $@
 else
-	"$_PENTAHO_JAVA" -Xms1024m -Xmx2048m -jar "$DIR/launcher.jar" $@
+	"$_PENTAHO_JAVA" $JAVA_ADD_OPENS -Xms1024m -Xmx2048m $JAVA_LOCALE_COMPAT -jar "$DIR/launcher.jar" $@
 fi
