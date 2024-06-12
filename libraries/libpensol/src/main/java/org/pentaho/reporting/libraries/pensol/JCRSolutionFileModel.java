@@ -12,7 +12,7 @@
 * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 * See the GNU Lesser General Public License for more details.
 *
-* Copyright (c) 2002-2017 Hitachi Vantara..  All rights reserved.
+* Copyright (c) 2002-2020 Hitachi Vantara.  All rights reserved.
 */
 
 package org.pentaho.reporting.libraries.pensol;
@@ -28,8 +28,9 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.vfs2.FileName;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.http.HttpStatus;
-import org.pentaho.platform.repository2.unified.webservices.RepositoryFileDto;
-import org.pentaho.platform.repository2.unified.webservices.RepositoryFileTreeDto;
+import org.pentaho.platform.api.repository2.unified.webservices.RepositoryFileDto;
+import org.pentaho.platform.api.repository2.unified.webservices.RepositoryFileTreeDto;
+import org.pentaho.platform.repository2.unified.webservices.RepositoryFileAdapter;
 import org.pentaho.platform.util.RepositoryPathEncoder;
 import org.pentaho.reporting.libraries.base.util.FastStack;
 import org.pentaho.reporting.libraries.base.util.URLEncoder;
@@ -39,6 +40,9 @@ import javax.ws.rs.core.Response;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 import java.net.URLDecoder;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -104,11 +108,12 @@ public class JCRSolutionFileModel implements SolutionFileModel {
     this.url = url;
     descriptionEntries = new HashMap<FileName, String>();
 
+    CookieHandler.setDefault( new CookieManager( null, CookiePolicy.ACCEPT_ALL ) );
+
     final ClientConfig config = new DefaultClientConfig();
     config.getProperties().put( ClientConfig.PROPERTY_FOLLOW_REDIRECTS, true );
     config.getProperties().put( ClientConfig.PROPERTY_READ_TIMEOUT, timeout );
     this.client = Client.create( config );
-    this.client.addFilter( new CookiesHandlerFilter() ); // must be inserted before HTTPBasicAuthFilter
     this.client.addFilter( new HTTPBasicAuthFilter( username, password ) );
     this.majorVersion = "999";
     this.minorVersion = "999";
@@ -274,7 +279,15 @@ public class JCRSolutionFileModel implements SolutionFileModel {
     if ( fileDto == null ) {
       throw new FileSystemException( BI_SERVER_NULL_OBJECT );
     }
-    final Date lastModifiedDate = fileDto.getLastModifiedDate();
+
+    final String lastModifiedDateRaw = fileDto.getLastModifiedDate();
+    if ( lastModifiedDateRaw.isEmpty() ) {
+      // Folders have an empty lastModifiedDate field
+      // Returning -1 here means that lastModifiedDate wasn't found
+      return -1;
+    }
+
+    final Date lastModifiedDate = RepositoryFileAdapter.unmarshalDate( lastModifiedDateRaw );
     if ( lastModifiedDate == null ) {
       logger.error( "Repository returned <null> for last-modified-date on file: " + file );
       return -1;

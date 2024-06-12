@@ -5,10 +5,10 @@
   <parent>
     <groupId>org.pentaho.reporting.engine</groupId>
     <artifactId>reporting-engine</artifactId>
-    <version>8.1.0.4-542</version>
+    <version>8.3.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>classic-extensions-kettle</artifactId>
-  <version>8.1.0.4-542</version>
+  <version>8.3.0.0-SNAPSHOT</version>
   <licenses>
     <license>
       <name>GNU Lesser General Public License, version 2.1</name>
@@ -35,10 +35,6 @@
       <artifactId>kettle-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.pentaho.di.plugins</groupId>
-      <artifactId>kettle-log4j-core</artifactId>
-    </dependency>
-    <dependency>
       <groupId>pentaho</groupId>
       <artifactId>metastore</artifactId>
     </dependency>
@@ -55,11 +51,6 @@
     <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -113,16 +104,6 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>org.dom4j</groupId>
-      <artifactId>dom4j</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-core</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
       <groupId>jug-lgpl</groupId>
       <artifactId>jug-lgpl</artifactId>
       <scope>compile</scope>
@@ -168,11 +149,6 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>janino</groupId>
-      <artifactId>janino</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
@@ -182,11 +158,6 @@
       <artifactId>classic-core</artifactId>
       <version>${project.version}</version>
       <type>test-jar</type>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

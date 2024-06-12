@@ -12,12 +12,15 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
- * Copyright (c) 2002-2017 Pentaho Corporation..  All rights reserved.
+ * Copyright (c) 2002-2018 Hitachi Vantara..  All rights reserved.
  */
 
 package org.pentaho.reporting.engine.classic.core.layout.richtext;
 
 import java.awt.*;
+import java.io.IOException;
+import java.io.StreamTokenizer;
+import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
@@ -43,8 +46,19 @@ import org.pentaho.reporting.engine.classic.core.Element;
 import org.pentaho.reporting.engine.classic.core.ReportElement;
 import org.pentaho.reporting.engine.classic.core.filter.types.ContentType;
 import org.pentaho.reporting.engine.classic.core.filter.types.LabelType;
+import org.pentaho.reporting.engine.classic.core.layout.richtext.html.RichTextHtmlStyleBuilderFactory;
+import org.pentaho.reporting.engine.classic.core.layout.style.SimpleStyleSheet;
 import org.pentaho.reporting.engine.classic.core.metadata.ElementType;
-import org.pentaho.reporting.engine.classic.core.style.*;
+import org.pentaho.reporting.engine.classic.core.style.BandStyleKeys;
+import org.pentaho.reporting.engine.classic.core.style.BorderStyle;
+import org.pentaho.reporting.engine.classic.core.style.ElementStyleKeys;
+import org.pentaho.reporting.engine.classic.core.style.StyleKey;
+import org.pentaho.reporting.engine.classic.core.style.TextStyleKeys;
+import org.pentaho.reporting.engine.classic.core.style.TextWrap;
+import org.pentaho.reporting.engine.classic.core.style.VerticalTextAlign;
+import org.pentaho.reporting.engine.classic.core.style.WhitespaceCollapse;
+import org.pentaho.reporting.libraries.base.util.StringUtils;
+import org.pentaho.reporting.libraries.xmlns.parser.ParseException;
 
 /**
  * This handles HTML 3.2 with some CSS support. It uses the Swing HTML parser to process the document.
@@ -102,9 +116,17 @@ public class HtmlRichTextConverter implements RichTextConverter {
   public Object convert( final ReportElement source, final Object value ) {
     try {
       final Document doc = RichTextConverterUtilities.parseDocument( editorKit, value );
-      if ( doc == null ) {
+      if ( !( doc instanceof HTMLDocument ) ) {
         return value;
       }
+
+      HTMLDocument docHTML = (HTMLDocument) doc;
+
+      SimpleStyleSheet simpleStyle = source.getComputedStyle();
+      RichTextHtmlStyleBuilderFactory richTextBuilder = new RichTextHtmlStyleBuilderFactory();
+      String codeCss = richTextBuilder.produceTextStyle( null, simpleStyle ).toString();
+
+      docHTML.getStyleSheet().addRule( "body { " + codeCss + ";}" );
 
       final Element element = process( doc.getDefaultRootElement(), null,null, null);
       return RichTextConverterUtilities.convertToBand( StyleKey.getDefinedStyleKeysList(), source, element );
@@ -558,6 +580,126 @@ public class HtmlRichTextConverter implements RichTextConverter {
     return false;
   }
 
+  private void configureStyle( final javax.swing.text.Element textElement, final Element result ) {
+    final HTMLDocument htmlDocument = (HTMLDocument) textElement.getDocument();
+    final StyleSheet sheet = htmlDocument.getStyleSheet();
+    final AttributeSet attr = computeStyle( textElement, sheet );
+
+    if ( attr instanceof SimpleAttributeSet && ( (SimpleAttributeSet) attr ).getAttributeCount() == 0 ) {
+      return;
+    }
+
+    parseBorderAndBackgroundStyle( result, sheet, attr );
+    parseBoxStyle( result, attr );
+
+    final Object fontFamily = attr.getAttribute( CSS.Attribute.FONT_FAMILY );
+    if ( fontFamily != null ) {
+      result.getStyle().setStyleProperty( TextStyleKeys.FONT, String.valueOf( fontFamily ) );
+    }
+
+    final Object fontSize = attr.getAttribute( CSS.Attribute.FONT_SIZE );
+    if ( fontSize != null ) {
+      result.getStyle().setStyleProperty( TextStyleKeys.FONTSIZE, Math.round( parseLength( String.valueOf( fontSize ) ) ) );
+    }
+
+    final Object fontWeight = attr.getAttribute( CSS.Attribute.FONT_WEIGHT );
+    if ( fontWeight != null ) {
+      String fontWeightStr = String.valueOf( fontWeight );
+      result.getStyle().setStyleProperty( TextStyleKeys.BOLD, fontWeightStr.toLowerCase().equals( "bold" ) );
+    }
+
+    final Object fontStyle = attr.getAttribute( CSS.Attribute.FONT_STYLE );
+    if ( fontStyle != null ) {
+      String fontStyleStr = String.valueOf( fontStyle );
+      result.getStyle().setStyleProperty( TextStyleKeys.ITALIC, fontStyleStr.toLowerCase().equals( "italic" ) );
+    }
+
+    final Object letterSpacing = attr.getAttribute( CSS.Attribute.LETTER_SPACING );
+    if ( letterSpacing != null ) {
+      result.getStyle().setStyleProperty( TextStyleKeys.X_OPTIMUM_LETTER_SPACING,
+          parseLength( String.valueOf( letterSpacing ) ) );
+    }
+
+    final Object wordSpacing = attr.getAttribute( CSS.Attribute.WORD_SPACING );
+    if ( wordSpacing != null ) {
+      result.getStyle().setStyleProperty( TextStyleKeys.WORD_SPACING, parseLength( String.valueOf( wordSpacing ) ) );
+    }
+
+    final Object lineHeight = attr.getAttribute( CSS.Attribute.LINE_HEIGHT );
+    if ( lineHeight != null ) {
+      result.getStyle().setStyleProperty( TextStyleKeys.LINEHEIGHT, parseLength( String.valueOf( lineHeight ) ) );
+    }
+    final Object textAlign = attr.getAttribute( CSS.Attribute.TEXT_ALIGN );
+    if ( textAlign != null ) {
+      try {
+        result.getStyle().setStyleProperty( ElementStyleKeys.ALIGNMENT,
+            ReportParserUtil.parseHorizontalElementAlignment( String.valueOf( textAlign ), null ) );
+      } catch ( ParseException e ) {
+        // ignore ..
+      }
+    }
+
+    final Object textDecoration = attr.getAttribute( CSS.Attribute.TEXT_DECORATION );
+    if ( textDecoration != null ) {
+      final String[] strings = StringUtils.split( String.valueOf( textDecoration ) );
+      result.getStyle().setStyleProperty( TextStyleKeys.STRIKETHROUGH, Boolean.FALSE );
+      result.getStyle().setStyleProperty( TextStyleKeys.UNDERLINED, Boolean.FALSE );
+
+      for ( int i = 0; i < strings.length; i++ ) {
+        final String value = strings[i];
+        if ( "line-through".equals( value ) ) {
+          result.getStyle().setStyleProperty( TextStyleKeys.STRIKETHROUGH, Boolean.TRUE );
+        }
+        if ( "underline".equals( value ) ) {
+          result.getStyle().setStyleProperty( TextStyleKeys.UNDERLINED, Boolean.TRUE );
+        }
+      }
+    }
+
+    final Object valign = attr.getAttribute( CSS.Attribute.VERTICAL_ALIGN );
+    if ( valign != null ) {
+      final VerticalTextAlign valignValue = VerticalTextAlign.valueOf( String.valueOf( valign ) );
+      result.getStyle().setStyleProperty( TextStyleKeys.VERTICAL_TEXT_ALIGNMENT, valignValue );
+      try {
+        result.getStyle().setStyleProperty( ElementStyleKeys.VALIGNMENT,
+            ReportParserUtil.parseVerticalElementAlignment( String.valueOf( valign ), null ) );
+      } catch ( ParseException e ) {
+        // ignore ..
+      }
+    }
+
+    final Object whitespaceText = attr.getAttribute( CSS.Attribute.WHITE_SPACE );
+    if ( whitespaceText != null ) {
+      final String value = String.valueOf( whitespaceText );
+      if ( "pre".equals( value ) ) {
+        result.getStyle().setStyleProperty( TextStyleKeys.WHITE_SPACE_COLLAPSE, WhitespaceCollapse.PRESERVE );
+        result.getStyle().setStyleProperty( TextStyleKeys.TEXT_WRAP, TextWrap.NONE );
+      } else if ( "nowrap".equals( value ) ) {
+        result.getStyle().setStyleProperty( TextStyleKeys.WHITE_SPACE_COLLAPSE, WhitespaceCollapse.PRESERVE_BREAKS );
+        result.getStyle().setStyleProperty( TextStyleKeys.TEXT_WRAP, TextWrap.NONE );
+      } else {
+        result.getStyle().setStyleProperty( TextStyleKeys.WHITE_SPACE_COLLAPSE, WhitespaceCollapse.COLLAPSE );
+        result.getStyle().setStyleProperty( TextStyleKeys.TEXT_WRAP, TextWrap.WRAP );
+      }
+    } else {
+      result.getStyle().setStyleProperty( TextStyleKeys.WHITE_SPACE_COLLAPSE, WhitespaceCollapse.COLLAPSE );
+      result.getStyle().setStyleProperty( TextStyleKeys.TEXT_WRAP, TextWrap.WRAP );
+    }
+
+    final Object alignAttribute = attr.getAttribute( HTML.Attribute.ALIGN );
+    if ( alignAttribute != null ) {
+      try {
+        result.getStyle().setStyleProperty( ElementStyleKeys.ALIGNMENT,
+            ReportParserUtil.parseHorizontalElementAlignment( String.valueOf( alignAttribute ), null ) );
+      } catch ( ParseException e ) {
+        // ignore ..
+      }
+    }
+
+    final Object titleAttribute = attr.getAttribute( HTML.Attribute.TITLE );
+    if ( titleAttribute != null ) {
+      result.setAttribute( AttributeNames.Html.NAMESPACE, AttributeNames.Html.TITLE, String.valueOf( titleAttribute ) );
+    }
 
 
   private HTML.Tag findTag( final AttributeSet attr ) {

@@ -5,10 +5,10 @@
   <parent>
     <groupId>org.pentaho.reporting.designer</groupId>
     <artifactId>reporting-designer</artifactId>
-    <version>8.1.0.4-542</version>
+    <version>8.3.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>datasource-editor-mondrian</artifactId>
-  <version>8.1.0.4-542</version>
+  <version>8.3.0.0-SNAPSHOT</version>
   <licenses>
     <license>
       <name>GNU Lesser General Public License, version 2.1</name>
@@ -33,10 +33,6 @@
     <dependency>
       <groupId>commons-cli</groupId>
       <artifactId>commons-cli</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-compress</artifactId>
     </dependency>
     <dependency>
       <groupId>commons-validator</groupId>
@@ -65,11 +61,6 @@
     <dependency>
       <groupId>ftp4che</groupId>
       <artifactId>ftp4che</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>nickyb</groupId>
-      <artifactId>sqleonardo</artifactId>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.ini4j</groupId>
@@ -193,11 +184,6 @@
     <dependency>
       <groupId>org.hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
