@@ -1,14 +1,8 @@
 package org.pentaho.reporting.engine.classic.core.layout.richtext;
 
-import junit.framework.TestCase;
 import org.pentaho.reporting.engine.classic.core.Band;
-import org.pentaho.reporting.engine.classic.core.ClassicEngineBoot;
 import org.pentaho.reporting.engine.classic.core.Element;
-import org.pentaho.reporting.engine.classic.core.ReportElement;
 import org.pentaho.reporting.engine.classic.core.style.BandStyleKeys;
-import org.pentaho.reporting.engine.classic.core.style.StyleKey;
-
-import java.util.Arrays;
 
 public class HtmlListsRichTextConverterTest extends BaseHtmlRichTextConverterTest {
 
@@ -43,7 +37,7 @@ public class HtmlListsRichTextConverterTest extends BaseHtmlRichTextConverterTes
         final Band body = checkResultAndGetBody(result);
 
         final Element ol = body.getElement(0);
-        //printElement(ol, 0);
+        printElement(ol, 0);
 
         checkOLwithLI(ol, 0, null, null);
     }
@@ -52,7 +46,7 @@ public class HtmlListsRichTextConverterTest extends BaseHtmlRichTextConverterTes
         final String input = "<ol><li>foo</li></ol><ol><li>bar</li></ol>";
         final Band result = (Band) converter.convert(source, input);
         final Band body = checkResultAndGetBody(result);
-        //printElement(body, 1);
+        printElement(body, 1);
 
         final Element olFoo = body.getElement(0);
         checkOLwithLI(olFoo, 0, "1. ", "foo");

@@ -5,10 +5,10 @@
   <parent>
     <groupId>org.pentaho.reporting.engine</groupId>
     <artifactId>reporting-engine</artifactId>
-    <version>8.1.0.4-542</version>
+    <version>10.1.0.1-348</version>
   </parent>
   <artifactId>classic-core</artifactId>
-  <version>8.1.0.4-542</version>
+  <version>10.1.0.1-348</version>
   <properties>
     <powermock.version>1.6.3</powermock.version>
     <mockito-all.version>1.10.19</mockito-all.version>
@@ -22,12 +22,6 @@
     </license>
   </licenses>
   <dependencies>
-    <dependency>
-      <!-- added be me, mjasek -->
-      <groupId>de.usu.si</groupId>
-      <artifactId>si-pdr-xmljdbc</artifactId>
-      <version>2.2.2</version>
-    </dependency>
 
     <dependency>
       <groupId>org.pentaho.reporting.library</groupId>
@@ -159,18 +153,14 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>com.lowagie</groupId>
-      <artifactId>itext-rtf</artifactId>
+      <groupId>com.github.librepdf</groupId>
+      <artifactId>openrtf</artifactId>
+      <version>${openrtf.version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>bouncycastle</groupId>
-      <artifactId>bcprov-jdk14</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>bouncycastle</groupId>
-      <artifactId>bcmail-jdk14</artifactId>
+      <groupId>org.bouncycastle</groupId>
+      <artifactId>bcmail-jdk15to18</artifactId>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -179,8 +169,8 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>rhino</groupId>
-      <artifactId>js</artifactId>
+      <groupId>org.mozilla</groupId>
+      <artifactId>rhino</artifactId>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -229,11 +219,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>pentaho</groupId>
       <artifactId>simple-jndi</artifactId>
       <scope>test</scope>
@@ -263,6 +248,19 @@
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpcore</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.pentaho</groupId>
+      <artifactId>pentaho-encryption-support</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -278,12 +276,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <distributionManagement>
-    <repository>
-      <id>internal.repo</id>
-      <name>MyCo Internal Repository</name>
-      <url>http://ci.vma.usucz.usu.grp:81/nexus/content/repositories/vma_prd_build/</url>
-    </repository>
-  </distributionManagement>
 </project>

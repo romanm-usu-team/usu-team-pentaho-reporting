@@ -12,7 +12,7 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
- * Copyright (c) 2001 - 2017 Object Refinery Ltd, Hitachi Vantara and Contributors..  All rights reserved.
+ * Copyright (c) 2001 - 2023 Object Refinery Ltd, Hitachi Vantara and Contributors..  All rights reserved.
  */
 
 package org.pentaho.reporting.engine.classic.core.function;
@@ -23,6 +23,7 @@ import org.pentaho.reporting.engine.classic.core.ClassicEngineCoreModule;
 import org.pentaho.reporting.engine.classic.core.InvalidReportStateException;
 import org.pentaho.reporting.libraries.base.config.Configuration;
 import org.pentaho.reporting.libraries.base.util.ObjectUtilities;
+import org.pentaho.reporting.libraries.formula.CustomErrorValue;
 import org.pentaho.reporting.libraries.formula.ErrorValue;
 import org.pentaho.reporting.libraries.formula.Formula;
 import org.pentaho.reporting.libraries.formula.FormulaContext;
@@ -54,12 +55,17 @@ public final class FormulaExpression extends AbstractExpression {
    * The formula as specified by the user. This is the formula and the namespace.
    */
   private String formula;
+
+  private String elementType;
+
   /**
    * A flag indicating that the formula cannot be parsed.
    */
   private Exception formulaError;
 
   private Boolean failOnError;
+
+  private transient Object evaluate;
 
   /**
    * Default Constructor.
@@ -83,6 +89,14 @@ public final class FormulaExpression extends AbstractExpression {
   private FormulaContext getFormulaContext() {
     final ProcessingContext globalContext = getRuntime().getProcessingContext();
     return globalContext.getFormulaContext();
+  }
+
+  public String getElementType() {
+    return elementType;
+  }
+
+  public void setElementType(String elementType) {
+    this.elementType = elementType;
   }
 
   /**
@@ -160,7 +174,7 @@ public final class FormulaExpression extends AbstractExpression {
    */
   private Object computeRegularValue() {
     if ( formulaError != null ) {
-      if ( Boolean.TRUE.equals( getComputedFailOnError() ) ) {
+      if ( getComputedFailOnError() ) {
         throw new InvalidReportStateException( String.format(
             "Previously failed to evaluate formula-expression with error %s", // NON-NLS
             formulaError ) );
@@ -182,12 +196,12 @@ public final class FormulaExpression extends AbstractExpression {
       final ReportFormulaContext context = new ReportFormulaContext( getFormulaContext(), expressionRuntime );
       try {
         compiledFormula.initialize( context );
-        final Object evaluate = compiledFormula.evaluate();
-        if ( Boolean.TRUE.equals( getComputedFailOnError() ) ) {
+        evaluate = compiledFormula.evaluate();
+        if ( getComputedFailOnError() ) {
           if ( evaluate instanceof ErrorValue ) {
             throw new InvalidReportStateException( String.format(
-                "Failed to evaluate formula-expression with error %s", // NON-NLS
-                evaluate ) );
+                "Failed to evaluate formula-expression %s with error %s", // NON-NLS
+                getName(), evaluate ) );
           }
         }
         return evaluate;
@@ -195,22 +209,30 @@ public final class FormulaExpression extends AbstractExpression {
         context.close();
       }
     } catch ( Exception e ) {
-      formulaError = e;
-      if ( FormulaExpression.logger.isDebugEnabled() ) {
-        final Configuration config = getReportConfiguration();
-        if ( "true".equals( config
-            .getConfigProperty( "org.pentaho.reporting.engine.classic.core.function.LogFormulaFailureCause" ) ) ) {
-          FormulaExpression.logger.debug( "Failed to compute the regular value [" + formulaExpression + ']', e );
-        } else {
-          FormulaExpression.logger.debug( "Failed to compute the regular value [" + formulaExpression + ']' );
-        }
-      }
-      if ( Boolean.TRUE.equals( getComputedFailOnError() ) ) {
-        throw new InvalidReportStateException( String.format( "Failed to evaluate formula-expression with error %s", // NON-NLS
-            e.getMessage() ), e );
-      }
-      return LibFormulaErrorValue.ERROR_UNEXPECTED_VALUE;
+      return computeError( e );
     }
+  }
+
+  private Object computeError( Exception e ) {
+    formulaError = e;
+    if ( FormulaExpression.logger.isDebugEnabled() ) {
+      final Configuration config = getReportConfiguration();
+      if ( "true".equals( config
+          .getConfigProperty( "org.pentaho.reporting.engine.classic.core.function.LogFormulaFailureCause" ) ) ) {
+        FormulaExpression.logger.debug( "Formula at " + getName() + " failed to compute the regular value [" + formulaExpression + ']',
+          e );
+      } else {
+        FormulaExpression.logger.debug( "Formula at " + getName() + " failed to compute the regular value [" + formulaExpression + ']' );
+      }
+    }
+    if ( getComputedFailOnError() ) {
+      if ( evaluate instanceof CustomErrorValue ) {
+        return evaluate;
+      }
+      throw new InvalidReportStateException( String.format( "Failed to evaluate formula-expression %s with error %s", // NON-NLS
+          getName(), e.getMessage() ), e );
+    }
+    return LibFormulaErrorValue.ERROR_UNEXPECTED_VALUE;
   }
 
   /**
