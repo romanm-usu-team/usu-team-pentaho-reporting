@@ -5,10 +5,10 @@
   <parent>
     <groupId>org.pentaho.reporting.engine</groupId>
     <artifactId>reporting-engine</artifactId>
-    <version>8.1.0.4-542</version>
+    <version>10.1.0.1-348</version>
   </parent>
   <artifactId>legacy-functions</artifactId>
-  <version>8.1.0.4-542</version>
+  <version>10.1.0.1-348</version>
   <licenses>
     <license>
       <name>GNU Lesser General Public License, version 2.1</name>
@@ -41,11 +41,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>pentaho</groupId>
       <artifactId>simple-jndi</artifactId>
       <scope>test</scope>
@@ -68,12 +63,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  
-  <distributionManagement>
-    <repository>
-      <id>internal.repo</id>
-      <name>MyCo Internal Repository</name>
-      <url>http://ci.vma.usucz.usu.grp:81/nexus/content/repositories/vma_prd_build/</url>
-    </repository>
-  </distributionManagement>
 </project>

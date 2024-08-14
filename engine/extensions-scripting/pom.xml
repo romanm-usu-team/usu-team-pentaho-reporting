@@ -5,10 +5,10 @@
   <parent>
     <groupId>org.pentaho.reporting.engine</groupId>
     <artifactId>reporting-engine</artifactId>
-    <version>8.1.0.4-542</version>
+    <version>10.1.0.1-348</version>
   </parent>
   <artifactId>classic-extensions-scripting</artifactId>
-  <version>8.1.0.4-542</version>
+  <version>10.1.0.1-348</version>
   <licenses>
     <license>
       <name>GNU Lesser General Public License, version 2.1</name>
@@ -23,8 +23,8 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>rhino</groupId>
-      <artifactId>js</artifactId>
+      <groupId>org.mozilla</groupId>
+      <artifactId>rhino</artifactId>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -34,11 +34,6 @@
     <dependency>
       <groupId>org.hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

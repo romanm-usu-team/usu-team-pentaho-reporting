@@ -4,12 +4,9 @@ import junit.framework.TestCase;
 import org.pentaho.reporting.engine.classic.core.ClassicEngineBoot;
 
 public class HtmlStylesRichTextConverterTest extends TestCase {
-    private HtmlStylesRichTechConverter styles;
 
     public void setUp() throws Exception {
         ClassicEngineBoot.getInstance().start();
-
-        styles = new HtmlStylesRichTechConverter();
     }
 
     public void testFormats() {

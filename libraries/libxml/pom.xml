@@ -5,10 +5,10 @@
   <parent>
     <groupId>org.pentaho.reporting.library</groupId>
     <artifactId>reporting-libraries</artifactId>
-    <version>8.1.0.4-542</version>
+    <version>10.1.0.1-348</version>
   </parent>
   <artifactId>libxml</artifactId>
-  <version>8.1.0.4-542</version>
+  <version>10.1.0.1-348</version>
   <name>LibXml</name>
   <description>LibXML is a namespace aware SAX-Parser utility library. It eases the
     pain of implementing non-trivial SAX input handlers. The original
@@ -45,12 +45,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  
-  <distributionManagement>
-    <repository>
-      <id>internal.repo</id>
-      <name>MyCo Internal Repository</name>
-      <url>http://ci.vma.usucz.usu.grp:81/nexus/content/repositories/vma_prd_build/</url>
-    </repository>
-  </distributionManagement>
 </project>
